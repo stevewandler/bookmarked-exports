@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESC 16 Partnership Terms — For Charlie</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1a1a2e;
+    background: #f8f9fa;
+    padding: 40px 20px;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 32px 40px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #a0a0b8;
+  }
+  .badge {
+    display: inline-block;
+    background: #e8553d;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .body { padding: 40px; }
+
+  /* Message section */
+  .message-section {
+    margin-bottom: 36px;
+    padding-bottom: 36px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  .message-section p {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  .message-section p:last-child {
+    margin-bottom: 0;
+  }
+  .message-section strong {
+    color: #1a1a2e;
+  }
+
+  .context-box {
+    background: #f8f9fa;
+    border: 1px solid #e8e8ec;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .context-box .cb-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .context-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .context-box ul li {
+    font-size: 14px;
+    color: #444;
+    padding: 6px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .context-box ul li:before {
+    content: "→";
+    color: #888;
+    position: absolute;
+    left: 0;
+  }
+  .context-box ul li strong {
+    color: #1a1a2e;
+  }
+
+  /* Divider */
+  .section-divider {
+    text-align: center;
+    margin: 8px 0 32px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Terms sections */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+  }
+  .terms-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+  }
+  .terms-grid .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .terms-grid .value {
+    font-size: 14px;
+    color: #1a1a2e;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .highlight {
+    background: #fff8f0;
+    border: 1px solid #fde8d0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .highlight .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e8553d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  ul li {
+    font-size: 14px;
+    color: #333;
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  ul li:before {
+    content: "•";
+    color: #e8553d;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    border-bottom: 2px solid #eee;
+  }
+  table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+  }
+  table tr:last-child td { border-bottom: none; }
+  .step-down-table td:first-child { font-weight: 600; }
+  .econ-table td:nth-child(2) { font-weight: 600; color: #1a1a2e; }
+  .footer {
+    padding: 20px 40px;
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="badge">Draft — For Charlie's Review</div>
+    <h1>ESC 16 Partnership Terms</h1>
+    <div class="subtitle">Simplified to match what we discussed — March 2, 2026</div>
+  </div>
+
+  <div class="body">
+
+    <!-- Steve's message to Charlie -->
+    <div class="message-section">
+      <p>Charlie,</p>
+
+      <p>You're right — I overcomplicated the last version. Before I show you the cleaned-up terms, I want to explain what I was trying to get at, because the intent was sound even if the execution missed.</p>
+
+      <p>The core problem I was trying to solve: <strong>ESC 16's current SLA already includes marketing, sales, and conference commitments, but none of it is happening.</strong> Their marketing activity is a gap. Their conference presence is a gap. Their lead generation is a gap. Derek took almost a week to send the Conroe ILA. These are real operational issues that cost us deals and slow down revenue.</p>
+
+      <div class="context-box">
+        <div class="cb-title">What each element was trying to solve</div>
+        <ul>
+          <li><strong>Base vs. Accelerated rate (10%/15%)</strong> → Reward ESC 16 for actually helping close deals instead of just processing invoices. Right now they get paid the same whether they do nothing or actively sell.</li>
+          <li><strong>Floor tied to marketing deliverables</strong> → Make the $75K guarantee contingent on ESC 16 actually participating in marketing, since the current SLA has zero accountability and they're not doing it.</li>
+          <li><strong>Training tiers</strong> → Give ESC 16 a way to earn revenue beyond commission, making the partnership more valuable to them and giving them a reason to be more active.</li>
+          <li><strong>Attribution automation</strong> → If we differentiate rates, we need a fair way to track who did what. Jan flagged gaming concerns and she's right.</li>
+        </ul>
+      </div>
+
+      <p><strong>Where I went wrong:</strong> I tried to solve all of these in the deal structure instead of solving them over time. You said it on Feb 17 — "Do I care whether they deliver on marketing? We're in the ballpark for just the invoicing and contracting piece." You were right. The 10% is fair for procurement. The marketing trial year gives us a full year of data. If ESC 16 delivers on marketing, we build incentives into Year 2. If they don't, we have leverage.</p>
+
+      <p>The problems I was trying to solve are real, but the right time to solve them is after we have data — not in a deal Nathan has already told us three times to keep simple.</p>
+
+      <p>Here are the terms stripped back to what we discussed. Ready to send to Nathan once you confirm.</p>
+    </div>
+
+    <div class="section-divider">— Proposed Terms Below —</div>
+
+    <!-- Term Sheet -->
+    <div class="section">
+      <h2>Financial Terms</h2>
+      <div class="terms-grid">
+        <div class="label">Revenue Share</div>
+        <div class="value">10% of Texas revenue flowing through ESC 16 contracting</div>
+        <div class="label">Floor</div>
+        <div class="value">$75,000/year minimum guarantee (not additive)</div>
+        <div class="label">Scope</div>
+        <div class="value">Texas revenue through ESC 16 contracting only. Out-of-state is a separate conversation.</div>
+        <div class="label">Effective Date</div>
+        <div class="value">Retroactive to January 1, 2026</div>
+        <div class="label">Term</div>
+        <div class="value">Annual, January 1 – December 31</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Step-Downs at Scale</h2>
+      <table class="step-down-table">
+        <tr>
+          <th>ESC 16's Annual Share Reaches</th>
+          <th>Rate on Additional Revenue</th>
+        </tr>
+        <tr>
+          <td>$150,000</td>
+          <td>Drops to 7.5%</td>
+        </tr>
+        <tr>
+          <td>$225,000</td>
+          <td>Drops to 5.0%</td>
+        </tr>
+      </table>
+      <p style="font-size: 13px; color: #888; margin-top: 8px;">Rates reset to 10% at the start of each contract year.</p>
+    </div>
+
+    <div class="section">
+      <h2>Contracting Services (What ESC 16 Does for 10%)</h2>
+      <ul>
+        <li>Quote development and proposal preparation</li>
+        <li>Purchase order processing</li>
+        <li>Contract execution with districts</li>
+        <li>Invoicing, billing, and payment collection</li>
+        <li>Renewal processing</li>
+        <li>2 business day turnaround on quotes and invoicing</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Marketing Collaboration — Trial Year</h2>
+      <ul>
+        <li>Bookmarked provides monthly marketing content</li>
+        <li>ESC 16 distributes through agreed channels</li>
+        <li>No financial penalties for Year 1</li>
+        <li>Quarterly review of activities and effectiveness</li>
+      </ul>
+      <p style="font-size: 13px; color: #888; margin-top: 8px;">Year 1 establishes what collaboration looks like. Performance expectations formalized in Year 2 based on actual data.</p>
+    </div>
+
+    <div class="section">
+      <h2>Operational</h2>
+      <ul>
+        <li>Monthly check-in meeting between Bookmarked and ESC 16 leadership</li>
+        <li>Bookmarked provides partnership dashboard (revenue, pipeline, activity)</li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <div class="hl-title">Economics at Key Revenue Levels</div>
+      <table class="econ-table">
+        <tr>
+          <th>Texas Revenue</th>
+          <th>ESC 16 Receives</th>
+          <th>vs. Current (25%)</th>
+          <th>Bookmarked Saves</th>
+        </tr>
+        <tr>
+          <td>$500K</td>
+          <td>$75,000 (floor)</td>
+          <td>was $125,000</td>
+          <td>$50,000</td>
+        </tr>
+        <tr>
+          <td>$1.0M</td>
+          <td>$100,000</td>
+          <td>was $250,000</td>
+          <td>$150,000</td>
+        </tr>
+        <tr>
+          <td>$1.5M</td>
+          <td>$150,000</td>
+          <td>was $375,000</td>
+          <td>$225,000</td>
+        </tr>
+        <tr>
+          <td>$2.0M</td>
+          <td>$187,500</td>
+          <td>was $500,000</td>
+          <td>$312,500</td>
+        </tr>
+        <tr>
+          <td>$3.0M</td>
+          <td>$250,000</td>
+          <td>was $750,000</td>
+          <td>$500,000</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section" style="margin-bottom: 0;">
+      <h2>Approval</h2>
+      <p style="font-size: 14px; color: #666;">Final agreement subject to Bookmarked Board approval.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Bookmarked &times; ESC 16 — Draft for Charlie's Review — March 2, 2026
+  </div>
+</div>
+</body>
+</html>

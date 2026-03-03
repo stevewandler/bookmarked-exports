@@ -401,6 +401,127 @@
             margin-bottom: 8px;
         }
 
+        /* Founder narrative section */
+        .founder-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+        }
+
+        .founder-section .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sea-green);
+            margin-bottom: 12px;
+        }
+
+        .founder-section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .founder-narrative {
+            font-size: 18px;
+            line-height: 1.85;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .founder-narrative p {
+            margin-bottom: 20px;
+        }
+
+        .founder-narrative .pull-quote {
+            font-size: 24px;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--sea-green);
+            padding: 32px 0;
+            border-left: 3px solid var(--sea-green);
+            padding-left: 28px;
+            margin: 36px 0;
+            line-height: 1.5;
+        }
+
+        .founder-narrative .pull-quote .attribution {
+            display: block;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            color: var(--muted-gray);
+            margin-top: 12px;
+        }
+
+        .gateway-chain {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .gateway-step {
+            background: var(--card-surface);
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .gateway-arrow {
+            color: var(--sea-green);
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        .founder-bridge {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 24px;
+        }
+
+        .founder-bridge p {
+            font-size: 14px;
+            color: var(--muted-gray);
+            margin-bottom: 8px;
+        }
+
+        .founder-bridge a {
+            color: var(--sea-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .founder-bridge a:hover {
+            text-decoration: underline;
+        }
+
+        .founder-to-vision {
+            text-align: center;
+            padding: 48px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .founder-to-vision .arrow-down {
+            font-size: 32px;
+            color: var(--sea-green);
+            margin-bottom: 16px;
+        }
+
+        .founder-to-vision p {
+            font-size: 15px;
+            color: var(--muted-gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .container { padding: 40px 24px; }
@@ -411,6 +532,10 @@
             .process-steps { grid-template-columns: 1fr; }
             .rocks-table { font-size: 14px; }
             .belief { font-size: 22px; padding: 32px 20px; }
+            .founder-section { padding: 0 24px 40px; }
+            .founder-narrative { font-size: 16px; }
+            .founder-narrative .pull-quote { font-size: 20px; }
+            .gateway-chain { gap: 8px; }
         }
     </style>
 </head>
@@ -418,8 +543,54 @@
     <div class="header">
         <div class="header-label">Bookmarked</div>
         <h1>Vision/Traction Organizer</h1>
-        <p class="subtitle">Where we're going and how we plan to get there</p>
+        <p class="subtitle">The founder's story, the company's vision, and the plan to get there</p>
         <p class="date">Last updated: February 25, 2026 &middot; Owner: Steve Wandler</p>
+    </div>
+
+    <!-- FOUNDER NARRATIVE -->
+    <div class="founder-section">
+        <div class="section-label">Why This Company Exists</div>
+        <h2>The Founder's Story</h2>
+
+        <div class="founder-narrative">
+            <p>If you were told three times a year for eleven years that you're really bad at your job, would you stay? That's what school does to kids who learn differently. Three report cards a year, every year, K through 11. Thirty-three times being told you're not enough. I know because I was that kid.</p>
+
+            <p>I have dyslexia and ADHD. I didn't know that growing up — nobody diagnosed it. What I knew was that I was the kid doing multiplication tables on my arm because I couldn't memorize them. The kid who used a pencil when everyone else got the Bic pen. The kid who got locked in a closet by a teacher who didn't know what else to do with me.</p>
+
+            <p>My Grade 5 report card has a line that says "Shows Interest in Reading." It went from an A to a B-minus. Meanwhile I had straight A's in Art, Music, and PE — the things where nobody was measuring me with a tool that didn't fit. By Grade 10 I was getting 48 in English while the class average was 65. I was getting 96 in PE while the class average was 71. The system wasn't measuring my ability. It was measuring my compatibility with the system.</p>
+
+            <div class="pull-quote">
+                "Dad, the reason you don't read more books is because you haven't found the right one."
+                <span class="attribution">— Faith Wandler, Steve's daughter</span>
+            </div>
+
+            <p>My daughter Faith said that to me about four years ago, when we were first thinking about Bookmarked. She's the reader in the family — she helped me find a book connected to a movie I loved, suggested I try it on Audible alongside the physical copy. She was right. It wasn't that I didn't like reading. It was that nobody had ever helped me find the right book in the right format.</p>
+
+            <p>That one insight reframed everything. If the right book in the right hands can change a life — and I believe it can — then the most important thing in education isn't measuring kids against a standard. It's connecting them to the ideas that light them up.</p>
+
+            <div class="gateway-chain">
+                <div class="gateway-step">Right book</div>
+                <div class="gateway-arrow">&rarr;</div>
+                <div class="gateway-step">Love of reading</div>
+                <div class="gateway-arrow">&rarr;</div>
+                <div class="gateway-step">Literacy</div>
+                <div class="gateway-arrow">&rarr;</div>
+                <div class="gateway-step" style="border: 1px solid var(--sea-green);">Everything else</div>
+            </div>
+
+            <p>Before Bookmarked, I co-founded FreshGrade — an EdTech company that replaced traditional report cards with evidence-based portfolios. Before that, I helped build Thrively, which matched kids to their strengths. Looking back, it's all one career: I keep building tools that help people find the thing the system missed.</p>
+
+            <p>Today, a new wave of legislation has created an operationally impossible task for school districts. Twenty-six states require districts to review, document, and defend every book in their collections. Books aren't being banned — they're just not being ordered, because the compliance burden has paralyzed the system. We walked into this problem through compliance because that's the door that was open. But the real mission hasn't changed since I was the kid with the pencil: help everyone find the next great book.</p>
+        </div>
+
+        <div class="founder-bridge">
+            <p>Read the full founder narrative &rarr; <a href="https://stevewandler.github.io/bookmarked-exports/vision/founder-vision-narrative.html">Why Bookmarked — Founder's Vision</a></p>
+        </div>
+    </div>
+
+    <div class="founder-to-vision">
+        <div class="arrow-down">&#8595;</div>
+        <p>From personal mission to company vision</p>
     </div>
 
     <div class="container">
@@ -433,7 +604,7 @@
         <div class="section">
             <div class="section-label">Core Focus</div>
             <h2>Help everyone find the next great book.</h2>
-            <p><em>"Dad, the reason you don't read more books is because you haven't found the right one."</em> — This isn't a tagline. It's the truth about every reader, every student, every person who thinks they don't like books. They just haven't found theirs yet.</p>
+            <p>Faith's insight isn't a tagline. It's the truth about every reader, every student, every person who thinks they don't like books. They just haven't found theirs yet.</p>
 
             <div class="highlight-box">
                 <h4>Our Niche: Book Intelligence</h4>

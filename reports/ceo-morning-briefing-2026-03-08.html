@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESC 16 Prep Briefing — March 8, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --eigengrau: #101828;
+  --sea-green: #15B79E;
+  --deep-green: #107569;
+  --pumpkin: #FF692E;
+  --white: #FFFFFF;
+  --muted: #9CA3AF;
+  --card: #1F2937;
+  --card-hover: #283548;
+  --border: #374151;
+  --surface-dim: #0D1117;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Urbanist', sans-serif;
+  background: var(--eigengrau);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--eigengrau) 0%, #1a2332 50%, var(--eigengrau) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 40px;
+}
+.hero .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sea-green);
+  margin-bottom: 8px;
+}
+.hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+.hero .date { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+.hero .subtitle { color: var(--muted); font-size: 16px; max-width: 700px; }
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-number { font-size: 32px; font-weight: 800; color: var(--sea-green); }
+.stat-number.warn { color: var(--pumpkin); }
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Section Headers */
+.section-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header .icon { margin-right: 8px; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.timeline-item:hover { border-color: var(--sea-green); }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--eigengrau);
+}
+.timeline-item.active::before { background: var(--sea-green); box-shadow: 0 0 8px rgba(21,183,158,0.4); }
+.timeline-item.warn-dot::before { background: var(--pumpkin); box-shadow: 0 0 8px rgba(255,105,46,0.4); }
+.timeline-date { font-size: 12px; color: var(--sea-green); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.timeline-title { font-size: 15px; font-weight: 600; margin: 4px 0; }
+.timeline-detail { font-size: 13px; color: var(--muted); }
+.timeline-quote {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--surface-dim);
+  border-left: 3px solid var(--sea-green);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  color: #D1D5DB;
+  font-style: italic;
+}
+
+/* People Cards */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+.person-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.person-card .name { font-size: 17px; font-weight: 700; }
+.person-card .role { font-size: 13px; color: var(--sea-green); margin-bottom: 8px; }
+.person-card .intel { font-size: 13px; color: var(--muted); }
+.person-card .intel strong { color: var(--white); font-weight: 600; }
+
+/* Calendar */
+.cal-grid { margin: 20px 0; }
+.cal-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.cal-item.highlight { border-color: var(--pumpkin); background: #1F2937; }
+.cal-time { font-size: 14px; font-weight: 700; color: var(--sea-green); }
+.cal-item.highlight .cal-time { color: var(--pumpkin); }
+.cal-title { font-size: 15px; font-weight: 600; }
+.cal-meta { font-size: 12px; color: var(--muted); }
+.cal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-hot { background: rgba(255,105,46,0.15); color: var(--pumpkin); }
+.badge-normal { background: rgba(21,183,158,0.15); color: var(--sea-green); }
+
+/* Action Items */
+.task-list { margin: 20px 0; }
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+.priority-p1 { background: var(--pumpkin); }
+.priority-p2 { background: var(--sea-green); }
+.priority-p3 { background: var(--muted); }
+.task-content { flex: 1; }
+.task-title { font-size: 14px; font-weight: 600; }
+.task-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Clarity Section */
+.clarity-grid { margin: 20px 0; }
+.clarity-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--pumpkin);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+.clarity-item .number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pumpkin);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.clarity-item .question { font-size: 15px; font-weight: 600; margin: 4px 0; }
+.clarity-item .context { font-size: 13px; color: var(--muted); }
+.clarity-item .source {
+  font-size: 11px;
+  color: var(--deep-green);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Deal Status */
+.deal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+}
+.deal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.deal-title { font-size: 18px; font-weight: 700; }
+.deal-status {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-negotiating { background: rgba(255,105,46,0.15); color: var(--pumpkin); }
+.status-pending { background: rgba(21,183,158,0.15); color: var(--sea-green); }
+.deal-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.deal-row:last-child { border-bottom: none; }
+.deal-label { color: var(--muted); font-weight: 500; }
+.deal-value { font-weight: 600; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+/* Utilities */
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.text-sea { color: var(--sea-green); }
+.text-pumpkin { color: var(--pumpkin); }
+.text-muted { color: var(--muted); }
+.fw-700 { font-weight: 700; }
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(21,183,158,0.12);
+  color: var(--sea-green);
+}
+.tag-warn { background: rgba(255,105,46,0.12); color: var(--pumpkin); }
+.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+@media (max-width: 768px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .people-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 70px 1fr; }
+  .cal-badge { display: none; }
+  .hero h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">CEO Operating System</div>
+    <h1>ESC 16 Prep Briefing</h1>
+    <div class="date">Sunday, March 8, 2026 — Evening Session</div>
+    <div class="subtitle">Full intelligence synthesis from 15 emails, 4 Plaud recordings, Slack DMs with Charlie Clines, and tomorrow's calendar. Prepare tonight, execute tomorrow.</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="container">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">15</div>
+      <div class="stat-label">Email Threads</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Plaud Recordings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">7</div>
+      <div class="stat-label">Events Tomorrow</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number warn">8</div>
+      <div class="stat-label">Needs Clarity</div>
+    </div>
+  </div>
+
+  <!-- DEAL STATUS -->
+  <div class="section-header">Deal Status</div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-title">ESC 16 Partnership Agreement</div>
+      <span class="deal-status status-negotiating">Negotiating</span>
+    </div>
+    <div class="deal-row"><div class="deal-label">Structure</div><div class="deal-value">$75K guarantee + 15% revenue share</div></div>
+    <div class="deal-row"><div class="deal-label">Term</div><div class="deal-value">2-year agreement (Nathan's counter)</div></div>
+    <div class="deal-row"><div class="deal-label">Key Contact</div><div class="deal-value">Nathan Maxwell, Executive Director</div></div>
+    <div class="deal-row"><div class="deal-label">Advisor</div><div class="deal-value">Charlie Clines (former ESC 16 ED)</div></div>
+    <div class="deal-row"><div class="deal-label">Legal</div><div class="deal-value">Derek Criswell — terms finalized, ILA drafted</div></div>
+    <div class="deal-row"><div class="deal-label">Next Gate</div><div class="deal-value text-pumpkin fw-700">Conroe ISD board vote — March 17</div></div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-title">Conroe ISD — First District via ESC 16</div>
+      <span class="deal-status status-pending">ILA Pending</span>
+    </div>
+    <div class="deal-row"><div class="deal-label">Status</div><div class="deal-value">Interlocal Agreement sent to Conroe</div></div>
+    <div class="deal-row"><div class="deal-label">Board Date</div><div class="deal-value text-pumpkin fw-700">March 17, 2026</div></div>
+    <div class="deal-row"><div class="deal-label">Contact</div><div class="deal-value">Brian Broussard (Conroe ISD)</div></div>
+    <div class="deal-row"><div class="deal-label">Revenue Split</div><div class="deal-value">Nathan countered 25% to Conroe — needs resolution</div></div>
+    <div class="deal-row"><div class="deal-label">Sent By</div><div class="deal-value">Derek Criswell (Feb 25)</div></div>
+  </div>
+
+  <!-- NEGOTIATION TIMELINE -->
+  <div class="section-header">Negotiation Timeline</div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 24</div>
+      <div class="timeline-title">Steve asks about PO timing</div>
+      <div class="timeline-detail">Initial inquiry to Derek Criswell about purchase order process and timing for ESC 16 partnership.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 24</div>
+      <div class="timeline-title">Derek: Attorney finalized terms</div>
+      <div class="timeline-detail">Attorney completed term sheet. Interlocal agreement needed between ESC 16 and Conroe ISD before proceeding.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 25</div>
+      <div class="timeline-title">ILA sent to Conroe ISD</div>
+      <div class="timeline-detail">Derek confirms Interlocal Agreement sent to Conroe. March 17 board meeting identified as approval date.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 2</div>
+      <div class="timeline-title">Steve drafts proposal — sends to Charlie for review</div>
+      <div class="timeline-detail">Initial proposal: 10% revenue share, $75K annual guarantee. Charlie reviews and responds same day.</div>
+      <div class="timeline-quote">"Looks good to go" — Charlie Clines</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 2</div>
+      <div class="timeline-title">Proposal sent to Nathan Maxwell</div>
+      <div class="timeline-detail">Steve sends formal proposal to Nathan at ESC 16. 10% revenue share structure with $75K guarantee.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 2</div>
+      <div class="timeline-title">Nathan acknowledges, proposes call</div>
+      <div class="timeline-detail">Nathan receives proposal positively, suggests scheduling a call to discuss terms.</div>
+    </div>
+
+    <div class="timeline-item warn-dot">
+      <div class="timeline-date">Mar 3</div>
+      <div class="timeline-title">Nathan's Counter-Proposal — 4 Points</div>
+      <div class="timeline-detail">Nathan pushes back on several terms:</div>
+      <div class="timeline-quote">
+        1. <strong>15% not 10%</strong> revenue share to ESC 16<br>
+        2. <strong>Longer term</strong> — wants multi-year commitment<br>
+        3. <strong>25% to Conroe ISD</strong> — additional district cut<br>
+        4. <strong>Expanded scope</strong> — broader service expectations
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 3</div>
+      <div class="timeline-title">Steve forwards counter to Charlie</div>
+      <div class="timeline-detail">Steve immediately loops Charlie Clines in on Nathan's counter-proposal for strategic guidance.</div>
+    </div>
+
+    <div class="timeline-item active">
+      <div class="timeline-date">Mar 3–4</div>
+      <div class="timeline-title">Charlie's Bifurcation Strategy</div>
+      <div class="timeline-detail">Charlie drafts response separating the value proposition into two distinct components — contracting/procurement vs. marketing/sales facilitation. Initial draft included "interim CEO" language which was removed before sending.</div>
+      <div class="timeline-quote">Bifurcation approach: separate the contracting convenience fee from the sales/marketing value to justify the full economics without appearing to overpay on either dimension.</div>
+    </div>
+
+    <div class="timeline-item active">
+      <div class="timeline-date">Mar 4</div>
+      <div class="timeline-title">Charlie sends bifurcation email to Nathan &amp; Derek</div>
+      <div class="timeline-detail">Formal proposal restructuring the value proposition into two distinct pillars. Nathan's response is positive.</div>
+      <div class="timeline-quote">"This makes sense" — Nathan Maxwell's reply</div>
+    </div>
+
+    <div class="timeline-item active">
+      <div class="timeline-date">Mar 4</div>
+      <div class="timeline-title">ESC 16 Strategy Call — 51 minutes</div>
+      <div class="timeline-detail">Full strategy session captured on Plaud. Discussed deal structure, Conroe timeline, SLA commitments, and scalability to other ESC regions.</div>
+    </div>
+
+    <div class="timeline-item active">
+      <div class="timeline-date">Mar 5</div>
+      <div class="timeline-title">Terms crystallize: $75K + 15%, 2-year</div>
+      <div class="timeline-detail">Gemini auto-notes capture emerging consensus: $75K guarantee plus 15% revenue share, 2-year agreement. Key items still open: exact bifurcation split, Conroe's 25%, SLA definitions.</div>
+    </div>
+  </div>
+
+  <!-- CHARLIE CLINES INTELLIGENCE -->
+  <div class="section-header">Charlie Clines — Key Intelligence</div>
+
+  <div class="people-grid">
+    <div class="person-card">
+      <div class="name">Slack DM — March 6</div>
+      <div class="role">Unresolved Strategic Question</div>
+      <div class="intel">Charlie asked <strong>"what's in it for us"</strong> regarding applicability of the ESC 16 model to other ESCs. This signals he's thinking about <strong>scalability of his advisory role</strong> across the ESC network — not just ESC 16. Needs clarification on whether this is about ESC-wide model economics or his personal compensation structure.</div>
+    </div>
+    <div class="person-card">
+      <div class="name">Slack — March 2</div>
+      <div class="role">Negotiation Guidance</div>
+      <div class="intel">Charlie's initial guidance: <strong>"keep it simple, 10% and $75K"</strong>. This was the baseline before Nathan's counter pushed to 15%. Charlie's bifurcation strategy was the response to justify the higher number without appearing to give ESC 16 a windfall.</div>
+    </div>
+  </div>
+
+  <div class="people-grid">
+    <div class="person-card">
+      <div class="name">Jan Gilboy — Operational Flags</div>
+      <div class="role">Sales Operations</div>
+      <div class="intel">
+        <strong>Feb 27:</strong> Tighten accelerated triggers, maintain $75K floor, define SLAs clearly.<br>
+        <strong>Argyle ISD:</strong> Onboarding in progress — separate from ESC 16 but context for workload.<br>
+        <strong>ILA:</strong> Conroe board approval March 17 is the critical gate.<br>
+        <strong>SLA feedback:</strong> Jan flagged need for clearer deliverable definitions in ESC agreement.
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="name">Plaud Recordings</div>
+      <div class="role">4 Captured Sessions</div>
+      <div class="intel">
+        <strong>ESC 16 Strategy Call</strong> — 51 min (Mar 4)<br>
+        <strong>SB13 Compliance &amp; GTM</strong> — 1h 6m<br>
+        <strong>Region 11 ESC Briefing</strong> — 1h 59m<br>
+        <strong>SB13/HB412 Library Compliance</strong> — 1h 10m<br>
+        Region 11 and SB13 recordings may contain ESC network context relevant to scalability question.
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY PEOPLE -->
+  <div class="section-header">Key People</div>
+
+  <div class="people-grid">
+    <div class="person-card">
+      <div class="name">Nathan Maxwell</div>
+      <div class="role">Executive Director, ESC 16</div>
+      <div class="intel">Primary decision-maker. Pushed for 15% (up from 10%), longer term, and 25% cut to Conroe. Responded positively to Charlie's bifurcation strategy. Tone is collaborative but commercially minded.</div>
+    </div>
+    <div class="person-card">
+      <div class="name">Charlie Clines</div>
+      <div class="role">Advisor (Former ESC 16 ED)</div>
+      <div class="intel">Trusted strategic advisor. Knows ESC 16 operations intimately. Architected the bifurcation approach. Asking about scalability to other ESCs — may want ongoing advisory role across the network.</div>
+    </div>
+    <div class="person-card">
+      <div class="name">Derek Criswell</div>
+      <div class="role">Legal / Procurement</div>
+      <div class="intel">Handled attorney coordination and ILA drafting. Sent interlocal to Conroe on Feb 25. Terms finalized on his end — execution depends on Conroe board vote March 17.</div>
+    </div>
+    <div class="person-card">
+      <div class="name">Brian Broussard</div>
+      <div class="role">Conroe ISD (Role unclear)</div>
+      <div class="intel">Referenced in ESC 16 threads as Conroe ISD contact. Exact title/role needs clarification. May be the district-side champion for the ILA.</div>
+    </div>
+  </div>
+
+  <!-- TOMORROW'S CALENDAR -->
+  <div class="section-header">Tomorrow — Monday, March 9</div>
+
+  <div class="cal-grid">
+    <div class="cal-item">
+      <div class="cal-time">9:00</div>
+      <div>
+        <div class="cal-title">Eng/Product Sync</div>
+        <div class="cal-meta">Product team</div>
+      </div>
+      <span class="cal-badge badge-normal">Routine</span>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">9:15</div>
+      <div>
+        <div class="cal-title">V2 Stand</div>
+        <div class="cal-meta">Architecture rebuild standup</div>
+      </div>
+      <span class="cal-badge badge-normal">Routine</span>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">9:30</div>
+      <div>
+        <div class="cal-title">Daily Updates</div>
+        <div class="cal-meta">Team sync</div>
+      </div>
+      <span class="cal-badge badge-normal">Routine</span>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">10:30</div>
+      <div>
+        <div class="cal-title">Jan + Steve</div>
+        <div class="cal-meta">Sales operations — ESC 16 prep opportunity</div>
+      </div>
+      <span class="cal-badge badge-normal">Prep</span>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">10:45</div>
+      <div>
+        <div class="cal-title">Jan 1:1</div>
+        <div class="cal-meta">Jan Gilboy — align on SLA definitions, Argyle status</div>
+      </div>
+      <span class="cal-badge badge-normal">Prep</span>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">11:00</div>
+      <div>
+        <div class="cal-title">Weekly Sales Priorities</div>
+        <div class="cal-meta">Jan, Teela — ESC 16 should be Priority #1</div>
+      </div>
+      <span class="cal-badge badge-normal">Strategy</span>
+    </div>
+    <div class="cal-item highlight">
+      <div class="cal-time">12:00</div>
+      <div>
+        <div class="cal-title">Moak Casey Call</div>
+        <div class="cal-meta">Steve, Jan, Jodi Duron — relationship to ESC 16 unclear</div>
+      </div>
+      <span class="cal-badge badge-hot">Key Call</span>
+    </div>
+  </div>
+
+  <!-- TONIGHT'S ACTION ITEMS -->
+  <div class="section-header">Tonight's Action Items</div>
+
+  <div class="task-list">
+    <div class="task-item">
+      <div class="priority-dot priority-p1"></div>
+      <div class="task-content">
+        <div class="task-title">Review Charlie's bifurcation email and confirm exact split structure</div>
+        <div class="task-detail">Need to know: what % is contracting convenience vs. marketing/sales facilitation? This determines how to present to Nathan.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p1"></div>
+      <div class="task-content">
+        <div class="task-title">Decide position on Nathan's 25% Conroe counter</div>
+        <div class="task-detail">If ESC 16 gets 15% AND Conroe gets 25%, that's 40% off the top. Model the math against $75K guarantee.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p1"></div>
+      <div class="task-content">
+        <div class="task-title">Reply to Charlie's "what's in it for us" Slack DM</div>
+        <div class="task-detail">Clarify whether you're proposing Charlie as ongoing ESC network advisor or if this is about ESC-level model economics. Don't let this go cold.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p2"></div>
+      <div class="task-content">
+        <div class="task-title">Prep Jan for 10:30/10:45 meetings on ESC 16 status</div>
+        <div class="task-detail">Jan needs to know: current terms ($75K + 15%), Conroe board date (Mar 17), open items (SLAs, 25% Conroe cut).</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p2"></div>
+      <div class="task-content">
+        <div class="task-title">Clarify Moak Casey call context</div>
+        <div class="task-detail">Is this ESC 16 related? Legislative? Different deal entirely? Need to know before walking in at noon.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p2"></div>
+      <div class="task-content">
+        <div class="task-title">Draft SLA framework for ESC 16 deliverables</div>
+        <div class="task-detail">Jan flagged this. What does ESC 16 commit to for 15%? Training? Marketing? District intros? Define before next Nathan call.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p3"></div>
+      <div class="task-content">
+        <div class="task-title">Review Region 11 ESC recording for network patterns</div>
+        <div class="task-detail">2-hour recording may have ESC network structure context relevant to scaling beyond ESC 16.</div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p3"></div>
+      <div class="task-content">
+        <div class="task-title">Check Conroe ISD board agenda for March 17</div>
+        <div class="task-detail">Confirm ILA is actually on the agenda. Don't assume — verify the item is scheduled for vote.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEEDS CLARITY -->
+  <div class="section-header"><span class="text-pumpkin">&#9888;</span> Needs Clarity — Triage With Steve</div>
+
+  <div class="clarity-grid">
+    <div class="clarity-item">
+      <div class="number">Clarity #1</div>
+      <div class="question">What exactly is the "bifurcated value" structure?</div>
+      <div class="context">Charlie proposed splitting the ESC 16 value proposition into two components — but the exact percentages for contracting vs. marketing/sales are never stated explicitly in email or recordings. Is it 10% for procurement convenience + 5% for sales facilitation? Or a different split?</div>
+      <div class="source">Source: Charlie's Mar 4 email to Nathan/Derek + strategy call</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #2</div>
+      <div class="question">Nathan's 25% Conroe counter — is this agreed, rejected, or still open?</div>
+      <div class="context">Nathan proposed 25% revenue share going to Conroe ISD in his Mar 3 counter. Charlie's bifurcation email doesn't explicitly address this point. Combined with ESC 16's 15%, this would be 40% total off the top. Was this resolved in the strategy call?</div>
+      <div class="source">Source: Nathan's Mar 3 email + no explicit resolution found</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #3</div>
+      <div class="question">Is the Moak Casey call tomorrow ESC 16 related?</div>
+      <div class="context">12:00 PM call with Steve, Jan, and Jodi Duron at Moak Casey. This could be ESC 16 legal, legislative (SB13/HB412), or a separate matter entirely. Prep depends on knowing the agenda.</div>
+      <div class="source">Source: Calendar event — no description or agenda attached</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #4</div>
+      <div class="question">Charlie's "what's in it for us" — ESC model economics or personal advisory role?</div>
+      <div class="context">Charlie's March 6 Slack DM asks "what's in it for us" regarding other ESCs. "Us" could mean: (a) what ESCs broadly get from the Bookmarked model, or (b) what Charlie personally gets for advising on ESC expansion. The answer shapes the entire ESC scaling strategy.</div>
+      <div class="source">Source: Charlie Clines Slack DM, March 6</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #5</div>
+      <div class="question">How does Region 11 ESC connect to the ESC 16 structure?</div>
+      <div class="context">A 2-hour Region 11 ESC briefing was recorded. If Region 11 is a potential next ESC partner, the deal structure being negotiated with ESC 16 becomes a template. If unrelated, it's separate context. This affects how rigidly we negotiate ESC 16 terms.</div>
+      <div class="source">Source: Plaud recording — Region 11 ESC briefing (1h 59m)</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #6</div>
+      <div class="question">Who is Brian Broussard and what's his role at Conroe?</div>
+      <div class="context">Referenced in ESC 16 email threads as the Conroe ISD contact but no title is given. Could be superintendent, curriculum director, library services, or procurement. His role determines the right framing for the ILA conversation.</div>
+      <div class="source">Source: Email threads referencing Conroe ISD contacts</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #7</div>
+      <div class="question">Is the $75K guarantee annual or one-time?</div>
+      <div class="context">The term "$75K guarantee" appears in both Steve's original proposal and the Gemini auto-notes from the Mar 5 call. With a 2-year agreement, this could be $75K/year ($150K total) or $75K total over 2 years. Massive difference in deal economics.</div>
+      <div class="source">Source: Steve's Mar 2 proposal + Gemini auto-notes Mar 5</div>
+    </div>
+
+    <div class="clarity-item">
+      <div class="number">Clarity #8</div>
+      <div class="question">What SLAs/deliverables has ESC 16 committed to in exchange for 15%?</div>
+      <div class="context">Jan flagged this: we know what Bookmarked pays ESC 16, but what does ESC 16 deliver? Training sessions? Marketing support? District introductions? Procurement facilitation? The SLA definitions are nowhere in email or recordings — they may only exist in the attorney's term sheet.</div>
+      <div class="source">Source: Jan Gilboy (Feb 27) + absence from all other sources</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Bookmarked CEO Operating System — Generated March 8, 2026 at evening session<br>
+    Intelligence from 15 Gmail threads &bull; 4 Plaud recordings &bull; Slack DMs &bull; Google Calendar
+  </div>
+
+</section>
+</body>
+</html>

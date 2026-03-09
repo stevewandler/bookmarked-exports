@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monday Morning Briefing — March 9, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --eigengrau: #101828;
+  --sea-green: #818CF8;
+  --deep-green: #6366F1;
+  --pumpkin: #F59E0B;
+  --white: #FFFFFF;
+  --muted: #9CA3AF;
+  --card: #1F2937;
+  --card-hover: #283548;
+  --border: #374151;
+  --surface-dim: #0D1117;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Urbanist', sans-serif;
+  background: var(--eigengrau);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--eigengrau) 0%, #1a1f3d 50%, var(--eigengrau) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 40px;
+}
+.hero .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sea-green);
+  margin-bottom: 8px;
+}
+.hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+.hero .date { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+.hero .subtitle { color: var(--muted); font-size: 16px; max-width: 700px; }
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-number { font-size: 32px; font-weight: 800; color: var(--sea-green); }
+.stat-number.warn { color: var(--pumpkin); }
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Section Headers */
+.section-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header .icon { margin-right: 8px; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.timeline-item:hover { border-color: var(--sea-green); }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--eigengrau);
+}
+.timeline-item.active::before { background: var(--sea-green); box-shadow: 0 0 8px rgba(129,140,248,0.4); }
+.timeline-item.warn-dot::before { background: var(--pumpkin); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+.timeline-date { font-size: 12px; color: var(--sea-green); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.timeline-title { font-size: 15px; font-weight: 600; margin: 4px 0; }
+.timeline-detail { font-size: 13px; color: var(--muted); }
+.timeline-quote {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: var(--surface-dim);
+  border-left: 3px solid var(--sea-green);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  color: #D1D5DB;
+  font-style: italic;
+}
+
+/* People Cards */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+.person-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.person-card .name { font-size: 17px; font-weight: 700; }
+.person-card .role { font-size: 13px; color: var(--sea-green); margin-bottom: 8px; }
+.person-card .intel { font-size: 13px; color: var(--muted); }
+.person-card .intel strong { color: var(--white); font-weight: 600; }
+
+/* Calendar */
+.cal-grid { margin: 20px 0; }
+.cal-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.cal-item.highlight { border-color: var(--pumpkin); background: #1F2937; }
+.cal-time { font-size: 14px; font-weight: 700; color: var(--sea-green); }
+.cal-item.highlight .cal-time { color: var(--pumpkin); }
+.cal-title { font-size: 15px; font-weight: 600; }
+.cal-meta { font-size: 12px; color: var(--muted); }
+.cal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-hot { background: rgba(245,158,11,0.15); color: var(--pumpkin); }
+.badge-normal { background: rgba(129,140,248,0.15); color: var(--sea-green); }
+
+/* Action Items */
+.task-list { margin: 20px 0; }
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+.priority-p1 { background: var(--pumpkin); }
+.priority-p2 { background: var(--sea-green); }
+.priority-p3 { background: var(--muted); }
+.task-content { flex: 1; }
+.task-title { font-size: 14px; font-weight: 600; }
+.task-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Deal Status */
+.deal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+}
+.deal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.deal-title { font-size: 18px; font-weight: 700; }
+.deal-status {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-negotiating { background: rgba(245,158,11,0.15); color: var(--pumpkin); }
+.status-pending { background: rgba(129,140,248,0.15); color: var(--sea-green); }
+.status-overdue { background: rgba(239,68,68,0.15); color: #EF4444; }
+.deal-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.deal-row:last-child { border-bottom: none; }
+.deal-label { color: var(--muted); font-weight: 500; }
+.deal-value { font-weight: 600; }
+
+/* Clarity Section */
+.clarity-grid { margin: 20px 0; }
+.clarity-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--pumpkin);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+.clarity-item .number {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pumpkin);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.clarity-item .question { font-size: 15px; font-weight: 600; margin: 4px 0; }
+.clarity-item .context { font-size: 13px; color: var(--muted); }
+.clarity-item .source {
+  font-size: 11px;
+  color: var(--deep-green);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Overdue Section */
+.overdue-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid #EF4444;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 8px;
+}
+.overdue-item .overdue-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+  background: #EF4444;
+}
+.overdue-title { font-size: 14px; font-weight: 600; }
+.overdue-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.overdue-due { font-size: 11px; color: #EF4444; font-weight: 700; margin-top: 2px; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+/* Utilities */
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.text-sea { color: var(--sea-green); }
+.text-pumpkin { color: var(--pumpkin); }
+.text-muted { color: var(--muted); }
+.text-red { color: #EF4444; }
+.fw-700 { font-weight: 700; }
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(129,140,248,0.12);
+  color: var(--sea-green);
+}
+.tag-warn { background: rgba(245,158,11,0.12); color: var(--pumpkin); }
+.tag-red { background: rgba(239,68,68,0.12); color: #EF4444; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+@media (max-width: 768px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .people-grid { grid-template-columns: 1fr; }
+  .cal-item { grid-template-columns: 70px 1fr; }
+  .cal-badge { display: none; }
+  .hero h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">Monday Morning Briefing</div>
+    <h1>Good Morning, Steve</h1>
+    <div class="date">Monday, March 9, 2026 &bull; Frisco, TX</div>
+    <div class="subtitle">Big Monday. 7 meetings including Moak Casey strategy call. ESC 10 objection responses are your #1 priority &mdash; Angela's team is waiting. ESC 16 proposal is overdue. Afternoon is open for deep work.</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="container">
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">7</div>
+      <div class="stat-label">Meetings Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Top Priorities</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number warn">8+</div>
+      <div class="stat-label">Overdue Items</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Action Emails</div>
+    </div>
+  </div>
+
+  <!-- LAST WEEK RECAP -->
+  <div class="section-header"><span class="icon">&#x1F4CB;</span> Last Week Recap</div>
+  <div class="timeline">
+    <div class="timeline-item active">
+      <div class="timeline-date">Wednesday, March 4</div>
+      <div class="timeline-title">Moak Casey Lunch &amp; Learn</div>
+      <div class="timeline-detail">13 districts represented, ~$489K total addressable. Jan and Jodi Duron co-hosted. Strong reception &mdash; follow-up strategy call is TODAY at noon.</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="timeline-date">Thursday &ndash; Friday, March 5&ndash;6</div>
+      <div class="timeline-title">ESC Round Up &mdash; Granbury / Pecan Plantation</div>
+      <div class="timeline-detail">Multi-day ESC engagement. Built relationships across several regions. Notes from sessions need to be processed.</div>
+    </div>
+    <div class="timeline-item warn-dot">
+      <div class="timeline-date">Wednesday, March 4</div>
+      <div class="timeline-title">ESC 16 Call + Debrief</div>
+      <div class="timeline-detail">$75K + 15% rev share, 2-year term negotiated. Charlie drafting proposal &mdash; now <strong class="text-pumpkin">OVERDUE</strong> (was due 3/6).</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Last Week</div>
+      <div class="timeline-title">Saddleback &times; Bookmarked Meeting</div>
+      <div class="timeline-detail">MOU follow-up pending. Need to finalize terms and send back.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Last Week</div>
+      <div class="timeline-title">Wimberley ISD Call</div>
+      <div class="timeline-detail">Small district outreach. Follow-up actions captured.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Last Week</div>
+      <div class="timeline-title">Team Event (2 Days)</div>
+      <div class="timeline-detail">Team building and alignment. Good for morale heading into a big sales push week.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Last Week</div>
+      <div class="timeline-title">Coffee with Shane</div>
+      <div class="timeline-detail">Relationship touchpoint. Notes captured.</div>
+    </div>
+  </div>
+
+  <!-- ESC DEAL STATUS -->
+  <div class="section-header"><span class="icon">&#x1F4B0;</span> ESC Deal Status</div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-title">ESC Region 10</div>
+      <div class="deal-status status-negotiating">Action Required</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Status</div>
+      <div class="deal-value">Active &mdash; Angela raised 4 objections via Lori Aden</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Key Intel</div>
+      <div class="deal-value">Lori Aden forwarded Angela's objections on 3/5. Objection response prep is your <strong class="text-pumpkin">#1 priority TODAY</strong></div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Follow-up Email</div>
+      <div class="deal-value text-red">OVERDUE &mdash; was due 3/6</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">District Lists</div>
+      <div class="deal-value">Needed by 3/10 (tomorrow)</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Last Modified</div>
+      <div class="deal-value">January 27, 2026</div>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-title">ESC Region 15</div>
+      <div class="deal-status status-pending">Stale &mdash; Needs Refresh</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Status</div>
+      <div class="deal-value">Active deal, but notes last updated December 2023</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Key Win</div>
+      <div class="deal-value">Consortium districts moved to closed-won</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Follow-up Email</div>
+      <div class="deal-value text-red">OVERDUE &mdash; was due 3/6</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">District Lists</div>
+      <div class="deal-value">Needed by 3/10 (tomorrow)</div>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-title">ESC Region 16</div>
+      <div class="deal-status status-negotiating">Proposal Overdue</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Deal Terms</div>
+      <div class="deal-value">$75K + 15% revenue share, 2-year term</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Proposal Draft</div>
+      <div class="deal-value text-red">OVERDUE &mdash; Charlie drafting, was due 3/6</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-label">Incoming</div>
+      <div class="deal-value">Granger ISD quote (562 students)</div>
+    </div>
+  </div>
+
+  <!-- TODAY'S CALENDAR -->
+  <div class="section-header"><span class="icon">&#x1F4C5;</span> Today's Calendar</div>
+  <div class="cal-grid">
+    <div class="cal-item">
+      <div class="cal-time">9:00</div>
+      <div>
+        <div class="cal-title">Eng/Product Sync</div>
+        <div class="cal-meta">Raju, Tim &bull; V2 architecture status</div>
+      </div>
+      <div class="cal-badge badge-normal">Routine</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">9:15</div>
+      <div>
+        <div class="cal-title">V2 Stand</div>
+        <div class="cal-meta">Product team &bull; Sprint progress</div>
+      </div>
+      <div class="cal-badge badge-normal">Routine</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">9:30</div>
+      <div>
+        <div class="cal-title">Daily Updates</div>
+        <div class="cal-meta">Full team &bull; Sync</div>
+      </div>
+      <div class="cal-badge badge-normal">Routine</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">10:30</div>
+      <div>
+        <div class="cal-title">Jan + Steve</div>
+        <div class="cal-meta">Sales ops &bull; ESC follow-ups, district lists</div>
+      </div>
+      <div class="cal-badge badge-hot">Prep</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">10:45</div>
+      <div>
+        <div class="cal-title">Jan 1:1</div>
+        <div class="cal-meta">Pipeline review &bull; Moak Casey strategy</div>
+      </div>
+      <div class="cal-badge badge-hot">Prep</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-time">11:00</div>
+      <div>
+        <div class="cal-title">Weekly Sales</div>
+        <div class="cal-meta">Jan, Teela &bull; Pipeline health, weekly targets</div>
+      </div>
+      <div class="cal-badge badge-hot">Strategy</div>
+    </div>
+    <div class="cal-item highlight">
+      <div class="cal-time">12:00</div>
+      <div>
+        <div class="cal-title">Moak Casey Strategy Call</div>
+        <div class="cal-meta">Jan, Jodi Duron &bull; Follow-up from Lunch &amp; Learn (13 districts, ~$489K)</div>
+      </div>
+      <div class="cal-badge badge-hot">Key Call</div>
+    </div>
+  </div>
+
+  <div class="timeline-quote" style="margin: 16px 0;">
+    <strong>Afternoon is OPEN.</strong> 3&ndash;5 PM is your peak executive function window &mdash; protect it for ESC 10 objection responses and ESC 16 proposal review.
+  </div>
+
+  <!-- TOP 3 PRIORITIES -->
+  <div class="section-header"><span class="icon">&#x1F3AF;</span> Top 3 Priorities</div>
+  <div class="task-list">
+    <div class="task-item">
+      <div class="priority-dot priority-p1"></div>
+      <div class="task-content">
+        <div class="task-title">Prep Angela / Region 10 Objection Responses</div>
+        <div class="task-detail">Score: 98/100 &bull; Angela raised 4 objections via Lori Aden (forwarded 3/5). Draft point-by-point responses before your afternoon deep work block. This unblocks the entire ESC 10 deal.</div>
+        <div class="mt-8"><span class="tag-warn tag">P1 &mdash; Do Today</span></div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p1"></div>
+      <div class="task-content">
+        <div class="task-title">ESC 16 Proposal Draft Review</div>
+        <div class="task-detail">Score: 91/100 &bull; Charlie's draft was due 3/6 &mdash; now overdue. Chase Charlie for status, review when received. $75K + 15% rev share, 2-year term. Granger ISD quote (562 students) incoming.</div>
+        <div class="mt-8"><span class="tag-warn tag">P1 &mdash; Chase + Review</span></div>
+      </div>
+    </div>
+    <div class="task-item">
+      <div class="priority-dot priority-p2"></div>
+      <div class="task-content">
+        <div class="task-title">Moak Casey Strategy + Call</div>
+        <div class="task-detail">Score: 82/100 &bull; Noon call with Jan and Jodi Duron. 13 districts from lunch &amp; learn, ~$489K addressable. Prep conversion strategy for highest-value districts. Prioritize before 11 AM sales meeting.</div>
+        <div class="mt-8"><span class="tag">P2 &mdash; Prep by 11 AM</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEETING PREP -->
+  <div class="section-header"><span class="icon">&#x1F465;</span> Meeting Prep</div>
+  <div class="people-grid">
+    <div class="person-card">
+      <div class="name">Raju Datla</div>
+      <div class="role">VP Engineering &bull; 9:00 AM Sync</div>
+      <div class="intel">
+        <strong>Prep:</strong> V2 architecture rebuild status. Check if sprint blockers need CEO escalation. Ask about timeline confidence for next customer-facing milestone.
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="name">Jan Gilboy</div>
+      <div class="role">Sales &bull; 10:30, 10:45, 11:00, 12:00</div>
+      <div class="intel">
+        <strong>Prep:</strong> Four meetings today. Cover ESC 10/15 follow-up emails (both overdue since 3/6), district list deadline (3/10 = tomorrow), Moak Casey conversion strategy. She's your key partner on every active ESC deal.
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="name">Teela Watson</div>
+      <div class="role">Sales &bull; 11:00 AM Weekly Sales</div>
+      <div class="intel">
+        <strong>Prep:</strong> Pipeline health check. What's the weekly number? Any deals at risk? Where does she need air cover from you this week?
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="name">Jodi Duron</div>
+      <div class="role">Moak Casey &bull; 12:00 PM Call</div>
+      <div class="intel">
+        <strong>Prep:</strong> Co-hosted last week's lunch &amp; learn. Review which of the 13 districts showed highest engagement. Come with a proposed next-step for top 3&ndash;5 districts.
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERDUE ITEMS -->
+  <div class="section-header"><span class="icon">&#x26A0;</span> Overdue Items</div>
+  <div class="task-list">
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">ESC 16 Proposal Draft</div>
+        <div class="overdue-detail">Charlie drafting &mdash; chase for status</div>
+        <div class="overdue-due">Due: March 6</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">ESC 10 Follow-up Email</div>
+        <div class="overdue-detail">Post-meeting follow-up to Lori Aden / Angela's team</div>
+        <div class="overdue-due">Due: March 6</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">ESC 15 Follow-up Email</div>
+        <div class="overdue-detail">Re-engage after consortium close &mdash; notes stale since Dec 2023</div>
+        <div class="overdue-due">Due: March 6</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">10 ESC 13 Follow-up Emails</div>
+        <div class="overdue-detail">Drafts ready &mdash; review and send batch</div>
+        <div class="overdue-due">Drafts waiting</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">Patrick &mdash; Belton ISD Sandbox Reply</div>
+        <div class="overdue-detail">Customer waiting on sandbox access response</div>
+        <div class="overdue-due">Overdue</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">TEA RFO Email to Kristi</div>
+        <div class="overdue-detail">Regulatory follow-up</div>
+        <div class="overdue-due">Overdue</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">Saddleback MOU</div>
+        <div class="overdue-detail">Finalize terms and return</div>
+        <div class="overdue-due">Overdue</div>
+      </div>
+    </div>
+    <div class="overdue-item">
+      <div class="overdue-dot"></div>
+      <div class="task-content">
+        <div class="overdue-title">Dan Huberty Follow-up</div>
+        <div class="overdue-detail">Relationship touchpoint</div>
+        <div class="overdue-due">Overdue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUR MORNING FLOW -->
+  <div class="section-header"><span class="icon">&#x2615;</span> Your Morning Flow</div>
+  <div class="clarity-grid">
+    <div class="clarity-item">
+      <div class="number">9:00 &ndash; 9:30</div>
+      <div class="question">Morning Syncs</div>
+      <div class="context">Eng/Product, V2 Stand, Daily Updates &mdash; listen mode, flag blockers only. Low cognitive load.</div>
+    </div>
+    <div class="clarity-item">
+      <div class="number">10:00 &ndash; 10:30</div>
+      <div class="question">Moak Casey Prep</div>
+      <div class="context">Review the 13 districts from last week. Rank by addressable value. Identify top 3&ndash;5 for Jodi call at noon. Pull any HubSpot data on existing contacts.</div>
+    </div>
+    <div class="clarity-item">
+      <div class="number">10:30 &ndash; 11:00</div>
+      <div class="question">Jan Meetings</div>
+      <div class="context">Back-to-back with Jan. Cover: ESC 10 objection strategy, ESC 15 re-engagement, ESC 16 proposal status, district list deadline (3/10). These overlap &mdash; expect 30 min total.</div>
+    </div>
+    <div class="clarity-item">
+      <div class="number">11:00 &ndash; 12:00</div>
+      <div class="question">Weekly Sales + Moak Casey Call</div>
+      <div class="context">Pipeline review with Jan/Teela, then straight into the Moak Casey strategy call with Jodi Duron. Come armed with your district priority list.</div>
+    </div>
+  </div>
+
+  <!-- YOUR PEAK -->
+  <div class="section-header"><span class="icon">&#x1F525;</span> Your Peak Block (3&ndash;5 PM)</div>
+  <div class="clarity-grid">
+    <div class="clarity-item">
+      <div class="number">Protected Time</div>
+      <div class="question">ESC 10 Objection Responses</div>
+      <div class="context">This is the ONE THING. Angela's 4 objections via Lori Aden need a point-by-point response. This unblocks the entire Region 10 pipeline. Use your peak executive function window for this.</div>
+      <div class="source">Priority Score: 98/100</div>
+    </div>
+    <div class="clarity-item">
+      <div class="number">If Time Allows</div>
+      <div class="question">ESC 16 Proposal Review</div>
+      <div class="context">Review Charlie's draft when it arrives. $75K + 15%, 2-year. Quick turnaround expected.</div>
+      <div class="source">Priority Score: 91/100</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Bookmarked CEO Briefing &bull; Generated March 9, 2026 &bull; Chief of Staff Agent<br>
+    <span class="mt-8" style="display:inline-block;">Data sources: Google Calendar, Gmail, HubSpot, Google Tasks</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -8,9 +8,9 @@
 <style>
 :root {
   --eigengrau: #101828;
-  --sea-green: #15B79E;
-  --deep-green: #107569;
-  --pumpkin: #FF692E;
+  --sea-green: #818CF8;
+  --deep-green: #6366F1;
+  --pumpkin: #F59E0B;
   --white: #FFFFFF;
   --muted: #9CA3AF;
   --card: #1F2937;
@@ -30,7 +30,7 @@ body {
 
 /* Hero */
 .hero {
-  background: linear-gradient(135deg, var(--eigengrau) 0%, #1a2332 50%, var(--eigengrau) 100%);
+  background: linear-gradient(135deg, var(--eigengrau) 0%, #1a1f3d 50%, var(--eigengrau) 100%);
   border-bottom: 1px solid var(--border);
   padding: 48px 0 40px;
 }
@@ -106,8 +106,8 @@ body {
   background: var(--border);
   border: 2px solid var(--eigengrau);
 }
-.timeline-item.active::before { background: var(--sea-green); box-shadow: 0 0 8px rgba(21,183,158,0.4); }
-.timeline-item.warn-dot::before { background: var(--pumpkin); box-shadow: 0 0 8px rgba(255,105,46,0.4); }
+.timeline-item.active::before { background: var(--sea-green); box-shadow: 0 0 8px rgba(129,140,248,0.4); }
+.timeline-item.warn-dot::before { background: var(--pumpkin); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
 .timeline-date { font-size: 12px; color: var(--sea-green); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .timeline-title { font-size: 15px; font-weight: 600; margin: 4px 0; }
 .timeline-detail { font-size: 13px; color: var(--muted); }
@@ -166,8 +166,8 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.badge-hot { background: rgba(255,105,46,0.15); color: var(--pumpkin); }
-.badge-normal { background: rgba(21,183,158,0.15); color: var(--sea-green); }
+.badge-hot { background: rgba(245,158,11,0.15); color: var(--pumpkin); }
+.badge-normal { background: rgba(129,140,248,0.15); color: var(--sea-green); }
 
 /* Action Items */
 .task-list { margin: 20px 0; }
@@ -239,8 +239,8 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.status-negotiating { background: rgba(255,105,46,0.15); color: var(--pumpkin); }
-.status-pending { background: rgba(21,183,158,0.15); color: var(--sea-green); }
+.status-negotiating { background: rgba(245,158,11,0.15); color: var(--pumpkin); }
+.status-pending { background: rgba(129,140,248,0.15); color: var(--sea-green); }
 .deal-row {
   display: grid;
   grid-template-columns: 140px 1fr;
@@ -278,10 +278,10 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: rgba(21,183,158,0.12);
+  background: rgba(129,140,248,0.12);
   color: var(--sea-green);
 }
-.tag-warn { background: rgba(255,105,46,0.12); color: var(--pumpkin); }
+.tag-warn { background: rgba(245,158,11,0.12); color: var(--pumpkin); }
 .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
 
 @media (max-width: 768px) {
@@ -298,8 +298,8 @@ body {
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="eyebrow">CEO Operating System</div>
-    <h1>ESC 16 Prep Briefing</h1>
+    <div class="eyebrow">Partnership Intelligence</div>
+    <h1>ESC 16 Partnership Briefing</h1>
     <div class="date">Sunday, March 8, 2026 — Evening Session</div>
     <div class="subtitle">Full intelligence synthesis from 15 emails, 4 Plaud recordings, Slack DMs with Charlie Clines, and tomorrow's calendar. Prepare tonight, execute tomorrow.</div>
   </div>
@@ -445,9 +445,12 @@ body {
 
   <div class="people-grid">
     <div class="person-card">
-      <div class="name">Slack DM — March 6</div>
+      <div class="name">Slack DM — Friday, March 6</div>
       <div class="role">Unresolved Strategic Question</div>
-      <div class="intel">Charlie asked <strong>"what's in it for us"</strong> regarding applicability of the ESC 16 model to other ESCs. This signals he's thinking about <strong>scalability of his advisory role</strong> across the ESC network — not just ESC 16. Needs clarification on whether this is about ESC-wide model economics or his personal compensation structure.</div>
+      <div class="intel">
+        <div class="timeline-quote" style="margin-bottom: 10px;">"We also need to circle back on 16 vis a vis other ESC's on how they would like us to answer the question 'what's in it for us' and 'why should we spend time on this'. We visiting this briefly, but certainly something we should add to the list of things to clarify with 16."</div>
+        Charlie is signaling that <strong>ESC 16 needs a clear value proposition</strong> for why they should invest time in the Bookmarked partnership vs. other priorities. This isn't about Charlie's compensation — it's about <strong>how ESC 16 frames the ROI internally</strong> to justify staff time and effort. This question will come from Nathan or his team and we need a crisp answer ready for Monday.
+      </div>
     </div>
     <div class="person-card">
       <div class="name">Slack — March 2</div>
@@ -469,13 +472,14 @@ body {
     </div>
     <div class="person-card">
       <div class="name">Plaud Recordings</div>
-      <div class="role">4 Captured Sessions</div>
+      <div class="role">4 Captured + 1 Pending</div>
       <div class="intel">
-        <strong>ESC 16 Strategy Call</strong> — 51 min (Mar 4)<br>
+        <strong>ESC 16 Strategy Call (Thu)</strong> — 51 min, fully transcribed. Key themes: bifurcation strategy, BATNA analysis, 10% vs 25% split, Charlie's title correction, Conroe ISD as proof point.<br>
+        <strong>Charlie Phone Call (Fri)</strong> — <span class="tag-warn" style="display:inline-block; margin: 2px 0;">PENDING TRANSCRIPT</span> Plaud recording exists but transcript is being generated. Will update when available.<br>
         <strong>SB13 Compliance &amp; GTM</strong> — 1h 6m<br>
         <strong>Region 11 ESC Briefing</strong> — 1h 59m<br>
         <strong>SB13/HB412 Library Compliance</strong> — 1h 10m<br>
-        Region 11 and SB13 recordings may contain ESC network context relevant to scalability question.
+        Region 11 and SB13 recordings may contain ESC network context relevant to Charlie's "what's in it for us" question.
       </div>
     </div>
   </div>
@@ -693,8 +697,8 @@ body {
 
   <!-- FOOTER -->
   <div class="footer">
-    Bookmarked CEO Operating System — Generated March 8, 2026 at evening session<br>
-    Intelligence from 15 Gmail threads &bull; 4 Plaud recordings &bull; Slack DMs &bull; Google Calendar
+    Bookmarked Partnership Intelligence — Generated March 8, 2026 evening<br>
+    Sources: 15 Gmail threads &bull; 4 Plaud recordings (1 pending) &bull; Charlie Clines Slack DMs &bull; Google Calendar
   </div>
 
 </section>

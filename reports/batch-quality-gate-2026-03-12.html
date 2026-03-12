@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Quality Gate Report — BOOK Project | March 12, 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; padding: 24px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: #94a3b8; }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+  .card { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #334155; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+  /* Summary cards */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #334155; }
+  .stat-value { font-size: 36px; font-weight: 700; }
+  .stat-label { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  .stat-red { color: #ef4444; }
+  .stat-yellow { color: #eab308; }
+  .stat-green { color: #22c55e; }
+  .stat-blue { color: #3b82f6; }
+
+  /* Traffic lights */
+  .pass { color: #22c55e; font-weight: 600; }
+  .fail { color: #ef4444; font-weight: 600; }
+  .warn { color: #eab308; font-weight: 600; }
+  .na { color: #64748b; }
+
+  /* Verdict badges */
+  .verdict { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .verdict-sprint-ready { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+  .verdict-needs-work { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
+  .verdict-block { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+  /* Type badges */
+  .type-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-right: 6px; }
+  .type-bug { background: rgba(239,68,68,0.2); color: #fca5a5; }
+  .type-story { background: rgba(59,130,246,0.2); color: #93c5fd; }
+  .type-task { background: rgba(168,85,247,0.2); color: #c4b5fd; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 10px 12px; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #334155; }
+  td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid rgba(51,65,85,0.5); vertical-align: top; }
+  tr:hover { background: rgba(51,65,85,0.3); }
+
+  /* Progress bar */
+  .progress-bar { background: #334155; border-radius: 8px; height: 8px; overflow: hidden; margin-top: 8px; }
+  .progress-fill { height: 100%; border-radius: 8px; transition: width 0.3s; }
+  .progress-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+  .progress-yellow { background: linear-gradient(90deg, #eab308, #ca8a04); }
+  .progress-green { background: linear-gradient(90deg, #22c55e, #16a34a); }
+
+  /* Agent readiness */
+  .readiness-score { display: inline-flex; align-items: center; gap: 4px; }
+  .readiness-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-filled { background: #3b82f6; }
+  .dot-empty { background: #334155; border: 1px solid #475569; }
+
+  /* Comparison */
+  .comparison { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+  .comparison-arrow { font-size: 18px; }
+  .arrow-up { color: #22c55e; }
+  .arrow-down { color: #ef4444; }
+  .arrow-flat { color: #eab308; }
+
+  /* Failures list */
+  .failure-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(51,65,85,0.5); }
+  .failure-bar { background: #334155; border-radius: 4px; height: 20px; position: relative; flex: 1; margin-left: 16px; max-width: 200px; }
+  .failure-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #ef4444, #f87171); }
+  .failure-count { position: absolute; right: 8px; top: 2px; font-size: 11px; font-weight: 600; }
+
+  /* UAT section */
+  .uat-convention { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; padding: 16px; }
+  .uat-convention li { margin-left: 20px; margin-bottom: 8px; font-size: 14px; }
+
+  /* Ticket detail */
+  .ticket-detail { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #334155; }
+  .ticket-detail:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .ticket-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .ticket-key { color: #3b82f6; text-decoration: none; }
+  .ticket-key:hover { text-decoration: underline; }
+  .criteria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; margin-top: 10px; }
+  .criteria-item { font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  .check { color: #22c55e; }
+  .cross { color: #ef4444; }
+  .dash { color: #64748b; }
+  .fix-suggestions { background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.2); border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 12px; }
+  .fix-suggestions ul { margin-left: 16px; margin-top: 4px; }
+  .fix-suggestions li { margin-bottom: 2px; }
+
+  .section-divider { border: none; border-top: 1px solid #334155; margin: 32px 0; }
+
+  @media (max-width: 768px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .criteria-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Batch Quality Gate Report</h1>
+<p class="subtitle">BOOK Project &mdash; 15 tickets validated &mdash; March 12, 2026 &mdash; PM Infrastructure Day 3, Thread G</p>
+
+<!-- PART 1: UAT Label Convention -->
+<div class="card">
+  <h2>Part 1: UAT Label Convention</h2>
+  <p style="margin-bottom: 12px; color: #94a3b8;">No tickets currently carry the <code style="background:#334155; padding:2px 6px; border-radius:4px;">UAT</code> label. The label will be auto-created when first applied to a ticket.</p>
+  <div class="uat-convention">
+    <h3 style="color: #3b82f6;">UAT Label Protocol</h3>
+    <ul>
+      <li><strong>Label:</strong> <code style="background:#334155; padding:2px 6px; border-radius:4px;">UAT</code> &mdash; added to a ticket when it enters UAT review</li>
+      <li><strong>Turnaround metric:</strong> Time from UAT label added &rarr; ticket status moves to Done</li>
+      <li><strong>Review requirement:</strong> Both Patrick Reid and Sarah El Massry must post structured review comments before the label is removed</li>
+      <li><strong>No workflow change needed</strong> &mdash; this is label-based, avoiding any Jira workflow modifications</li>
+      <li><strong>Tracking:</strong> JQL query <code style="background:#334155; padding:2px 6px; border-radius:4px;">project = BOOK AND labels = UAT AND status != Done</code> surfaces all tickets in UAT review</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PART 2: Summary Stats -->
+<div class="summary-grid">
+  <div class="stat-card">
+    <div class="stat-value stat-red">0 / 15</div>
+    <div class="stat-label">Sprint-Ready</div>
+    <div class="progress-bar"><div class="progress-fill progress-red" style="width: 0%"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-yellow">13</div>
+    <div class="stat-label">Needs Work</div>
+    <div class="progress-bar"><div class="progress-fill progress-yellow" style="width: 87%"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-red">2</div>
+    <div class="stat-label">Blocked</div>
+    <div class="progress-bar"><div class="progress-fill progress-red" style="width: 13%"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-blue">0%</div>
+    <div class="stat-label">Pass Rate</div>
+    <div class="comparison">
+      <span class="comparison-arrow arrow-flat">&harr;</span>
+      <span style="font-size:12px; color:#94a3b8;">Day 1 baseline: ~13% had AC</span>
+    </div>
+  </div>
+</div>
+
+<!-- Day 1 Comparison -->
+<div class="card">
+  <h3>Day 1 Baseline Comparison</h3>
+  <table>
+    <tr>
+      <th>Metric</th>
+      <th>Day 1 (55 tickets)</th>
+      <th>Today (15 sampled)</th>
+      <th>Trend</th>
+    </tr>
+    <tr>
+      <td>Has Acceptance Criteria</td>
+      <td>~13%</td>
+      <td>73% (11/15)</td>
+      <td><span class="pass">&#9650; Improved</span></td>
+    </tr>
+    <tr>
+      <td>Has Assignee</td>
+      <td>~4%</td>
+      <td>7% (1/15)</td>
+      <td><span class="warn">&#9654; Flat</span></td>
+    </tr>
+    <tr>
+      <td>Has Story Points</td>
+      <td>~3%</td>
+      <td>0% (0/15)</td>
+      <td><span class="fail">&#9660; Worse</span></td>
+    </tr>
+    <tr>
+      <td>Has Parent Epic</td>
+      <td>Unknown</td>
+      <td>13% (2/15)</td>
+      <td><span class="na">&mdash; New metric</span></td>
+    </tr>
+    <tr>
+      <td>Has Component</td>
+      <td>Unknown</td>
+      <td>7% (1/15)</td>
+      <td><span class="na">&mdash; New metric</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- Most Common Failures -->
+<div class="card">
+  <h2>Most Common Failures (Ranked)</h2>
+
+  <div class="failure-item">
+    <span>Missing Story Points</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:100%"></div><span class="failure-count">15/15</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Missing Assignee</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:93%"></div><span class="failure-count">14/15</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Missing Parent Epic Link</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:87%"></div><span class="failure-count">13/15</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Missing Component</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:93%"></div><span class="failure-count">14/15</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Missing Acceptance Criteria</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:27%"></div><span class="failure-count">4/15</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Bug: Missing Severity Classification</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:63%"></div><span class="failure-count">5/8 bugs</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Bug: Missing Jam/Screenshot</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:63%"></div><span class="failure-count">5/8 bugs</span></div>
+  </div>
+  <div class="failure-item">
+    <span>Story: Missing User Story Statement</span>
+    <div class="failure-bar"><div class="failure-bar-fill" style="width:0%"></div><span class="failure-count">0/4 stories</span></div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- Per-Ticket Details -->
+<div class="card">
+  <h2>Per-Ticket Quality Gate Results</h2>
+
+  <!-- BOOK-879 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-879" target="_blank">BOOK-879</a>: Librarian bulk-upload returns 403 despite valid campus assignment
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Jam/Screenshot</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5, cross-service permission issue)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (suggest: Libraries: Core Management BOOK-719 or create Permissions epic)</li>
+        <li>Add component: Book Intelligence or User Management</li>
+        <li>Add explicit severity classification (P2 suggested — workaround possible via other campuses)</li>
+        <li>Attach Jam recording or screenshot</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-878 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-878" target="_blank">BOOK-878</a>: SFTP onboarding dialog never displays password
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Severity (P1 blocker)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Jam/Screenshot</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 3, frontend + possible backend credential fix)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (suggest: create Integrations/SFTP epic)</li>
+        <li>Add component: Integrations</li>
+        <li>Attach Jam recording or screenshot</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-877 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-877" target="_blank">BOOK-877</a>: Super Admin: Creating non-SUPERINTENDENT_ADMIN user shows "Invalid enum value" error
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Jam (referenced)</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 3)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (suggest: User Management epic)</li>
+        <li>Add component: User Management</li>
+        <li>Add explicit severity classification (P2 suggested — creates orphaned users)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-876 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-story">Story</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-876" target="_blank">BOOK-876</a>: Book Inventory CSV Export Endpoint for Librarian
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria (GIVEN/WHEN/THEN)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Components (Circulation, Reporting)</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> User Story Statement</div>
+    </div>
+    <div style="margin-top: 10px;">
+      <strong style="font-size:13px;">Agent-Readiness Score:</strong>
+      <span class="readiness-score">
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <strong style="margin-left:6px; color:#3b82f6;">4/5</strong>
+      </span>
+    </div>
+    <table style="margin-top:8px; font-size:12px;">
+      <tr><td style="color:#94a3b8; width:180px;">Context Sufficiency</td><td class="pass">PASS &mdash; Detailed implementation guide, affected services, test plan</td></tr>
+      <tr><td style="color:#94a3b8;">Boundary Clarity</td><td class="pass">PASS &mdash; In/out scope explicitly stated</td></tr>
+      <tr><td style="color:#94a3b8;">Testability</td><td class="pass">PASS &mdash; AC follows testable format with test file references</td></tr>
+      <tr><td style="color:#94a3b8;">Scope Precision</td><td class="pass">PASS &mdash; Out of scope section defined</td></tr>
+      <tr><td style="color:#94a3b8;">Error Coverage</td><td class="fail">FAIL &mdash; Only 1 error scenario (empty CSV); needs 2+ (e.g., malformed CSV, timeout on large dataset)</td></tr>
+    </table>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic</li>
+        <li>Add 1+ additional error scenario (e.g., CSV generation timeout, DynamoDB connection failure)</li>
+        <li>Note: Implementation guide lists irrelevant files (VettingDecision, BannedBooks) &mdash; prune to relevant files only</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-873 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-task">Task</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-873" target="_blank">BOOK-873</a>: Impersonation of Users
+      </div>
+      <span class="verdict verdict-block">Block</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="cross">&#10007;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix (BLOCKED &mdash; no description, no AC):</strong>
+      <ul>
+        <li>Add full description: what does "impersonation" mean here? Admin impersonating user for debugging? SSO impersonation?</li>
+        <li>Add testable acceptance criteria</li>
+        <li>Add story points, assignee, component (User Management), parent Epic</li>
+        <li>This ticket cannot enter a sprint in its current state</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-858 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-story">Story</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-858" target="_blank">BOOK-858</a>: SIS Management UI &mdash; Admin Config + Read-Only Views
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria (checklist)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> User Story Statement</div>
+    </div>
+    <div style="margin-top: 10px;">
+      <strong style="font-size:13px;">Agent-Readiness Score:</strong>
+      <span class="readiness-score">
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <strong style="margin-left:6px; color:#eab308;">3/5</strong>
+      </span>
+    </div>
+    <table style="margin-top:8px; font-size:12px;">
+      <tr><td style="color:#94a3b8; width:180px;">Context Sufficiency</td><td class="pass">PASS &mdash; Role matrix, technical details, related ticket</td></tr>
+      <tr><td style="color:#94a3b8;">Boundary Clarity</td><td class="fail">FAIL &mdash; No Always/Ask/Never boundaries stated</td></tr>
+      <tr><td style="color:#94a3b8;">Testability</td><td class="pass">PASS &mdash; AC has clear verifiable conditions</td></tr>
+      <tr><td style="color:#94a3b8;">Scope Precision</td><td class="fail">FAIL &mdash; No explicit out-of-scope section</td></tr>
+      <tr><td style="color:#94a3b8;">Error Coverage</td><td class="fail">FAIL &mdash; No error states defined (e.g., SFTP config save failure, ClassLink API timeout)</td></tr>
+    </table>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 8, large frontend story with multiple views)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (BOOK-847 or create SIS Management epic)</li>
+        <li>Add component: Integrations</li>
+        <li>Add out-of-scope section</li>
+        <li>Add 2+ error states (config save failure, invalid credentials, API timeout)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-857 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-story">Story</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-857" target="_blank">BOOK-857</a>: Role-Based Access Control for District-Wide SIS Management
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria (checklist)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> User Story Statement</div>
+    </div>
+    <div style="margin-top: 10px;">
+      <strong style="font-size:13px;">Agent-Readiness Score:</strong>
+      <span class="readiness-score">
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <strong style="margin-left:6px; color:#eab308;">3/5</strong>
+      </span>
+    </div>
+    <table style="margin-top:8px; font-size:12px;">
+      <tr><td style="color:#94a3b8; width:180px;">Context Sufficiency</td><td class="pass">PASS &mdash; Clear role matrix, affected services listed</td></tr>
+      <tr><td style="color:#94a3b8;">Boundary Clarity</td><td class="fail">FAIL &mdash; No Always/Ask/Never boundaries</td></tr>
+      <tr><td style="color:#94a3b8;">Testability</td><td class="pass">PASS &mdash; "Unit tests cover all four role scenarios" specified</td></tr>
+      <tr><td style="color:#94a3b8;">Scope Precision</td><td class="fail">FAIL &mdash; No explicit out-of-scope section</td></tr>
+      <tr><td style="color:#94a3b8;">Error Coverage</td><td class="fail">FAIL &mdash; Only 403 mentioned; no error states for middleware failures, role lookup failures</td></tr>
+    </table>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic</li>
+        <li>Add component: User Management</li>
+        <li>Add out-of-scope section and error states</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-853 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-task">Task</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-853" target="_blank">BOOK-853</a>: Add District-Wide Import Audit Logging
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Parent Epic (BOOK-847)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5)</li>
+        <li>Assign to engineering</li>
+        <li>Add component: Reporting or Integrations</li>
+        <li>Note: Description contains two stories merged into one ticket &mdash; consider splitting SFTP config flag into separate ticket</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-838 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-838" target="_blank">BOOK-838</a>: Circulation page book search returns no results and check-in fails
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Parent Epic (BOOK-719)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Jam Link</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (description suggests 5)</li>
+        <li>Assign to engineering</li>
+        <li>Add component: Circulation</li>
+        <li>Add explicit severity classification (P1 suggested &mdash; core circulation broken)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-849 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-story">Story</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-849" target="_blank">BOOK-849</a>: Modify SFTP Upload Processing for District-Wide Updates
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria (checklist)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> User Story Statement</div>
+    </div>
+    <div style="margin-top: 10px;">
+      <strong style="font-size:13px;">Agent-Readiness Score:</strong>
+      <span class="readiness-score">
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-filled"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <span class="readiness-dot dot-empty"></span>
+        <strong style="margin-left:6px; color:#eab308;">3/5</strong>
+      </span>
+    </div>
+    <table style="margin-top:8px; font-size:12px;">
+      <tr><td style="color:#94a3b8; width:180px;">Context Sufficiency</td><td class="pass">PASS &mdash; Technical details, affected services listed</td></tr>
+      <tr><td style="color:#94a3b8;">Boundary Clarity</td><td class="fail">FAIL &mdash; No Always/Ask/Never boundaries</td></tr>
+      <tr><td style="color:#94a3b8;">Testability</td><td class="pass">PASS &mdash; AC is verifiable</td></tr>
+      <tr><td style="color:#94a3b8;">Scope Precision</td><td class="fail">FAIL &mdash; No out-of-scope section</td></tr>
+      <tr><td style="color:#94a3b8;">Error Coverage</td><td class="pass">PASS &mdash; "Error handling ensures if one campus fails, others continue"</td></tr>
+    </table>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 8)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (BOOK-847 District-Wide SFTP)</li>
+        <li>Add component: Integrations</li>
+        <li>Add out-of-scope section</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-837 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-837" target="_blank">BOOK-837</a>: CSV Upload: Books import without metadata
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Jam Link</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (BOOK-719 or create Import epic)</li>
+        <li>Add component: Book Intelligence</li>
+        <li>Add explicit severity classification (P2 &mdash; degraded UX, books still importable)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-835 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-task">Task</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-835" target="_blank">BOOK-835</a>: Teacher: No Classroom/School Library Badges on Books
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 3)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (BOOK-719 Libraries: Core Management)</li>
+        <li>Add component: Classroom Libraries</li>
+        <li>Note: Classified as "Bug" in description but typed as Task &mdash; this is a new feature, Task is correct</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-740 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-task">Task</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-740" target="_blank">BOOK-740</a>: V2 Login Tracking to HubSpot Integration
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Assignee (Sarah El Massry)</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 5)</li>
+        <li>Link to parent Epic</li>
+        <li>Add component: Integrations</li>
+        <li>Note: This ticket is In Progress and assigned &mdash; closest to sprint-ready but still missing points and epic</li>
+        <li>Note: References "Feb 1" and "Feb 17" deadlines that have passed &mdash; update context for current status</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-829 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-829" target="_blank">BOOK-829</a>: Superintendent: cannot create classroom
+      </div>
+      <span class="verdict verdict-needs-work">Needs Work</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Jam Link</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix:</strong>
+      <ul>
+        <li>Add story points (suggested: 2, likely a frontend role check fix)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic</li>
+        <li>Add component: Classroom Libraries or User Management</li>
+        <li>Add severity classification (P2 &mdash; role-specific, workaround is Teacher creates classroom)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BOOK-776 -->
+  <div class="ticket-detail">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="ticket-title">
+        <span class="type-badge type-bug">Bug</span>
+        <a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-776" target="_blank">BOOK-776</a>: Teacher: No Lock Icons Displayed on Restricted/Banned Books
+      </div>
+      <span class="verdict verdict-block">Block</span>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="check">&#10003;</span> Acceptance Criteria</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Story Points</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Assignee</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Parent Epic</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Component</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> No Banned Phrases</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Steps to Reproduce</div>
+      <div class="criteria-item"><span class="check">&#10003;</span> Expected vs Actual</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Severity Classified</div>
+      <div class="criteria-item"><span class="cross">&#10007;</span> Jam/Screenshot</div>
+    </div>
+    <div class="fix-suggestions">
+      <strong>Fix (BLOCKED &mdash; classified as Bug but is actually unimplemented feature):</strong>
+      <ul>
+        <li>Reclassify as Story or Task &mdash; description says "Feature not yet implemented"</li>
+        <li>Add story points (suggested: 3)</li>
+        <li>Assign to engineering</li>
+        <li>Link to parent Epic (Compliance or Libraries epic)</li>
+        <li>Add component: Compliance</li>
+        <li>Add severity classification or convert to feature request</li>
+        <li>Add screenshot showing current state (no icons visible)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- Recommendations -->
+<div class="card">
+  <h2>Improvement Recommendations</h2>
+  <table>
+    <tr>
+      <th style="width:40px;">#</th>
+      <th>Recommendation</th>
+      <th>Impact</th>
+      <th>Effort</th>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td><strong>Story point sweep:</strong> 0/15 tickets have points. Run a batch estimation session (planning poker or Sarah+Steve async sizing). This is the #1 blocker to sprint velocity tracking.</td>
+      <td class="fail">Critical</td>
+      <td>30 min</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td><strong>Assignment sweep:</strong> 14/15 tickets unassigned. Assign owners during sprint planning or backlog grooming. Without owners, nothing moves.</td>
+      <td class="fail">Critical</td>
+      <td>15 min</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td><strong>Epic linkage:</strong> Only 2/15 tickets have parent epics. Create missing epics (SIS Management, Permissions/RBAC, Import Pipeline) and bulk-link orphaned tickets.</td>
+      <td class="warn">High</td>
+      <td>45 min</td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td><strong>Component assignment:</strong> Only 1/15 has components. Bulk-assign using the valid component list. This enables per-module reporting.</td>
+      <td class="warn">High</td>
+      <td>20 min</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td><strong>Bug misclassification:</strong> BOOK-776 and BOOK-835 are labeled as bugs but are unimplemented features. Reclassify to prevent velocity distortion.</td>
+      <td style="color:#94a3b8;">Medium</td>
+      <td>5 min</td>
+    </tr>
+    <tr>
+      <td><strong>6</strong></td>
+      <td><strong>Skeleton ticket cleanup:</strong> BOOK-873 has no description at all. Either flesh it out or remove it from the backlog.</td>
+      <td style="color:#94a3b8;">Medium</td>
+      <td>10 min</td>
+    </tr>
+    <tr>
+      <td><strong>7</strong></td>
+      <td><strong>Stale context:</strong> BOOK-740 references Feb 1 and Feb 17 deadlines that are 6+ weeks past. Update description to reflect current state.</td>
+      <td style="color:#94a3b8;">Low</td>
+      <td>5 min</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Agent Readiness Summary -->
+<div class="card">
+  <h2>Agent-Readiness Summary (Stories Only)</h2>
+  <table>
+    <tr>
+      <th>Ticket</th>
+      <th>Context</th>
+      <th>Boundaries</th>
+      <th>Testability</th>
+      <th>Scope</th>
+      <th>Errors</th>
+      <th>Score</th>
+    </tr>
+    <tr>
+      <td><a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-876" target="_blank">BOOK-876</a></td>
+      <td class="pass">&#10003;</td>
+      <td class="pass">&#10003;</td>
+      <td class="pass">&#10003;</td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td><strong style="color:#3b82f6;">4/5</strong></td>
+    </tr>
+    <tr>
+      <td><a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-858" target="_blank">BOOK-858</a></td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="fail">&#10007;</td>
+      <td><strong style="color:#eab308;">3/5</strong></td>
+    </tr>
+    <tr>
+      <td><a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-857" target="_blank">BOOK-857</a></td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="fail">&#10007;</td>
+      <td><strong style="color:#eab308;">3/5</strong></td>
+    </tr>
+    <tr>
+      <td><a class="ticket-key" href="https://bookmarked-team.atlassian.net/browse/BOOK-849" target="_blank">BOOK-849</a></td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="pass">&#10003;</td>
+      <td class="fail">&#10007;</td>
+      <td class="pass">&#10003;</td>
+      <td><strong style="color:#eab308;">3/5</strong></td>
+    </tr>
+  </table>
+  <p style="margin-top:12px; font-size:13px; color:#94a3b8;">Best-in-class: <strong>BOOK-876</strong> (4/5) &mdash; has implementation guide, test plan, out-of-scope, and GIVEN/WHEN/THEN AC. Use as template for other stories.</p>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center; padding: 32px 0 16px; color: #475569; font-size: 12px;">
+  Generated by PM Infrastructure Agent &mdash; Day 3, Thread G &mdash; March 12, 2026<br>
+  Data source: Jira BOOK project, 15 tickets sampled (most recently updated open Stories, Tasks, Bugs)
+</div>
+
+</div>
+</body>
+</html>

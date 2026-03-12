@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Scorecard — Week 1 Baseline — March 12, 2026</title>
+<style>
+  :root {
+    --green: #22c55e; --yellow: #eab308; --red: #ef4444;
+    --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --muted: #94a3b8;
+    --border: #334155; --accent: #3b82f6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; line-height: 1.6; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .metric-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; text-align: center; }
+  .metric-card .number { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+  .metric-card .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-card .value { font-size: 2rem; font-weight: 700; }
+  .metric-card .target { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+  .metric-card .bar-bg { background: var(--border); border-radius: 4px; height: 6px; width: 100%; margin-top: 0.5rem; }
+  .metric-card .bar-fill { border-radius: 4px; height: 6px; }
+  .red { color: var(--red); }
+  .yellow { color: var(--yellow); }
+  .green { color: var(--green); }
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .section h2 { font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .badge-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-gray { background: rgba(148,163,184,0.15); color: var(--muted); }
+  .insight { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; color: var(--muted); font-size: 0.9rem; }
+  .footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  @media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Product Scorecard — Week 1 Baseline</h1>
+<p class="subtitle">March 12, 2026 &middot; Sprint 62 &middot; Live Jira data from BOOK project</p>
+
+<!-- 5 Measurables -->
+<div class="grid">
+  <div class="metric-card">
+    <div class="number">#1</div>
+    <div class="label">First-Pass Rate</div>
+    <div class="value red">30%</div>
+    <div class="target">Target: TBD</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:30%;background:var(--red)"></div></div>
+  </div>
+  <div class="metric-card">
+    <div class="number">#2</div>
+    <div class="label">Sprint Ready</div>
+    <div class="value red">50%</div>
+    <div class="target">Target: 100%</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:50%;background:var(--red)"></div></div>
+  </div>
+  <div class="metric-card">
+    <div class="number">#3</div>
+    <div class="label">Customer Contact</div>
+    <div class="value" style="color:var(--muted)">TBD</div>
+    <div class="target">Target: 1x/week</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:0%;background:var(--muted)"></div></div>
+  </div>
+  <div class="metric-card">
+    <div class="number">#4</div>
+    <div class="label">UAT Turnaround</div>
+    <div class="value" style="color:var(--muted)">N/A</div>
+    <div class="target">Target: &lt;24h</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:0%;background:var(--muted)"></div></div>
+  </div>
+  <div class="metric-card">
+    <div class="number">#5</div>
+    <div class="label">Discovery Items</div>
+    <div class="value red">0</div>
+    <div class="target">Target: 1+/week</div>
+    <div class="bar-bg"><div class="bar-fill" style="width:0%;background:var(--red)"></div></div>
+  </div>
+</div>
+
+<!-- Detail Table -->
+<div class="section">
+  <h2>Week 1 Detail</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Measurable</th><th>Target</th><th>Week 1</th><th>Method</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Ticket first-pass rate</td>
+        <td>TBD%</td>
+        <td><strong>30%</strong> (6/20)</td>
+        <td>Quality check on last 20 tickets: AC, points, assignee, component, epic link</td>
+        <td><span class="badge badge-red">Below baseline</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Sprint readiness at start</td>
+        <td>100%</td>
+        <td><strong>50%</strong> (2/4 have points)</td>
+        <td>Sprint 62: 4 tickets, 2 with points, 0 with assignees</td>
+        <td><span class="badge badge-red">Not ready</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Customer contact</td>
+        <td>1x/week</td>
+        <td>TBD</td>
+        <td>Self-report by Sarah in 1:1</td>
+        <td><span class="badge badge-gray">Tracking starts</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>UAT turnaround</td>
+        <td>&lt;24h</td>
+        <td>No data</td>
+        <td>No UAT status exists in Jira workflow</td>
+        <td><span class="badge badge-yellow">Needs workflow change</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Discovery items validated</td>
+        <td>1+/week</td>
+        <td><strong>0</strong></td>
+        <td>No new PROD Confluence pages in last 2 weeks</td>
+        <td><span class="badge badge-red">Inactive</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Sprint 62 Snapshot -->
+<div class="section">
+  <h2>Sprint 62 Snapshot</h2>
+  <table>
+    <thead>
+      <tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Total tickets</td><td>4</td><td>All already Done on day 1 — sprint is retrospective</td></tr>
+      <tr><td>With story points</td><td>2 (50%)</td><td>BOOK-871 (3pts), BOOK-870 (5pts)</td></tr>
+      <tr><td>With assignees</td><td>0 (0%)</td><td>No tickets assigned</td></tr>
+      <tr><td>With AC</td><td>~2</td><td>Limited testable criteria</td></tr>
+      <tr><td>Sprint completion</td><td>100%</td><td>All 4 tickets Done (likely pre-completed)</td></tr>
+    </tbody>
+  </table>
+  <div class="insight">Sprint 62 shows 100% completion but this is misleading — all tickets were already Done at sprint start. This is a retrospective sprint, not a predictive one. Real sprint tracking begins next sprint.</div>
+</div>
+
+<!-- Improvement from Audit -->
+<div class="section">
+  <h2>Improvement Since March Audit</h2>
+  <table>
+    <thead>
+      <tr><th>Metric</th><th>March Audit</th><th>Week 1</th><th>Trend</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Machine-testable AC</td><td>13%</td><td>30%</td><td><span class="badge badge-green">+17pp</span></td></tr>
+      <tr><td>Story points</td><td>3%</td><td>10%</td><td><span class="badge badge-green">+7pp</span></td></tr>
+      <tr><td>Assignees</td><td>0%</td><td>0%</td><td><span class="badge badge-yellow">No change</span></td></tr>
+      <tr><td>Components</td><td>N/A</td><td>2%</td><td><span class="badge badge-yellow">New metric</span></td></tr>
+    </tbody>
+  </table>
+  <div class="insight">The 13% &rarr; 30% improvement in AC quality is likely from Claude AI agent amendments to tickets. This validates that automated quality enforcement works — the infrastructure we're building will accelerate this trend.</div>
+</div>
+
+<!-- Key Findings -->
+<div class="section">
+  <h2>Key Findings</h2>
+  <ul style="padding-left:1.25rem;">
+    <li style="margin-bottom:0.5rem;"><strong>Assignees (0%)</strong> is the single biggest operational gap. No accountability without assignment.</li>
+    <li style="margin-bottom:0.5rem;"><strong>No UAT workflow status in Jira.</strong> Turnaround can't be measured until a UAT column is added. This blocks Measurable #4.</li>
+    <li style="margin-bottom:0.5rem;"><strong>Confluence PROD space was dormant</strong> for ~2 weeks before today's restructure. Discovery validation (Measurable #5) needs active PRD creation.</li>
+    <li style="margin-bottom:0.5rem;"><strong>AC quality is strong where it exists</strong> — 6 tickets have excellent machine-testable AC with HTTP codes, field names, and test references. The quality bar is achievable; it just needs to be the default, not the exception.</li>
+    <li style="margin-bottom:0.5rem;"><strong>Sprint 62 is already complete.</strong> Real sprint tracking will begin with Sprint 63.</li>
+  </ul>
+</div>
+
+<!-- 13-Week Tracker -->
+<div class="section">
+  <h2>13-Week Tracker</h2>
+  <table>
+    <thead>
+      <tr><th>Week</th><th>Date</th><th>#1 First-Pass</th><th>#2 Sprint Ready</th><th>#3 Customer</th><th>#4 UAT &lt;24h</th><th>#5 Discovery</th></tr>
+    </thead>
+    <tbody>
+      <tr style="background:rgba(59,130,246,0.05);"><td><strong>1</strong></td><td>Mar 12</td><td class="red">30%</td><td class="red">50%</td><td style="color:var(--muted)">TBD</td><td style="color:var(--muted)">N/A</td><td class="red">0</td></tr>
+      <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>11</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  Bookmarked Product Scorecard &middot; Week 1 Baseline &middot; Generated by Claude Opus 4.6<br>
+  Data source: Jira BOOK project (Sprint 62) + Confluence PROD space<br>
+  Confluence: <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87490581" style="color:var(--accent)">Product Scorecard page</a>
+</div>
+
+</div>
+</body>
+</html>

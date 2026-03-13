@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM Infrastructure Overview — Bookmarked OS</title>
+<style>
+  :root {
+    --green: #22c55e; --yellow: #eab308; --red: #ef4444;
+    --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --muted: #94a3b8;
+    --border: #334155; --accent: #3b82f6; --purple: #a78bfa; --teal: #2dd4bf;
+    --orange: #fb923c; --pink: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
+  .tldr { background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(167,139,250,0.12)); border: 1px solid rgba(59,130,246,0.3); border-radius: 0.75rem; padding: 1.75rem; margin-bottom: 2.5rem; }
+  .tldr h2 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem; }
+  .tldr p { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .tldr .stat-row { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .tldr .stat { text-align: center; }
+  .tldr .stat .num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+  .tldr .stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.75rem; margin-bottom: 1.5rem; }
+  .section h2 { font-size: 1.2rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+  .section h3 { font-size: 1rem; margin: 1.25rem 0 0.5rem; }
+
+  /* Org Chart */
+  .org-chart { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .org-node { background: var(--card); border: 2px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; text-align: center; position: relative; min-width: 200px; }
+  .org-node.ceo { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+  .org-node.orchestrator { border-color: var(--purple); background: rgba(167,139,250,0.08); }
+  .org-node.agent { border-color: var(--teal); background: rgba(45,212,191,0.06); min-width: 160px; }
+  .org-node.human { border-color: var(--orange); background: rgba(251,146,60,0.08); min-width: 160px; }
+  .org-node .title { font-weight: 700; font-size: 0.95rem; }
+  .org-node .role { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; }
+  .org-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .connector { width: 2px; height: 24px; background: var(--border); margin: 0 auto; }
+  .connector-h { display: flex; align-items: center; justify-content: center; margin: 0.5rem 0; }
+  .connector-h::before { content: ''; display: block; height: 2px; background: var(--border); flex: 1; max-width: 600px; }
+  .org-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 1rem 0 0.5rem; text-align: center; }
+
+  /* Agent Cards */
+  .agent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+  .agent-card { background: var(--bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; }
+  .agent-card .name { font-weight: 700; font-size: 1rem; margin-bottom: 0.15rem; }
+  .agent-card .slash { color: var(--teal); font-family: monospace; font-size: 0.85rem; }
+  .agent-card .desc { font-size: 0.85rem; color: var(--muted); margin: 0.5rem 0; }
+  .agent-card .expertise { margin-top: 0.5rem; }
+  .agent-card .expertise span { display: inline-block; background: rgba(45,212,191,0.1); color: var(--teal); border-radius: 9999px; padding: 0.1rem 0.5rem; font-size: 0.7rem; margin: 0.15rem 0.15rem 0.15rem 0; font-weight: 600; }
+  .agent-card .autonomy { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; border-top: 1px solid var(--border); padding-top: 0.5rem; }
+  .agent-card .autonomy strong { color: var(--text); }
+  .agent-card.sub .name { color: var(--purple); }
+  .agent-card.sub .expertise span { background: rgba(167,139,250,0.1); color: var(--purple); }
+
+  /* Artifact table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 9999px; font-size: 0.65rem; font-weight: 600; }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-purple { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .badge-orange { background: rgba(251,146,60,0.15); color: var(--orange); }
+  .badge-teal { background: rgba(45,212,191,0.15); color: var(--teal); }
+
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin: 1rem 0; }
+  .flow-step { background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.8rem; text-align: center; min-width: 120px; }
+  .flow-arrow { color: var(--muted); font-size: 1.2rem; }
+  .flow-step.highlight { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+
+  .footer { text-align: center; color: var(--muted); font-size: 0.75rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  @media (max-width: 768px) { .agent-grid { grid-template-columns: 1fr; } .org-row { flex-direction: column; align-items: center; } .tldr .stat-row { justify-content: center; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>PM Infrastructure Overview</h1>
+<p class="subtitle">Bookmarked Operating System &middot; Built March 12-13, 2026 &middot; Deployed to Sarah El Massry</p>
+
+<!-- TLDR -->
+<div class="tldr">
+  <h2>TL;DR</h2>
+  <p>In one session, we built a <strong>complete product management infrastructure</strong> for a company that had none. Sarah El Massry (Product Owner) has been operating for a year with no scorecard, no structured 1:1s, no ticket quality standards, and no feedback loops. We built all of it — measurables, tracking systems, operational guides, Confluence pages, automated reports, and QA-validated integrations — then deployed it to her with a single email.</p>
+  <p style="color:var(--muted);font-size:0.9rem;margin-top:0.5rem;">The system is <strong>agent-augmented</strong>: AI agents do the data pulling, report generation, quality enforcement, and pattern detection. Humans do the judgment, relationships, and accountability conversations. Every piece connects — the scorecard feeds the 1:1, the 1:1 generates tasks, tasks feed the sprint, the sprint feeds the scorecard.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="num">9</div><div class="label">Confluence Pages</div></div>
+    <div class="stat"><div class="num">7</div><div class="label">HTML Reports</div></div>
+    <div class="stat"><div class="num">4</div><div class="label">Workflow Specs</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">Measurables</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">MCP Integrations</div></div>
+    <div class="stat"><div class="num">8</div><div class="label">QA Checks Passed</div></div>
+  </div>
+</div>
+
+<!-- Org Chart -->
+<div class="section">
+  <h2>Agent Org Chart</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem;">How the AI agents and human roles connect. <span style="color:var(--accent);">Blue = CEO layer</span> &middot; <span style="color:var(--purple);">Purple = orchestrator + sub-skills</span> &middot; <span style="color:var(--teal);">Teal = specialist agents</span> &middot; <span style="color:var(--orange);">Orange = human roles</span></p>
+
+  <div class="org-chart">
+    <!-- CEO -->
+    <div class="org-node ceo">
+      <div class="title">Steve Wandler</div>
+      <div class="role">CEO &middot; System Owner</div>
+    </div>
+    <div class="connector"></div>
+
+    <!-- Chief of Staff -->
+    <div class="org-node orchestrator">
+      <div class="title">/chief-of-staff</div>
+      <div class="role">Thin Orchestrator &middot; CEO-Only</div>
+    </div>
+    <div class="connector"></div>
+    <div class="connector-h"></div>
+
+    <!-- Sub-skills row -->
+    <div class="org-label">Chief of Staff Sub-Skills (internal routing — never invoked directly)</div>
+    <div class="org-row">
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Briefing Engine</div>
+        <div class="role">Morning / Afternoon / Shutdown / People Prep</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Email Triage</div>
+        <div class="role">ACTION / FYI / NOISE classification</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Task Manager</div>
+        <div class="role">Capture, triage, 15-item cap</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Decision Log</div>
+        <div class="role">Capture, search, loop prevention</div>
+      </div>
+    </div>
+    <div class="org-row" style="margin-top:0.75rem;">
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Weekly Review</div>
+        <div class="role">Clear → Current → Creative → Celebrate</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Publisher Intel</div>
+        <div class="role">Deal tracking, Natasha coordination</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Proactive Engine</div>
+        <div class="role">Nudges, streaks, overwhelm detection</div>
+      </div>
+      <div class="org-node agent" style="border-color:var(--purple);">
+        <div class="title" style="font-size:0.8rem;">Plaud Assistant</div>
+        <div class="role">Recording sync, transcript processing</div>
+      </div>
+    </div>
+
+    <div style="height:1.5rem;"></div>
+    <div class="connector-h"></div>
+    <div class="org-label">Product Management Agents (team-facing)</div>
+
+    <!-- PM Agents row -->
+    <div class="org-row">
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/jira</div>
+        <div class="role">Ticket creation &amp; structuring</div>
+      </div>
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/jira-standards</div>
+        <div class="role">Quality gate — blocks bad tickets</div>
+      </div>
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/cpo</div>
+        <div class="role">Product strategy &amp; prioritization</div>
+      </div>
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/ops-architect</div>
+        <div class="role">Workflow spec-check before building</div>
+      </div>
+    </div>
+    <div class="org-row" style="margin-top:0.75rem;">
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/diagnostic</div>
+        <div class="role">Team member questionnaire</div>
+      </div>
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/feedback</div>
+        <div class="role">Structured input from team</div>
+      </div>
+      <div class="org-node agent">
+        <div class="title" style="font-size:0.85rem;">/customer-success</div>
+        <div class="role">Health monitoring &amp; retention</div>
+      </div>
+    </div>
+
+    <div style="height:1.5rem;"></div>
+    <div class="connector-h"></div>
+    <div class="org-label">Human Roles</div>
+
+    <!-- Human roles -->
+    <div class="org-row">
+      <div class="org-node human">
+        <div class="title" style="font-size:0.85rem;">Sarah El Massry</div>
+        <div class="role">Product Owner &middot; Owns 5 measurables</div>
+      </div>
+      <div class="org-node human">
+        <div class="title" style="font-size:0.85rem;">Patrick Reid</div>
+        <div class="role">CS + UAT &middot; Owns quality validation</div>
+      </div>
+      <div class="org-node human">
+        <div class="title" style="font-size:0.85rem;">Raju Datla</div>
+        <div class="role">VP Engineering &middot; Sprint execution</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent Job Descriptions -->
+<div class="section">
+  <h2>Agent Job Descriptions &amp; Expertise</h2>
+
+  <h3 style="color:var(--purple);">Orchestrator</h3>
+  <div class="agent-grid">
+    <div class="agent-card sub">
+      <div class="slash">/chief-of-staff</div>
+      <div class="name">Chief of Staff</div>
+      <div class="desc">Steve's single entry point. Routes intent to the right sub-skill, orchestrates multi-skill work sessions, enforces ADHD-aware behavioral guardrails. Thin orchestrator — owns routing logic, delegates all execution.</div>
+      <div class="expertise">
+        <span>Intent Routing</span><span>Energy Matching</span><span>ADHD Support</span><span>Multi-Skill Orchestration</span><span>Session Management</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 3</strong> — Advisor. Claude does the heavy lifting, Steve sniff-checks priorities.</div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--purple);margin-top:1.5rem;">Sub-Skills (Internal — CEO Only)</h3>
+  <div class="agent-grid">
+    <div class="agent-card sub">
+      <div class="name">Briefing Engine</div>
+      <div class="desc">Morning, afternoon, and shutdown briefings. Pulls calendar, email, tasks, Plaud, publisher intel, and product pulse into a single situational awareness snapshot. Includes People Prep for meeting contexts.</div>
+      <div class="expertise">
+        <span>Calendar Analysis</span><span>Email Triage</span><span>Priority Scoring</span><span>Product Pulse</span><span>People Prep</span><span>Plaud Sync</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Email Triage</div>
+      <div class="desc">Classifies emails as ACTION (needs reply/decision), FYI (informational), or NOISE (newsletters/spam). Only ACTION emails surface in briefings. Sender intelligence adjusts classification.</div>
+      <div class="expertise">
+        <span>Gmail Integration</span><span>Classification</span><span>Sender Intelligence</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Task Manager</div>
+      <div class="desc">Google Tasks as the durable task system. 15-item cap, smart due dates, promise tracker ([PROMISE:Person]), delegation nudger ([DELEGATED:Person]), 14-day staleness rule, task bankruptcy/reset.</div>
+      <div class="expertise">
+        <span>Google Tasks</span><span>Capture</span><span>Triage</span><span>Promise Tracking</span><span>Delegation</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Proactive Engine</div>
+      <div class="desc">Closes the ADHD gap between having tools and using them. Auto-starts morning briefings, tracks streaks, detects overwhelm signals, nudges shutdown routines. Now includes Sarah diagnostic check.</div>
+      <div class="expertise">
+        <span>Streak Tracking</span><span>Overwhelm Detection</span><span>Session Startup</span><span>Context Window Protection</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Publisher Intelligence</div>
+      <div class="desc">Publisher relationship tracking — deal movement, Natasha coordination, publisher-specific prep. Monitors Saddleback, Brave, Lerner, Libraria, Capstone. Auto-included in Natasha meeting prep.</div>
+      <div class="expertise">
+        <span>Deal Tracking</span><span>HubSpot</span><span>Relationship Management</span><span>Slack Monitoring</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Decision Log</div>
+      <div class="desc">Captures decisions with context, prevents re-litigating closed decisions, tracks reversals. Searchable — "Did we decide X?" returns the decision, date, and reasoning.</div>
+      <div class="expertise">
+        <span>Decision Capture</span><span>Loop Prevention</span><span>Context Preservation</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Weekly Review</div>
+      <div class="desc">Friday ritual: Get Clear (process inboxes) → Get Current (update tasks) → Get Creative (strategic thinking) → Celebrate (completion counter) → Focus (set next week's priorities).</div>
+      <div class="expertise">
+        <span>GTD Review</span><span>Essentialism</span><span>Habit Tracking</span>
+      </div>
+    </div>
+    <div class="agent-card sub">
+      <div class="name">Plaud Assistant</div>
+      <div class="desc">Syncs recordings from Plaud device via MCP, segments by meeting, classifies content, extracts action items, saves transcripts to Google Drive. Integrates with briefings and People Prep.</div>
+      <div class="expertise">
+        <span>Plaud MCP</span><span>Transcript Processing</span><span>Action Extraction</span><span>Google Drive</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--teal);margin-top:1.5rem;">Product Management Agents (Team-Facing)</h3>
+  <div class="agent-grid">
+    <div class="agent-card">
+      <div class="slash">/jira</div>
+      <div class="name">JIRA Operating Model</div>
+      <div class="desc">Converts requirements into structured Jira tickets. Enforces Epic → Story → Task hierarchy, asks clarifying questions, writes machine-testable acceptance criteria, embeds data evidence, performs duplicate checks.</div>
+      <div class="expertise">
+        <span>Ticket Creation</span><span>AC Standards</span><span>Bug Templates</span><span>PRD Decomposition</span><span>Jam.dev Integration</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 1</strong> — Executor. Creates tickets autonomously within standards. Escalates scope/priority questions.</div>
+    </div>
+    <div class="agent-card">
+      <div class="slash">/jira-standards</div>
+      <div class="name">Ticket Quality Gate</div>
+      <div class="desc">Validates tickets before they enter a sprint. Checks AC completeness, story points, assignee, component, parent epic. Blocks incomplete tickets — the enforcement mechanism for the scorecard's first-pass rate.</div>
+      <div class="expertise">
+        <span>Quality Validation</span><span>Sprint-Ready Gate</span><span>Agent-Readiness Score</span><span>UAT-Testability</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 1</strong> — Executor. Pass/fail with specific remediation. No judgment calls.</div>
+    </div>
+    <div class="agent-card">
+      <div class="slash">/cpo</div>
+      <div class="name">Chief Product Officer</div>
+      <div class="desc">Product strategy, discovery vs delivery decisions, opportunity solution trees, roadmap prioritization, engineering accountability. Grounded in Cagan and Torres methodology.</div>
+      <div class="expertise">
+        <span>Product Strategy</span><span>Roadmap</span><span>Discovery</span><span>Prioritization</span><span>Metrics</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 3</strong> — Advisor. Recommends, Steve/Sarah decide.</div>
+    </div>
+    <div class="agent-card">
+      <div class="slash">/ops-architect</div>
+      <div class="name">Ops Architect</div>
+      <div class="desc">Upstream workflow designer. Enforces specification rigor before any automation gets built. Single-pass spec-check: does the workflow have clear trigger, steps, output, error handling, and owner?</div>
+      <div class="expertise">
+        <span>Workflow Design</span><span>Spec Validation</span><span>Automation Planning</span><span>Error Handling</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 2</strong> — Recommender. Specs the workflow, Steve approves before build.</div>
+    </div>
+    <div class="agent-card">
+      <div class="slash">/diagnostic</div>
+      <div class="name">Team Diagnostic</div>
+      <div class="desc">Interactive questionnaire administered 1:1 via Claude Code. Identifies workflows, tool comfort, pain points, and automation opportunities. Designed for Wispr Flow voice dictation.</div>
+      <div class="expertise">
+        <span>Team Assessment</span><span>Workflow Discovery</span><span>Pain Points</span><span>Automation Opportunities</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 1</strong> — Executor. Asks questions, captures answers, produces report.</div>
+    </div>
+    <div class="agent-card">
+      <div class="slash">/feedback</div>
+      <div name="name" class="name">Structured Feedback</div>
+      <div class="desc">Input command for team members to submit customer insights, messaging observations, content performance notes. Routes feedback to the appropriate log and detects patterns.</div>
+      <div class="expertise">
+        <span>Customer Insights</span><span>Pattern Detection</span><span>Content Sourcing</span><span>Feedback Routing</span>
+      </div>
+      <div class="autonomy"><strong>Autonomy Level 1</strong> — Executor. Captures and routes. Escalates patterns.</div>
+    </div>
+  </div>
+</div>
+
+<!-- What We Built -->
+<div class="section">
+  <h2>What Was Built — Complete Inventory</h2>
+
+  <h3>Confluence Pages (PROD Space)</h3>
+  <table>
+    <thead>
+      <tr><th>Page</th><th>Purpose</th><th>Owner</th><th>Update Cadence</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87490581">Product Scorecard</a></td><td>13-week tracker with 5 measurables — the heartbeat of the system</td><td>Sarah</td><td>Weekly (Thursday 1:1)</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87818280">Sarah's Operating Page</a></td><td>Role definition, measurables, weekly rhythm, tools</td><td>Sarah</td><td>As needed</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87654692">Patrick's QA Page</a></td><td>UAT process (label-based), bug quality standards, weekly rhythm</td><td>Patrick</td><td>As needed</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87949332">Weekly 1:1 Structure</a></td><td>Steve-Sarah Thursday agenda: scorecard review, IDS, commitments</td><td>Steve</td><td>Stable</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/88047617">Customer Feedback</a></td><td>Insight log populated by /feedback — patterns surface here</td><td>Sarah</td><td>As feedback arrives</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028">Sprint Reports</a></td><td>Sprint-over-sprint tracking — completion %, velocity, quality</td><td>Sarah</td><td>Per sprint close</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87785527">Retrospectives</a></td><td>What went well / what didn't / what we'll change</td><td>Sarah</td><td>Per sprint close</td></tr>
+      <tr><td>Discovery &amp; Research</td><td>PRDs, validated hypotheses, customer evidence</td><td>Sarah</td><td>As discovery happens</td></tr>
+      <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/56033329">Decisions Log</a></td><td>Product decisions with context — prevents re-litigation</td><td>Steve</td><td>As decisions are made</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:1.5rem;">HTML Reports (GitHub Pages)</h3>
+  <table>
+    <thead>
+      <tr><th>Report</th><th>Purpose</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="https://stevewandler.github.io/bookmarked-exports/exports/sarah-operational-walkthrough-2026-03-12.html">Sarah's Operational Walkthrough</a></td><td>"What buttons to push" — step-by-step guide for every tool and cadence</td><td><span class="badge badge-orange">Guide</span></td></tr>
+      <tr><td><a href="https://stevewandler.github.io/bookmarked-exports/exports/sarah-pm-guide-2026-03-12.html">Sarah's PM Guide</a></td><td>"Why" document — role, measurables, decision boundaries, how we work</td><td><span class="badge badge-orange">Guide</span></td></tr>
+      <tr><td><a href="https://stevewandler.github.io/bookmarked-exports/reports/jira-cleanup-2026-03-12.html">Jira Deficiency Report</a></td><td>55-ticket audit — baseline metrics, label pollution, orphaned subtasks</td><td><span class="badge badge-blue">Report</span></td></tr>
+      <tr><td><a href="https://stevewandler.github.io/bookmarked-exports/reports/scorecard-week1-2026-03-12.html">Product Scorecard (Week 1)</a></td><td>First measurable snapshot — 30% first-pass, 50% sprint ready, 0 discovery</td><td><span class="badge badge-blue">Report</span></td></tr>
+      <tr><td>Sprint Health Report</td><td>Sprint 62 snapshot — completion, velocity, quality breakdown</td><td><span class="badge badge-blue">Report</span></td></tr>
+      <tr><td>Batch Quality Gate</td><td>Ticket-by-ticket audit of recent 20 tickets with pass/fail per field</td><td><span class="badge badge-blue">Report</span></td></tr>
+      <tr><td>UAT Tracking Report</td><td>Label-based UAT convention documentation and tracking setup</td><td><span class="badge badge-blue">Report</span></td></tr>
+      <tr><td>Product Dashboard</td><td>CEO view — all metrics on one page, drill-down links</td><td><span class="badge badge-purple">Dashboard</span></td></tr>
+      <tr><td><a href="https://stevewandler.github.io/bookmarked-exports/reports/1on1-prep-dry-run-2026-03-13.html">1:1 Prep Packet (Mar 13)</a></td><td>Live data prep for today's Sarah meeting — scorecard, IDS, talk tracks</td><td><span class="badge badge-teal">Prep</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:1.5rem;">Ops-Architect Workflow Specs</h3>
+  <table>
+    <thead>
+      <tr><th>Spec</th><th>What It Automates</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sprint Close Report</td><td>Auto-generates sprint summary at sprint end</td><td><span class="badge badge-green">Spec'd</span></td></tr>
+      <tr><td>1:1 Prep Packet</td><td>Auto-generates Steve-Sarah prep from live data before Thursday</td><td><span class="badge badge-green">Spec'd</span></td></tr>
+      <tr><td>UAT Alert</td><td>Notifies Patrick when "UAT" label is added to a ticket</td><td><span class="badge badge-green">Spec'd</span></td></tr>
+      <tr><td>QA Gate</td><td>Validates ticket quality before sprint entry</td><td><span class="badge badge-green">Spec'd</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- The 5 Measurables -->
+<div class="section">
+  <h2>The 5 Measurables — Product Scorecard</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem;">Reviewed weekly in Thursday 1:1. Tracked over 13-week rolling window. These are Sarah's accountability numbers.</p>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Measurable</th><th>Target</th><th>Week 1</th><th>How It's Measured</th><th>Who Owns It</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Ticket first-pass rate</td><td>TBD%</td><td style="color:var(--red);">30%</td><td>Jira audit: AC + points + assignee + component</td><td>Sarah</td></tr>
+      <tr><td>2</td><td>Sprint readiness at start</td><td>100%</td><td style="color:var(--red);">50%</td><td>Jira sprint query: all tickets have points + assignee</td><td>Sarah</td></tr>
+      <tr><td>3</td><td>Customer contact</td><td>1x/week</td><td style="color:var(--muted);">TBD</td><td>Self-report by Sarah in 1:1</td><td>Sarah</td></tr>
+      <tr><td>4</td><td>UAT turnaround</td><td>&lt;24h</td><td style="color:var(--muted);">No Data</td><td>Jira label timestamps (UAT added → removed)</td><td>Patrick</td></tr>
+      <tr><td>5</td><td>Discovery items validated</td><td>1+/week</td><td style="color:var(--red);">0</td><td>New Confluence PRD pages in PROD space</td><td>Sarah</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- How It All Connects -->
+<div class="section">
+  <h2>How It All Connects — The Feedback Loops</h2>
+
+  <h3>Loop 1: Ticket Quality</h3>
+  <div class="flow">
+    <div class="flow-step">Sarah creates ticket<br><span style="color:var(--muted);font-size:0.7rem;">/jira</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step highlight">/jira-standards<br><span style="color:var(--muted);font-size:0.7rem;">quality gate</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Sprint entry<br><span style="color:var(--muted);font-size:0.7rem;">pass = enters sprint</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">First-pass rate<br><span style="color:var(--muted);font-size:0.7rem;">Measurable #1</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Scorecard<br><span style="color:var(--muted);font-size:0.7rem;">weekly trend</span></div>
+  </div>
+
+  <h3>Loop 2: Sprint Execution</h3>
+  <div class="flow">
+    <div class="flow-step">Sprint planned<br><span style="color:var(--muted);font-size:0.7rem;">pts + assignees</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Dev executes<br><span style="color:var(--muted);font-size:0.7rem;">Raju's team</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step highlight">UAT label added<br><span style="color:var(--muted);font-size:0.7rem;">ready for Patrick</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Patrick validates<br><span style="color:var(--muted);font-size:0.7rem;">&lt;24h turnaround</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Sprint close<br><span style="color:var(--muted);font-size:0.7rem;">auto-report</span></div>
+  </div>
+
+  <h3>Loop 3: Customer Feedback</h3>
+  <div class="flow">
+    <div class="flow-step">Customer input<br><span style="color:var(--muted);font-size:0.7rem;">call, email, support</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step highlight">/feedback<br><span style="color:var(--muted);font-size:0.7rem;">structured capture</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Confluence log<br><span style="color:var(--muted);font-size:0.7rem;">Customer Feedback page</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Pattern detection<br><span style="color:var(--muted);font-size:0.7rem;">themes surface</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Discovery<br><span style="color:var(--muted);font-size:0.7rem;">Measurable #5</span></div>
+  </div>
+
+  <h3>Loop 4: CEO Visibility</h3>
+  <div class="flow">
+    <div class="flow-step highlight">/chief-of-staff<br><span style="color:var(--muted);font-size:0.7rem;">morning briefing</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Product Pulse<br><span style="color:var(--muted);font-size:0.7rem;">sprint % + risks</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Thursday 1:1<br><span style="color:var(--muted);font-size:0.7rem;">scorecard review</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">IDS issues<br><span style="color:var(--muted);font-size:0.7rem;">identify, discuss, solve</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Commitments<br><span style="color:var(--muted);font-size:0.7rem;">tasks for next week</span></div>
+  </div>
+</div>
+
+<!-- MCP Integrations -->
+<div class="section">
+  <h2>MCP Integration Map</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem;">Every integration was verified with real data during the QA pass (8/8 checks passed).</p>
+  <table>
+    <thead>
+      <tr><th>Integration</th><th>What It Provides</th><th>Used By</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Jira</strong> (Atlassian MCP)</td><td>Sprint data, ticket queries, bug tracking, board management</td><td>Briefing Engine, /jira, /jira-standards, /cpo, Product Pulse</td></tr>
+      <tr><td><strong>Confluence</strong> (Atlassian MCP)</td><td>Scorecard page, PRDs, sprint reports, decisions log</td><td>Briefing Engine, Product Pulse, /cpo</td></tr>
+      <tr><td><strong>Google Workspace</strong> (local MCP)</td><td>Gmail, Calendar, Tasks, Drive, Docs, Sheets, Contacts</td><td>Chief of Staff (all sub-skills), /email, /calendar, /tasks</td></tr>
+      <tr><td><strong>Slack</strong> (cloud MCP)</td><td>Channel monitoring, DM posting, team activity</td><td>Publisher Intel, Proactive Engine, report delivery</td></tr>
+      <tr><td><strong>HubSpot</strong> (private app MCP)</td><td>Pipeline, deals, contacts, customer data</td><td>/hubspot, Publisher Intel, People Prep, /customer-success</td></tr>
+      <tr><td><strong>Jam.dev</strong> (MCP)</td><td>Bug captures, console logs, user events, screenshots</td><td>/jira (bug tickets), Patrick's QA workflow</td></tr>
+      <tr><td><strong>Plaud</strong> (local MCP)</td><td>Meeting recordings, transcripts, action item extraction</td><td>Plaud Assistant, Briefing Engine, People Prep</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Key Decisions -->
+<div class="section">
+  <h2>Key Design Decisions</h2>
+  <table>
+    <thead>
+      <tr><th>Decision</th><th>What We Chose</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>UAT tracking</td><td>Jira labels, not workflow changes</td><td>No Jira admin access needed. Labels are fast, visible, measurable. Raju doesn't need to change anything.</td></tr>
+      <tr><td>Scorecard location</td><td>Confluence page, not spreadsheet</td><td>Lives where Sarah already works. Cross-linked to all related pages. Version history built in.</td></tr>
+      <tr><td>Sarah's guides</td><td>Two docs: walkthrough (how) + PM guide (why)</td><td>Separates reference from philosophy. She'll use the walkthrough daily; the guide is for context.</td></tr>
+      <tr><td>Agent autonomy</td><td>/jira and /jira-standards are Level 1 (executor)</td><td>Ticket creation and validation should be fast and consistent. No room for "judgment calls" on quality standards.</td></tr>
+      <tr><td>Sprint cadence</td><td>Keep 1-2 day sprints (not traditional 2-week)</td><td>Matches Bookmarked's fast iteration speed. Scorecard adapts with per-sprint tracking.</td></tr>
+      <tr><td>Patrick's account</td><td>Found existing Atlassian ID (712020:7231c77e)</td><td>No new account needed. UAT ticket assignment now possible.</td></tr>
+      <tr><td>Known gaps</td><td>Documented openly in walkthrough</td><td>Sarah should see what's not ready yet. Prevents surprise and builds trust.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  Bookmarked PM Infrastructure Overview &middot; March 13, 2026 &middot; Generated by Claude Opus 4.6<br>
+  Built in one session. QA'd in one session. Deployed in one email.<br>
+  <em>"AI-native: agents get seats on the accountability chart."</em>
+</div>
+
+</div>
+</body>
+</html>

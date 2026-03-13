@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarah's Operational Guide — Bookmarked PM Infrastructure</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #253349;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent-light: #60a5fa;
+    --green: #22c55e;
+    --green-bg: rgba(34,197,94,0.12);
+    --yellow: #eab308;
+    --yellow-bg: rgba(234,179,8,0.12);
+    --red: #ef4444;
+    --red-bg: rgba(239,68,68,0.10);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167,139,250,0.12);
+    --orange: #f97316;
+    --orange-bg: rgba(249,115,22,0.12);
+    --border: #334155;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  a { color: var(--accent-light); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 48px 32px 40px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a2744 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .header h1 { font-size: 32px; margin-bottom: 8px; letter-spacing: -0.5px; color: #fff; }
+  .header .subtitle { font-size: 18px; color: var(--accent-light); margin-bottom: 16px; font-weight: 500; }
+  .header p { font-size: 15px; color: var(--text-muted); max-width: 700px; margin: 0 auto; }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid;
+    font-size: 14px;
+  }
+  .callout-feedback {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .callout-feedback h3 { color: var(--green); font-size: 16px; margin-bottom: 8px; }
+  .callout-warning {
+    background: var(--yellow-bg);
+    border-color: var(--yellow);
+  }
+  .callout-warning h3 { color: var(--yellow); font-size: 16px; margin-bottom: 8px; }
+  .callout-important {
+    background: var(--red-bg);
+    border-color: var(--red);
+  }
+  .callout-important h3 { color: var(--red); font-size: 16px; margin-bottom: 8px; }
+
+  /* Section */
+  .section { margin-top: 48px; }
+  .section-title {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .num {
+    background: var(--accent);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; margin-left: 42px; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card h3 { font-size: 17px; color: #fff; margin-bottom: 8px; }
+  .card p, .card li { font-size: 14px; color: var(--text); line-height: 1.65; }
+  .card ul { padding-left: 20px; margin-top: 8px; }
+  .card li { margin-bottom: 4px; }
+
+  /* Grid layouts */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+
+  /* Skill cards */
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    border-top: 3px solid var(--accent);
+  }
+  .skill-card h4 { font-size: 16px; color: var(--accent-light); margin-bottom: 4px; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .skill-card .when { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .skill-card p { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+  /* Confluence link cards */
+  .page-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .page-card h4 { font-size: 15px; color: #fff; }
+  .page-card .page-action { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .page-card a { font-size: 13px; }
+
+  /* Cadence table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--card);
+    color: var(--accent-light);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(59,130,246,0.04); }
+  .day-label { color: var(--accent-light); font-weight: 600; white-space: nowrap; }
+  code {
+    background: rgba(59,130,246,0.15);
+    color: var(--accent-light);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    padding: 12px 16px 12px 44px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+  }
+  .checklist .time { color: var(--text-muted); font-size: 12px; margin-left: 8px; }
+
+  /* Steps */
+  .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-row:last-child { border-bottom: none; }
+  .step-num {
+    background: var(--accent);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content h4 { font-size: 15px; color: #fff; margin-bottom: 4px; }
+  .step-content p { font-size: 14px; color: var(--text-muted); }
+
+  /* Tag badges */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-green { background: var(--green-bg); color: var(--green); }
+  .tag-yellow { background: var(--yellow-bg); color: var(--yellow); }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); }
+  .tag-orange { background: var(--orange-bg); color: var(--orange); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    margin-top: 56px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #1a1a2e; padding: 16px; }
+    .header { background: #1e3a5f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card, .skill-card, .page-card { background: #f8f9fa; border-color: #dee2e6; }
+    .section-title .num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: #2563eb; }
+    th { background: #e2e8f0 !important; color: #1e3a5f; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    td { color: #1a1a2e; }
+    .callout-feedback { background: #f0fdf4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .callout-warning { background: #fefce8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .callout-important { background: #fef2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    code { background: #e0e7ff; color: #3730a3; }
+    .step-num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Sarah's Operational Guide</h1>
+  <div class="subtitle">Bookmarked PM Infrastructure</div>
+  <p>Everything you need to operate the product management system starting Monday. This is your "what buttons to push, in what order" manual.</p>
+</div>
+
+<!-- FEEDBACK LOOP — most important, up front -->
+<div class="callout callout-feedback">
+  <h3>The Feedback Loop — How This System Gets Better</h3>
+  <p>This infrastructure was built in 3 days. It will not be perfect. That is by design. Your job is to <strong>use the system and tell Steve what feels wrong</strong>. Here is the loop:</p>
+  <ol style="margin-top: 10px; padding-left: 20px; line-height: 2;">
+    <li><strong>You notice something</strong> — a skill does not trigger right, output is confusing, a cadence feels off, data is missing</li>
+    <li><strong>You tell Steve</strong> — in your 1:1, Slack, or email. Just describe what happened and what you expected</li>
+    <li><strong>Steve brings it to Claude</strong> — he opens a thread and says "Sarah reported X, fix it"</li>
+    <li><strong>The system improves</strong> — next time you use it, the fix is live</li>
+  </ol>
+  <p style="margin-top: 10px;">You do <strong>not</strong> need to modify any skills, files, or configurations. You just use the system and report what you see. Your observations are the most valuable input.</p>
+</div>
+
+
+<!-- SECTION 1: FIRST WEEK CHECKLIST -->
+<div class="section">
+  <div class="section-title"><span class="num">1</span> First Week Checklist</div>
+  <p class="section-desc">Do these in order. Each one builds on the last. Budget ~2 hours total across the week.</p>
+
+  <div class="card">
+    <ul class="checklist">
+      <li>
+        <strong>Complete <code>/diagnostic</code></strong> <span class="time">~15 min</span><br>
+        <span style="color: var(--text-muted);">Open Claude Code, type <code>/diagnostic</code>, answer the questions. This calibrates every other skill to your actual workflow. Do this first.</span>
+      </li>
+      <li>
+        <strong>Review your Operating Page in Confluence</strong> <span class="time">~10 min</span><br>
+        <span style="color: var(--text-muted);">Read through your role definition, responsibilities, and decision boundaries. Is it accurate? Note anything that feels off.</span><br>
+        <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87818280" target="_blank">Open Sarah's Operating Page</a>
+      </li>
+      <li>
+        <strong>Review the Product Scorecard</strong> <span class="time">~10 min</span><br>
+        <span style="color: var(--text-muted);">Understand the 5 measurables you will review with Steve every week. Know what "green" looks like.</span><br>
+        <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87490581" target="_blank">Open Product Scorecard</a>
+      </li>
+      <li>
+        <strong>Create 1 ticket using <code>/jira</code></strong> <span class="time">~10 min</span><br>
+        <span style="color: var(--text-muted);">Pick any real piece of work. Open Claude Code, type <code>/jira</code>, describe what you need. See how the quality standards shape the output.</span>
+      </li>
+      <li>
+        <strong>Log 1 customer conversation using <code>/feedback</code></strong> <span class="time">~10 min</span><br>
+        <span style="color: var(--text-muted);">Think of your most recent customer call. Open Claude Code, type <code>/feedback</code>, walk through the prompts. See where it lands in Confluence.</span>
+      </li>
+      <li>
+        <strong>Attend 1:1 with Steve using the new structure</strong> <span class="time">30 min</span><br>
+        <span style="color: var(--text-muted);">Follow the 1:1 template: scorecard, rocks, IDS, customer debrief, cascading messages. Bring your first-week observations.</span><br>
+        <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87949332" target="_blank">Open 1:1 Structure</a>
+      </li>
+      <li>
+        <strong>Note 3 things that feel wrong or confusing</strong> <span class="time">ongoing</span><br>
+        <span style="color: var(--text-muted);">Write them down as you go. Bring them to Steve in your 1:1. These observations are the most valuable thing you can produce this week.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- SECTION 2: YOUR SKILLS TOOLKIT -->
+<div class="section">
+  <div class="section-title"><span class="num">2</span> Your Skills Toolkit</div>
+  <p class="section-desc">Six skills you will use regularly. All are accessed by typing the command in Claude Code.</p>
+
+  <div class="grid-3">
+    <div class="skill-card">
+      <h4>/diagnostic</h4>
+      <div class="when">Do this first &mdash; one time</div>
+      <p>15-minute questionnaire about your workflows, tools, and frustrations. Calibrates all other skills to how you actually work. Only needs to be done once (unless you want to re-run after major process changes).</p>
+    </div>
+
+    <div class="skill-card">
+      <h4>/jira</h4>
+      <div class="when">Every time you create a ticket</div>
+      <p>Describe what you need in plain language. Claude converts it into a properly structured Jira ticket with acceptance criteria, quality standards, and correct fields. <strong>Always use this instead of creating tickets directly in Jira.</strong></p>
+    </div>
+
+    <div class="skill-card">
+      <h4>/jira-standards</h4>
+      <div class="when">Before sprint entry</div>
+      <p>Validates that tickets are complete enough for engineering. This is the entry gate. Run it on any ticket before adding to a sprint. It will flag missing acceptance criteria, unclear scope, or incomplete requirements.</p>
+    </div>
+
+    <div class="skill-card">
+      <h4>/feedback</h4>
+      <div class="when">After customer conversations</div>
+      <p>Structured input for customer insights. Walk through prompts about what you heard, from whom, and what it means. Routes insights to the Customer Feedback log in Confluence automatically.</p>
+    </div>
+
+    <div class="skill-card">
+      <h4>/scrum-master</h4>
+      <div class="when">Sprint operations</div>
+      <p>Sprint planning prep, health monitoring, standup briefs, and retrospective data. Use it Monday for planning, daily for health checks, and at sprint close for the retrospective.</p>
+    </div>
+
+    <div class="skill-card">
+      <h4>/cpo</h4>
+      <div class="when">Product strategy questions</div>
+      <p>Coaching frameworks for discovery, prioritization, and product thinking. When you are unsure how to approach a product decision, this skill walks you through structured frameworks.</p>
+    </div>
+  </div>
+
+  <div class="callout callout-warning" style="margin-top: 20px;">
+    <h3>How to Use a Skill</h3>
+    <p>Open Claude Code on your computer. In the prompt, type the skill name (e.g., <code>/jira</code>) followed by what you need. Claude will guide you from there. You do not need to know any technical details &mdash; just describe what you want in plain language.</p>
+  </div>
+</div>
+
+
+<!-- SECTION 3: YOUR CONFLUENCE PAGES -->
+<div class="section">
+  <div class="section-title"><span class="num">3</span> Your Confluence Pages</div>
+  <p class="section-desc">Seven pages in the PROD space. Bookmark these &mdash; you will use them weekly.</p>
+
+  <div class="grid-2">
+    <div class="page-card">
+      <h4>Product Scorecard</h4>
+      <div class="page-action">Review the 5 measurables weekly before your 1:1 with Steve. Know which are green, yellow, or red and why.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87490581" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Sarah's Operating Page</h4>
+      <div class="page-action">Your role definition, responsibilities, decision boundaries, and escalation paths. This is your "job description, operationalized."</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87818280" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Weekly 1:1 Structure</h4>
+      <div class="page-action">The 30-minute format for your weekly 1:1 with Steve. Scorecard review, rock updates, IDS, customer debrief, cascading messages.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87949332" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Customer Feedback Log</h4>
+      <div class="page-action">Where customer conversation insights land after you use <code>/feedback</code>. Review before 1:1 to prep your customer debrief section.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/88047617" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Decisions Log</h4>
+      <div class="page-action">Record product decisions with context: what was decided, why, what alternatives were considered. Reference this when questions come up about past choices.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Sprint Reports</h4>
+      <div class="page-action">Auto-populated at sprint close. Review to understand velocity, carry-over, and completion patterns. Bring notable items to 1:1.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028" target="_blank">Open in Confluence</a>
+    </div>
+
+    <div class="page-card">
+      <h4>Patrick's QA Page</h4>
+      <div class="page-action">Patrick's measurables and UAT process. Understand how your tickets flow through QA. Coordinate with Patrick on acceptance criteria clarity.</div>
+      <a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87654692" target="_blank">Open in Confluence</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 4: WEEKLY CADENCE -->
+<div class="section">
+  <div class="section-title"><span class="num">4</span> Your Weekly Cadence</div>
+  <p class="section-desc">What you do, when you do it, and what tool to use.</p>
+
+  <div class="card" style="padding: 0; overflow: hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 140px;">When</th>
+          <th>What You Do</th>
+          <th style="width: 200px;">How</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="day-label">Monday</td>
+          <td><strong>Sprint Planning</strong><br>Review sprint prep from <code>/scrum-master</code>. Validate every ticket passes <code>/jira-standards</code> before it enters the sprint. No exceptions.</td>
+          <td><code>/scrum-master</code><br><code>/jira-standards</code></td>
+        </tr>
+        <tr>
+          <td class="day-label">Every Morning</td>
+          <td><strong>Sprint Health Check</strong><br>Read the morning standup brief. Know what is on track, what is blocked, and what needs your attention.</td>
+          <td><code>/scrum-master</code></td>
+        </tr>
+        <tr>
+          <td class="day-label">After Customer Calls</td>
+          <td><strong>Log Customer Insights</strong><br>Run <code>/feedback</code> with your notes from the conversation. Do this the same day while the conversation is fresh.</td>
+          <td><code>/feedback</code></td>
+        </tr>
+        <tr>
+          <td class="day-label">When Creating Work</td>
+          <td><strong>Create Tickets via Skill</strong><br>Never create tickets directly in Jira. Always use <code>/jira</code> so quality standards are enforced from the start.</td>
+          <td><code>/jira</code></td>
+        </tr>
+        <tr>
+          <td class="day-label">Thursday</td>
+          <td><strong>1:1 with Steve</strong><br>Follow the 1:1 structure: scorecard review (5 measurables), rock updates, IDS on blockers, customer debrief, cascading messages to team.</td>
+          <td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87949332" target="_blank">1:1 Structure</a></td>
+        </tr>
+        <tr>
+          <td class="day-label">Sprint Close</td>
+          <td><strong>Review Sprint Results</strong><br>Read the auto-generated sprint report. Note carry-over items and why they carried. Bring patterns to the next planning session.</td>
+          <td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028" target="_blank">Sprint Reports</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- SECTION 5: HOW THE PIECES FIT TOGETHER -->
+<div class="section">
+  <div class="section-title"><span class="num">5</span> How the Pieces Fit Together</div>
+  <p class="section-desc">The system has a flow. Here is how work moves through it.</p>
+
+  <div class="card">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>You hear something from a customer or identify a need</h4>
+        <p>A customer call, a support ticket, a pattern you notice, a feature request. This is the raw input.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Log it with <code>/feedback</code></h4>
+        <p>Capture the insight while it is fresh. Claude structures it and routes it to the Customer Feedback log in Confluence. This builds your evidence base.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Turn it into work with <code>/jira</code></h4>
+        <p>When insight becomes action, describe what you need. Claude creates a properly structured ticket with acceptance criteria and quality standards baked in.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Gate it with <code>/jira-standards</code></h4>
+        <p>Before the ticket enters a sprint, validate it meets the quality bar. This prevents half-baked work from reaching engineering.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Plan the sprint with <code>/scrum-master</code></h4>
+        <p>Monday sprint planning. The skill preps capacity, priorities, and dependencies. You validate and commit.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Monitor and report in your 1:1</h4>
+        <p>Thursday 1:1 with Steve. Review the scorecard (5 measurables), discuss rocks, IDS blockers, share customer insights, and align on cascading messages for the team.</p>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <h4>Close and learn at sprint end</h4>
+        <p>Sprint report auto-generates. Review carry-over, note patterns, feed lessons into the next cycle. Record key decisions in the Decisions Log.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 6: WHAT YOU OWN VS. WHAT STEVE OWNS -->
+<div class="section">
+  <div class="section-title"><span class="num">6</span> What You Own vs. What Steve Owns</div>
+  <p class="section-desc">Clear boundaries so you know where to act independently and where to escalate.</p>
+
+  <div class="grid-2">
+    <div class="card" style="border-top: 3px solid var(--accent);">
+      <h3>Sarah Owns</h3>
+      <ul>
+        <li>Sprint planning and execution</li>
+        <li>Ticket quality (using <code>/jira</code> and <code>/jira-standards</code>)</li>
+        <li>Customer feedback capture and logging</li>
+        <li>Daily sprint health monitoring</li>
+        <li>Coordinating with Patrick on QA/UAT</li>
+        <li>Preparing for and driving the 1:1 agenda</li>
+        <li>Flagging blockers and risks early</li>
+      </ul>
+    </div>
+
+    <div class="card" style="border-top: 3px solid var(--orange);">
+      <h3>Steve Owns</h3>
+      <ul>
+        <li>Product strategy and prioritization decisions</li>
+        <li>Modifying any skills, agents, or system files</li>
+        <li>Brand standards and messaging</li>
+        <li>Scorecard target-setting</li>
+        <li>Escalation resolution</li>
+        <li>System configuration and infrastructure changes</li>
+        <li>Hiring, partnerships, and external commitments</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-important" style="margin-top: 16px;">
+    <h3>Important Boundary</h3>
+    <p>If you ask Claude to change how a skill works, modify system files, or adjust agent behavior, Claude will say: <em>"That's a change that needs Steve's approval. I'll flag it for him."</em> This is intentional. You can use everything freely &mdash; you just cannot change the system itself. Tell Steve what you want changed and he will handle it.</p>
+  </div>
+</div>
+
+
+<!-- SECTION 7: QUICK REFERENCE -->
+<div class="section">
+  <div class="section-title"><span class="num">7</span> Quick Reference</div>
+  <p class="section-desc">Copy-paste commands and links for daily use.</p>
+
+  <div class="card">
+    <h3>Skill Commands</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>What It Does</th>
+          <th>When</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/diagnostic</code></td><td>Calibration questionnaire</td><td>Once (first thing)</td></tr>
+        <tr><td><code>/jira</code></td><td>Create quality tickets</td><td>Every ticket</td></tr>
+        <tr><td><code>/jira-standards</code></td><td>Validate ticket readiness</td><td>Before sprint entry</td></tr>
+        <tr><td><code>/feedback</code></td><td>Log customer insights</td><td>After customer calls</td></tr>
+        <tr><td><code>/scrum-master</code></td><td>Sprint operations</td><td>Planning, daily, close</td></tr>
+        <tr><td><code>/cpo</code></td><td>Product strategy coaching</td><td>When facing product decisions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <h3>Confluence Quick Links</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Page</th>
+          <th>Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87490581" target="_blank">Product Scorecard</a></td><td>Weekly measurables review</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87818280" target="_blank">Sarah's Operating Page</a></td><td>Role definition and boundaries</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87949332" target="_blank">1:1 Structure</a></td><td>Thursday meeting format</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/88047617" target="_blank">Customer Feedback</a></td><td>Insight log from /feedback</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028" target="_blank">Decisions Log</a></td><td>Product decision records</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87851028" target="_blank">Sprint Reports</a></td><td>Auto-generated sprint summaries</td></tr>
+        <tr><td><a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/87654692" target="_blank">Patrick's QA Page</a></td><td>QA process and UAT standards</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- SECTION 8: FAQ -->
+<div class="section">
+  <div class="section-title"><span class="num">8</span> Common Questions</div>
+  <p class="section-desc">Things you will probably wonder in your first two weeks.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>What if a skill gives me bad output?</h3>
+      <p>Tell Steve. Describe what you typed, what you got, and what you expected. He will fix it — usually within the same day.</p>
+    </div>
+    <div class="card">
+      <h3>Can I create tickets directly in Jira?</h3>
+      <p>You can, but you should not. The <code>/jira</code> skill enforces quality standards that catch gaps before engineering sees them. Use the skill.</p>
+    </div>
+    <div class="card">
+      <h3>What if I do not have Claude Code set up?</h3>
+      <p>Tell Steve immediately. You cannot use any skills without it. Setup takes about 15 minutes with the onboarding guide.</p>
+    </div>
+    <div class="card">
+      <h3>Do I need to update Confluence pages manually?</h3>
+      <p>Most pages auto-populate through skills. The exceptions: your Operating Page (review for accuracy) and the Decisions Log (you add context after decisions are made).</p>
+    </div>
+    <div class="card">
+      <h3>What is the difference between this guide and the playbook?</h3>
+      <p>The playbook (already shared) explains the "why" — product thinking, frameworks, your role in the cascade. This guide is the "how" — what to click, when to click it, in what order.</p>
+    </div>
+    <div class="card">
+      <h3>What if I disagree with how something works?</h3>
+      <p>Good. That means you are paying attention. Write it down, bring it to your 1:1. The system is built to evolve based on your input.</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  Bookmarked PM Infrastructure &mdash; Operational Guide for Sarah El Massry &mdash; March 2026<br>
+  <span style="opacity: 0.7;">This is a living document. Feedback drives improvements.</span>
+</div>
+
+</body>
+</html>

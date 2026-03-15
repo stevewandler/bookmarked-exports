@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Intelligence — March 08, 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --green-dark: #1B4332;
+    --green-mid: #2D6A4F;
+    --green-light: #52B788;
+    --green-pale: #D8F3DC;
+    --bg: #FAFDF7;
+    --card-bg: #FFFFFF;
+    --text: #1a1a2e;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 32px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    border-radius: 16px;
+    color: white;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 15px;
+    opacity: 0.85;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green-mid);
+  }
+  .kpi-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--green-dark);
+  }
+  .chart-container {
+    position: relative;
+    height: 280px;
+  }
+  .insight-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+  .insight-category {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .insight-text {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .insight-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .insight-action {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--green-mid);
+  }
+  .skill-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: monospace;
+    margin: 3px;
+  }
+  .skill-tag.used {
+    background: var(--green-pale);
+    color: var(--green-dark);
+    border: 1px solid var(--green-light);
+  }
+  .skill-tag.unused {
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #F59E0B;
+  }
+  .trend-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .trend-label { color: var(--text-muted); }
+  .trend-value { font-weight: 600; }
+  .trend-delta { font-weight: 700; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--green-pale);
+    color: var(--green-dark);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 16px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    body { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Workflow Intelligence</h1>
+  <div class="subtitle">
+    March 08 – March 15, 2026 &middot; Bookmarked CEO Operating System
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-value">309</div>
+    <div class="kpi-label">Total Tool Calls</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">25</div>
+    <div class="kpi-label">Sessions</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">40%</div>
+    <div class="kpi-label">Skill Coverage</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">96.8%</div>
+    <div class="kpi-label">Reliability</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">12</div>
+    <div class="kpi-label">Avg Tools/Session</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-value">10:00</div>
+    <div class="kpi-label">Peak Hour (CT)</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Usage by Category</h2>
+    <div class="chart-container">
+      <canvas id="categoryChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Usage by Hour (CT)</h2>
+    <div class="chart-container">
+      <canvas id="hourChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Top Skills</h2>
+    <div class="chart-container">
+      <canvas id="skillChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>MCP Services</h2>
+    <div class="chart-container">
+      <canvas id="mcpChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Usage by Day</h2>
+    <div class="chart-container">
+      <canvas id="dayChart"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Service Reliability</h2>
+    <div class="chart-container">
+      <canvas id="reliabilityChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Optimization Opportunities</h2>
+    
+        <div class="insight-card" style="border-left: 4px solid #457B9D;">
+            <div class="insight-category" style="color: #457B9D;">Skill Gap</div>
+            <div class="insight-text">21 of 35 installed skills had zero usage this week.</div>
+            <div class="insight-detail">Unused: cmo, collateral, compliance, customer-onboarding, diagnostic...</div>
+            <div class="insight-action">Consider if these skills are still needed, or if team awareness is the gap.</div>
+        </div>
+        <div class="insight-card" style="border-left: 4px solid #E9C46A;">
+            <div class="insight-category" style="color: #E9C46A;">Skill Coverage</div>
+            <div class="insight-text">Only 40% of installed skills were used this week.</div>
+            <div class="insight-detail">Many skills may be stale or misaligned with current workflows.</div>
+            <div class="insight-action">Audit skill inventory — archive or deprecate skills that haven't been used in 4+ weeks.</div>
+        </div>
+        <div class="insight-card" style="border-left: 4px solid #E9C46A;">
+            <div class="insight-category" style="color: #E9C46A;">Reliability</div>
+            <div class="insight-text">Tool failure rate is 3.2% — above 2% threshold.</div>
+            <div class="insight-detail">10 failures out of 309 calls.</div>
+            <div class="insight-action">Review error logs for patterns. May indicate rate limiting or auth drift.</div>
+        </div>
+        <div class="insight-card" style="border-left: 4px solid #457B9D;">
+            <div class="insight-category" style="color: #457B9D;">Efficiency</div>
+            <div class="insight-text">gws 'list' calls (39) are 4x more than 'get' calls (11).</div>
+            <div class="insight-detail">Listing without reading suggests scanning behavior — briefings may be listing without drilling in.</div>
+            <div class="insight-action">Consider caching list results or batching read operations.</div>
+        </div>
+  </div>
+  <div class="card">
+    <h2>Skill Coverage</h2>
+    <p style="margin-bottom: 12px; font-size: 14px;"><strong>Used this week:</strong></p>
+    <div style="margin-bottom: 16px;"><span class="skill-tag used">/chief-of-staff <small>(14)</small></span><span class="skill-tag used">/hubspot <small>(7)</small></span><span class="skill-tag used">/email <small>(6)</small></span><span class="skill-tag used">/jira <small>(5)</small></span><span class="skill-tag used">/calendar <small>(4)</small></span><span class="skill-tag used">/analyst <small>(3)</small></span><span class="skill-tag used">/slack:summarize-channel <small>(3)</small></span><span class="skill-tag used">/cpo <small>(3)</small></span><span class="skill-tag used">/feedback <small>(2)</small></span><span class="skill-tag used">/test <small>(2)</small></span><span class="skill-tag used">/social-post <small>(1)</small></span><span class="skill-tag used">/brand <small>(1)</small></span><span class="skill-tag used">/customer-success <small>(1)</small></span><span class="skill-tag used">/files <small>(1)</small></span><span class="skill-tag used">/writer <small>(1)</small></span></div>
+    <p style="margin-bottom: 12px; font-size: 14px;"><strong>Not used this week:</strong></p>
+    <div><span class="skill-tag unused">/cmo</span><span class="skill-tag unused">/collateral</span><span class="skill-tag unused">/compliance</span><span class="skill-tag unused">/customer-onboarding</span><span class="skill-tag unused">/diagnostic</span><span class="skill-tag unused">/founder-narrative</span><span class="skill-tag unused">/google-workspace</span><span class="skill-tag unused">/graphic-designer</span><span class="skill-tag unused">/hubspot-web-designer</span><span class="skill-tag unused">/jira-standards</span><span class="skill-tag unused">/library-data</span><span class="skill-tag unused">/marketing-coord</span><span class="skill-tag unused">/nate</span><span class="skill-tag unused">/onboarding-team</span><span class="skill-tag unused">/resume</span></div>
+  </div>
+</div>
+
+
+
+<div class="card" style="margin-bottom: 32px;">
+  <h2>Integration Reliability Detail</h2>
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Calls</th><th>Errors</th><th>Reliability</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>atlassian</td><td>52</td><td>1</td><td>⚠️ 98.1%</td></tr><tr><td>bash</td><td>41</td><td>1</td><td>⚠️ 97.6%</td></tr><tr><td>slack</td><td>30</td><td>1</td><td>⚠️ 96.7%</td></tr><tr><td>calendar</td><td>21</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>gh</td><td>21</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>gmail</td><td>19</td><td>1</td><td>❌ 94.7%</td></tr><tr><td>hubspot</td><td>19</td><td>1</td><td>❌ 94.7%</td></tr><tr><td>chief-of-staff</td><td>14</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>tasks</td><td>12</td><td>1</td><td>❌ 91.7%</td></tr><tr><td>drive</td><td>7</td><td>1</td><td>❌ 85.7%</td></tr><tr><td>Explore</td><td>7</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>email</td><td>6</td><td>1</td><td>❌ 83.3%</td></tr><tr><td>api.postiz.com</td><td>5</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>jira</td><td>5</td><td>0</td><td>✅ 100.0%</td></tr><tr><td>PowerPoint</td><td>4</td><td>0</td><td>✅ 100.0%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  Generated by Bookmarked CEO Operating System &middot; Claude Code Usage Analytics &middot; 2026-03-15 12:42 CT
+</div>
+
+<script>
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+  },
+};
+
+const greenGradient = ['#1B4332', '#2D6A4F', '#40916C', '#52B788', '#74C69D', '#95D5B2', '#B7E4C7', '#D8F3DC'];
+
+// Category donut
+new Chart(document.getElementById('categoryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ["mcp", "gws", "skill", "bash", "gh", "agent", "curl"],
+    datasets: [{ data: [109, 58, 54, 41, 21, 17, 9], backgroundColor: ["#2D6A4F", "#40916C", "#52B788", "#74C69D", "#95D5B2", "#B7E4C7", "#D8F3DC"], borderWidth: 0 }]
+  },
+  options: {
+    ...chartDefaults,
+    cutout: '55%',
+    plugins: {
+      legend: { display: true, position: 'right', labels: { font: { size: 12 }, padding: 12 } },
+    },
+  }
+});
+
+// Hour bar
+new Chart(document.getElementById('hourChart'), {
+  type: 'bar',
+  data: {
+    labels: ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"],
+    datasets: [{ data: [11, 17, 27, 72, 24, 17, 25, 25, 27, 16, 11, 6, 6, 8, 12, 5], backgroundColor: '#52B788', borderRadius: 4 }]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Skills horizontal bar
+new Chart(document.getElementById('skillChart'), {
+  type: 'bar',
+  data: {
+    labels: ["chief-of-staff", "hubspot", "email", "jira", "calendar", "analyst", "slack:summarize-channel", "cpo", "feedback", "test"],
+    datasets: [{ data: [14, 7, 6, 5, 4, 3, 3, 3, 2, 2], backgroundColor: '#2D6A4F', borderRadius: 4 }]
+  },
+  options: {
+    ...chartDefaults,
+    indexAxis: 'y',
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// MCP services horizontal bar
+new Chart(document.getElementById('mcpChart'), {
+  type: 'bar',
+  data: {
+    labels: ["atlassian", "slack", "hubspot", "PowerPoint", "plugin_playwright_playwright", "plaud", "Jam", "Desktop_Commander"],
+    datasets: [{ data: [52, 30, 12, 4, 3, 3, 2, 2], backgroundColor: '#40916C', borderRadius: 4 }]
+  },
+  options: {
+    ...chartDefaults,
+    indexAxis: 'y',
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Day bar
+new Chart(document.getElementById('dayChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    datasets: [{ data: [42, 71, 57, 37, 41, 12, 49], backgroundColor: '#74C69D', borderRadius: 4 }]
+  },
+  options: {
+    ...chartDefaults,
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Reliability bar
+new Chart(document.getElementById('reliabilityChart'), {
+  type: 'bar',
+  data: {
+    labels: ["atlassian", "bash", "slack", "calendar", "gh", "gmail", "hubspot", "chief-of-staff", "tasks", "drive", "Explore", "email"],
+    datasets: [{ data: [98.1, 97.6, 96.7, 100.0, 100.0, 94.7, 94.7, 100.0, 91.7, 85.7, 100.0, 83.3], backgroundColor: ["#E9C46A", "#E9C46A", "#E9C46A", "#2D6A4F", "#2D6A4F", "#E76F51", "#E76F51", "#2D6A4F", "#E76F51", "#E76F51", "#2D6A4F", "#E76F51"], borderRadius: 4 }]
+  },
+  options: {
+    ...chartDefaults,
+    indexAxis: 'y',
+    scales: {
+      x: { min: 80, max: 100, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Briefing Prototype — March 15, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --eigengrau: #101828;
+  --sea-green: #15B79E;
+  --deep-green: #107569;
+  --pumpkin: #FF692E;
+  --white: #FFFFFF;
+  --muted: #9CA3AF;
+  --card: #1F2937;
+  --card-hover: #283548;
+  --border: #374151;
+  --surface-dim: #0D1117;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Urbanist', sans-serif;
+  background: var(--eigengrau);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--eigengrau) 0%, #0f2320 50%, var(--eigengrau) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 40px;
+}
+.hero .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sea-green);
+  margin-bottom: 8px;
+}
+.hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+.hero .date { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+.hero .subtitle { color: var(--muted); font-size: 16px; max-width: 700px; }
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-number { font-size: 32px; font-weight: 800; color: var(--sea-green); }
+.stat-number.warn { color: var(--pumpkin); }
+.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Section Headers */
+.section-header {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 40px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Email Items */
+.email-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.email-item:hover { border-color: var(--sea-green); }
+.email-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.email-from { font-size: 15px; font-weight: 600; }
+.email-time { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+.email-subject { font-size: 13px; color: var(--sea-green); font-weight: 600; margin-bottom: 4px; }
+.email-preview { font-size: 13px; color: var(--muted); }
+.email-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+.badge-action { background: rgba(21, 183, 158, 0.15); color: var(--sea-green); }
+.badge-fyi { background: rgba(156, 163, 175, 0.15); color: var(--muted); }
+
+/* Task Items */
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.priority-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+.priority-p1 { background: var(--pumpkin); }
+.priority-p2 { background: var(--sea-green); }
+.priority-p3 { background: var(--muted); }
+.task-content { flex: 1; }
+.task-title { font-size: 14px; font-weight: 600; }
+.task-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Calendar */
+.cal-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.cal-time { font-size: 14px; font-weight: 700; color: var(--sea-green); }
+.cal-title { font-size: 15px; font-weight: 600; }
+.cal-meta { font-size: 12px; color: var(--muted); }
+.cal-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-team { background: rgba(21, 183, 158, 0.15); color: var(--sea-green); }
+
+/* Publisher Cards */
+.publisher-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.publisher-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.publisher-name { font-size: 17px; font-weight: 700; }
+.health-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.health-green { background: rgba(21, 183, 158, 0.15); color: var(--sea-green); }
+.health-yellow { background: rgba(255, 105, 46, 0.15); color: var(--pumpkin); }
+.health-red { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+.publisher-detail { font-size: 13px; color: var(--muted); }
+.publisher-stage { font-size: 12px; color: var(--sea-green); font-weight: 600; margin-top: 4px; }
+
+/* Product Pulse */
+.pulse-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 12px;
+}
+.pulse-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+.pulse-bar-fill {
+  height: 100%;
+  background: var(--sea-green);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.pulse-stats {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.pulse-stats strong { color: var(--white); }
+.pulse-risk {
+  font-size: 13px;
+  color: var(--pumpkin);
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 105, 46, 0.08);
+  border-radius: 8px;
+}
+
+/* One Thing */
+.one-thing {
+  background: linear-gradient(135deg, var(--deep-green) 0%, var(--eigengrau) 100%);
+  border: 1px solid var(--sea-green);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+}
+.one-thing .label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--sea-green);
+  margin-bottom: 8px;
+}
+.one-thing .statement { font-size: 20px; font-weight: 700; }
+.one-thing .first-step { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+/* === Interactive Action Buttons === */
+.action-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.action-btn:hover {
+  background: var(--card-hover);
+  color: var(--white);
+  border-color: var(--sea-green);
+}
+.action-btn:active {
+  transform: scale(0.97);
+}
+.action-btn.copied {
+  background: rgba(21, 183, 158, 0.15);
+  border-color: var(--sea-green);
+  color: var(--sea-green);
+}
+.action-btn .icon {
+  font-size: 14px;
+  line-height: 1;
+}
+.action-btn.primary {
+  border-color: var(--sea-green);
+  color: var(--sea-green);
+}
+.action-btn.primary:hover {
+  background: rgba(21, 183, 158, 0.15);
+  color: var(--sea-green);
+}
+.action-btn.warn {
+  border-color: var(--pumpkin);
+  color: var(--pumpkin);
+}
+.action-btn.warn:hover {
+  background: rgba(255, 105, 46, 0.15);
+  color: var(--pumpkin);
+}
+
+/* Toast notification */
+.action-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--card);
+  border: 1px solid var(--sea-green);
+  border-radius: 12px;
+  padding: 14px 20px;
+  color: var(--white);
+  font-family: 'Urbanist', sans-serif;
+  font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  max-width: 420px;
+}
+.action-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.action-toast .toast-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--sea-green);
+  margin-bottom: 4px;
+}
+.action-toast .toast-command {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  word-break: break-all;
+  max-height: 60px;
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .cal-item { grid-template-columns: 60px 1fr; }
+  .cal-badge { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="eyebrow">Interactive Briefing</div>
+    <h1>Good Morning, Steve</h1>
+    <div class="date">Saturday, March 15, 2026</div>
+    <div class="subtitle">Your briefing is now interactive. Click any action button to copy a Claude Code command, then paste it in your terminal.</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">4.5</div>
+      <div class="stat-label">Unblocked Hours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number warn">7</div>
+      <div class="stat-label">Emails Need Action</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Meetings Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Open Tasks</div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <h2 class="section-header">Today's Calendar</h2>
+  <div class="cal-item">
+    <div class="cal-time">9:30 AM</div>
+    <div>
+      <div class="cal-title">1:1 with Sarah El Massry</div>
+      <div class="cal-meta">Product sync — Sprint review + scorecard</div>
+      <div class="action-row">
+        <button class="action-btn primary" data-action="Run people prep for Sarah El Massry. Pull email, tasks, Plaud, and calendar context for our 9:30am 1:1.">
+          <span class="icon">&#128100;</span> Prep
+        </button>
+      </div>
+    </div>
+    <span class="cal-badge badge-team">Team</span>
+  </div>
+  <div class="cal-item">
+    <div class="cal-time">11:00 AM</div>
+    <div>
+      <div class="cal-title">Publisher Strategy with Natasha</div>
+      <div class="cal-meta">Saddleback MOU status + Brave next steps</div>
+      <div class="action-row">
+        <button class="action-btn primary" data-action="Run people prep for Natasha Flanders. Include publisher pipeline snapshot, pending decisions, and Red status publishers.">
+          <span class="icon">&#128100;</span> Prep
+        </button>
+        <button class="action-btn" data-action="Show me the latest publisher intelligence report. Run a publisher deep-dive for Saddleback and Brave Books.">
+          <span class="icon">&#128200;</span> Publisher Intel
+        </button>
+      </div>
+    </div>
+    <span class="cal-badge badge-team">Team</span>
+  </div>
+  <div class="cal-item">
+    <div class="cal-time">3:00 PM</div>
+    <div>
+      <div class="cal-title">Deep Work Block</div>
+      <div class="cal-meta">Protected peak window</div>
+    </div>
+  </div>
+
+  <!-- INBOX -->
+  <h2 class="section-header">Inbox — 7 Need Attention</h2>
+
+  <div class="email-item">
+    <div class="email-header">
+      <div class="email-from">Sarah El Massry <span class="email-badge badge-action">Action</span></div>
+      <div class="email-time">8:42 AM</div>
+    </div>
+    <div class="email-subject">Sprint 14 blockers — need your call on scope</div>
+    <div class="email-preview">Hey Steve, we have 3 tickets that might need to slip. Can you review the list and decide which ones we keep vs. push to next sprint?</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Reply to the email from Sarah El Massry about 'Sprint 14 blockers — need your call on scope'. Draft a response reviewing the 3 tickets she mentioned and giving a scope decision. Show me before sending.">
+        <span class="icon">&#9993;</span> Reply
+      </button>
+      <button class="action-btn" data-action="Create a Google Task: Review Sprint 14 scope decisions with Sarah. Due today. Priority high.">
+        <span class="icon">&#128197;</span> Defer
+      </button>
+      <button class="action-btn" data-action="Archive the email from Sarah El Massry about 'Sprint 14 blockers'. Remove from inbox.">
+        <span class="icon">&#128230;</span> Archive
+      </button>
+    </div>
+  </div>
+
+  <div class="email-item">
+    <div class="email-header">
+      <div class="email-from">Patrick Reid <span class="email-badge badge-action">Action</span></div>
+      <div class="email-time">Yesterday</div>
+    </div>
+    <div class="email-subject">UAT results for BOOK-841 — 2 issues found</div>
+    <div class="email-preview">Testing complete for the new review workflow. Found 2 issues: (1) bulk approve doesn't refresh the list, (2) export button 404s on staging.</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Reply to the email from Patrick Reid about 'UAT results for BOOK-841'. Acknowledge the 2 issues, ask him to file Jira bugs for both. Show me before sending.">
+        <span class="icon">&#9993;</span> Reply
+      </button>
+      <button class="action-btn" data-action="Create 2 Jira tickets in project BOOK: (1) 'Bulk approve does not refresh review list' type Bug, (2) 'Export button returns 404 on staging' type Bug. Both linked to BOOK-841.">
+        <span class="icon">&#9881;</span> File Bugs
+      </button>
+    </div>
+  </div>
+
+  <div class="email-item">
+    <div class="email-header">
+      <div class="email-from">Cooper Bell (Brave Books) <span class="email-badge badge-action">Action</span></div>
+      <div class="email-time">Yesterday</div>
+    </div>
+    <div class="email-subject">Re: Catalog integration timeline</div>
+    <div class="email-preview">Steve, thanks for the call. Can you send over the technical requirements doc we discussed? Want to get our team started on the data feed.</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Draft an email to Cooper Bell at cooper@brave.us about the Brave Books catalog integration. Include the technical requirements for the data feed. Reference our recent call. Show me before sending.">
+        <span class="icon">&#9993;</span> Reply
+      </button>
+      <button class="action-btn" data-action="Create a Google Task: Send Brave Books technical requirements doc to Cooper Bell. Tag [PROMISE:Cooper]. Due today.">
+        <span class="icon">&#128197;</span> Task
+      </button>
+      <button class="action-btn" data-action="Send a Slack message to Natasha Flanders: 'Cooper from Brave is asking for the tech requirements doc. Can you pull the latest version from Confluence and send it to him at cooper@brave.us?'">
+        <span class="icon">&#128172;</span> Delegate to Natasha
+      </button>
+    </div>
+  </div>
+
+  <div class="email-item">
+    <div class="email-header">
+      <div class="email-from">Jan Gilboy <span class="email-badge badge-action">Action</span></div>
+      <div class="email-time">Yesterday</div>
+    </div>
+    <div class="email-subject">AWS access setup — need your approval</div>
+    <div class="email-preview">Steve, I need ReadOnlyAccess to the prod account (694769042901) to investigate the Killeen usage data. Can you approve?</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Reply to Jan Gilboy's email about 'AWS access setup'. Approve the ReadOnlyAccess request for account 694769042901. Ask him to follow the IAM setup process in Confluence. Show me before sending.">
+        <span class="icon">&#9993;</span> Approve
+      </button>
+      <button class="action-btn" data-action="Archive the email from Jan Gilboy about 'AWS access setup'. Remove from inbox.">
+        <span class="icon">&#128230;</span> Archive
+      </button>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <h2 class="section-header">Tasks — Overdue + Due Today</h2>
+
+  <div class="task-item">
+    <div class="priority-dot priority-p1"></div>
+    <div class="task-content">
+      <div class="task-title">Follow up with Temple ISD on renewal</div>
+      <div class="task-detail">Due: March 13 (overdue) &middot; Rock: Revenue</div>
+      <div class="action-row">
+        <button class="action-btn primary" data-action="Draft an email to the Temple ISD contact about their Bookmarked renewal. Check HubSpot for their deal stage and contact info first. Show me before sending.">
+          <span class="icon">&#9993;</span> Send Follow-up
+        </button>
+        <button class="action-btn" data-action="Mark Google Task 'Follow up with Temple ISD on renewal' as completed (tasklist: MDUwNjEwNTg3NjQzNjg0MzE0OTc6MDow).">
+          <span class="icon">&#10003;</span> Done
+        </button>
+        <button class="action-btn" data-action="Snooze Google Task 'Follow up with Temple ISD on renewal' to Monday March 17 (tasklist: MDUwNjEwNTg3NjQzNjg0MzE0OTc6MDow).">
+          <span class="icon">&#9200;</span> Monday
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-item">
+    <div class="priority-dot priority-p2"></div>
+    <div class="task-content">
+      <div class="task-title">Review Sarah's PM infrastructure proposal</div>
+      <div class="task-detail">Due: Today &middot; Rock: Product</div>
+      <div class="action-row">
+        <button class="action-btn primary" data-action="Pull up Sarah's PM infrastructure proposal. Check Confluence and recent Slack messages for the latest version. Summarize the key decisions I need to make.">
+          <span class="icon">&#128065;</span> Review
+        </button>
+        <button class="action-btn" data-action="Mark Google Task 'Review Sarah PM infrastructure proposal' as completed (tasklist: MDUwNjEwNTg3NjQzNjg0MzE0OTc6MDow).">
+          <span class="icon">&#10003;</span> Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-item">
+    <div class="priority-dot priority-p2"></div>
+    <div class="task-content">
+      <div class="task-title">[PROMISE:Natasha] Send Saddleback MOU redlines</div>
+      <div class="task-detail">Due: Today &middot; Rock: Publishers</div>
+      <div class="action-row">
+        <button class="action-btn primary" data-action="Find the Saddleback MOU document in Google Drive. Check for the latest redlined version. Draft an email to Tim McHugh at Saddleback with the document attached. Show me before sending.">
+          <span class="icon">&#9993;</span> Send MOU
+        </button>
+        <button class="action-btn" data-action="Mark Google Task '[PROMISE:Natasha] Send Saddleback MOU redlines' as completed (tasklist: MDUwNjEwNTg3NjQzNjg0MzE0OTc6MDow).">
+          <span class="icon">&#10003;</span> Done
+        </button>
+        <button class="action-btn warn" data-action="Delete Google Task '[PROMISE:Natasha] Send Saddleback MOU redlines' (tasklist: MDUwNjEwNTg3NjQzNjg0MzE0OTc6MDow).">
+          <span class="icon">&#10005;</span> Kill
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLISHERS -->
+  <h2 class="section-header">Publishers — 2 Need Attention</h2>
+
+  <div class="publisher-card">
+    <div class="publisher-header">
+      <div class="publisher-name">Saddleback</div>
+      <span class="health-badge health-yellow">Yellow</span>
+    </div>
+    <div class="publisher-detail">MOU redlines pending from Steve for 5 days. Tim McHugh waiting on response.</div>
+    <div class="publisher-stage">Stage: MOU Drafting</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Draft an email to Tim McHugh at Saddleback about the MOU. Include our latest redlines. Reference the NDA already signed. Show me before sending.">
+        <span class="icon">&#9993;</span> Email Tim
+      </button>
+      <button class="action-btn" data-action="Run a publisher deep-dive for Saddleback. Pull all Slack, email, calendar, and Plaud context from the last 14 days.">
+        <span class="icon">&#128200;</span> Deep Dive
+      </button>
+      <button class="action-btn" data-action="Send a Slack message to Natasha Flanders: 'What's the latest on Saddleback MOU? I need to get Tim the redlines today.'">
+        <span class="icon">&#128172;</span> Ask Natasha
+      </button>
+    </div>
+  </div>
+
+  <div class="publisher-card">
+    <div class="publisher-header">
+      <div class="publisher-name">Brave Books</div>
+      <span class="health-badge health-green">Green</span>
+    </div>
+    <div class="publisher-detail">Cooper Bell requesting technical requirements for catalog data feed. Active engagement.</div>
+    <div class="publisher-stage">Stage: Active Conversations</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Draft an email to Cooper Bell at cooper@brave.us with Brave Books catalog integration technical requirements. Show me before sending.">
+        <span class="icon">&#9993;</span> Email Cooper
+      </button>
+      <button class="action-btn" data-action="Create a Google Task: Schedule call with Cooper Bell to walk through technical requirements. Due March 18.">
+        <span class="icon">&#128197;</span> Schedule Call
+      </button>
+    </div>
+  </div>
+
+  <!-- PRODUCT PULSE -->
+  <h2 class="section-header">Product Pulse — Sprint 14</h2>
+
+  <div class="pulse-card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="font-size: 17px; font-weight: 700;">Sprint 14 Progress</div>
+      <div style="font-size: 24px; font-weight: 800; color: var(--sea-green);">62%</div>
+    </div>
+    <div class="pulse-bar-track">
+      <div class="pulse-bar-fill" style="width: 62%;"></div>
+    </div>
+    <div class="pulse-stats">
+      <span><strong>8</strong> / 13 tickets done</span>
+      <span><strong>2</strong> blocked</span>
+      <span><strong>3</strong> unassigned</span>
+    </div>
+    <div class="pulse-risk">Risk: 3 unassigned tickets with 2 days left in sprint — no accountability on remaining work</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Show me the 3 unassigned tickets in Sprint 14. Pull from Jira board 1, active sprint. List ticket keys, summaries, and suggest assignees.">
+        <span class="icon">&#9881;</span> Show Unassigned
+      </button>
+      <button class="action-btn" data-action="Show me the 2 blocked tickets in Sprint 14. Pull from Jira board 1 with status Blocked. Show what's blocking each.">
+        <span class="icon">&#128683;</span> Show Blocked
+      </button>
+      <button class="action-btn" data-action="Send a Slack message to Sarah El Massry: 'Sprint 14 has 3 unassigned tickets with 2 days left. Can you assign owners today?'">
+        <span class="icon">&#128172;</span> Ping Sarah
+      </button>
+    </div>
+  </div>
+
+  <!-- ONE THING -->
+  <div class="one-thing">
+    <div class="label">If You Do Nothing Else Today</div>
+    <div class="statement">Send the Saddleback MOU redlines to Tim McHugh</div>
+    <div class="first-step">First step: Find the MOU doc in Drive, review the redlines, and email Tim.</div>
+    <div class="action-row">
+      <button class="action-btn primary" data-action="Find the Saddleback MOU document in Google Drive. Review the latest redlines. Draft an email to Tim McHugh with the document. Show me before sending.">
+        <span class="icon">&#9993;</span> Do It Now
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Interactive Briefing Prototype v1.0 &middot; March 15, 2026<br>
+    Phase 1: Clipboard Bridge &middot; Click any button, paste in Claude Code<br>
+    <span style="color: var(--sea-green);">Bookmarked CEO Operating System</span>
+  </div>
+
+</div>
+
+<!-- Clipboard Bridge JavaScript -->
+<script>
+(function() {
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = 'action-toast';
+  toast.innerHTML = '<div class="toast-label">Copied to clipboard</div><div class="toast-command"></div>';
+  document.body.appendChild(toast);
+
+  let toastTimeout;
+
+  function showToast(command) {
+    const cmdEl = toast.querySelector('.toast-command');
+    cmdEl.textContent = command.length > 120 ? command.substring(0, 120) + '...' : command;
+    toast.classList.add('visible');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('visible'), 2500);
+  }
+
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.action-btn');
+    if (!btn) return;
+
+    const command = btn.getAttribute('data-action');
+    if (!command) return;
+
+    navigator.clipboard.writeText(command).then(() => {
+      btn.classList.add('copied');
+      const originalHTML = btn.innerHTML;
+      const iconEl = btn.querySelector('.icon');
+      const iconHTML = iconEl ? iconEl.outerHTML : '';
+      btn.innerHTML = iconHTML + ' Copied!';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('copied');
+      }, 1500);
+      showToast(command);
+    }).catch(() => {
+      // Fallback for file:// or restricted contexts
+      const textarea = document.createElement('textarea');
+      textarea.value = command;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(textarea);
+      btn.classList.add('copied');
+      const originalHTML = btn.innerHTML;
+      const iconEl = btn.querySelector('.icon');
+      const iconHTML = iconEl ? iconEl.outerHTML : '';
+      btn.innerHTML = iconHTML + ' Copied!';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('copied');
+      }, 1500);
+      showToast(command);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

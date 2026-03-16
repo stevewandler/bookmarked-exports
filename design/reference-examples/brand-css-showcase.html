@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmarked Brand CSS — Visual Showcase</title>
+  <link rel="stylesheet" href="../bookmarked-brand.css">
+  <style>
+    .showcase-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 8px;
+      padding-top: 48px;
+    }
+    .showcase-label:first-child { padding-top: 0; }
+    .showcase-divider {
+      border: none;
+      border-top: 1px solid #E5E7EB;
+      margin: 48px 0 0;
+    }
+    .dark-showcase-divider {
+      border-top-color: rgba(255,255,255,0.1);
+    }
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .color-swatch {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .color-swatch__block {
+      height: 64px;
+    }
+    .color-swatch__info {
+      padding: 8px 10px;
+      background: #fff;
+      font-size: 12px;
+    }
+    .color-swatch__name {
+      font-weight: 700;
+      color: #101828;
+      margin-bottom: 2px;
+    }
+    .color-swatch__hex {
+      color: #9CA3AF;
+      font-family: monospace;
+      font-size: 11px;
+    }
+    .type-sample {
+      margin-bottom: 16px;
+    }
+    .type-meta {
+      font-size: 11px;
+      color: #9CA3AF;
+      font-family: monospace;
+      margin-top: 2px;
+    }
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .dark-panel {
+      background: #101828;
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+    }
+    .dark-panel .showcase-label {
+      color: #9CA3AF;
+      padding-top: 32px;
+    }
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 24px 0;
+    }
+    @media (max-width: 768px) {
+      .side-by-side { grid-template-columns: 1fr; }
+    }
+    .gradient-strip {
+      height: 80px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="bm-hero">
+  <div class="bm-container">
+    <p class="bm-eyebrow" style="color: rgba(255,255,255,0.7);">BRAND CSS SHOWCASE</p>
+    <h1>Every component in bookmarked-brand.css</h1>
+    <p>This page renders every class from the master stylesheet — colors, typography, buttons, cards, stats, tables, badges, progress bars, timelines, and more. Light and dark themes side by side.</p>
+    <div style="margin-top: 24px;">
+      <a href="#" class="bm-cta-button" style="margin-right: 12px;">Primary CTA</a>
+      <a href="#" class="bm-cta-button bm-cta-button--outline">Outline CTA</a>
+    </div>
+  </div>
+</div>
+
+<div class="bm-container" style="padding-top: 48px; padding-bottom: 64px;">
+
+  <!-- ============ COLORS ============ -->
+  <p class="showcase-label">Primary Colors</p>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #101828;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Eigengrau</div><div class="color-swatch__hex">#101828</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #107569;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Deep Green</div><div class="color-swatch__hex">#107569</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #12A38C;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Teal Accent</div><div class="color-swatch__hex">#12A38C</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #FF692E;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Pumpkin</div><div class="color-swatch__hex">#FF692E</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #FFFFFF; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">White</div><div class="color-swatch__hex">#FFFFFF</div></div>
+    </div>
+  </div>
+
+  <p class="showcase-label" style="padding-top: 16px;">Teal Gradient Stops</p>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #0D5A52;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Teal Dark</div><div class="color-swatch__hex">#0D5A52</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #107569;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Teal Mid</div><div class="color-swatch__hex">#107569</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #12A38C;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Teal Light</div><div class="color-swatch__hex">#12A38C</div></div>
+    </div>
+  </div>
+
+  <p class="showcase-label" style="padding-top: 16px;">Surface & Secondary Colors</p>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #1D2939;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Dark Surface</div><div class="color-swatch__hex">#1D2939</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #1F2937;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Card Surface</div><div class="color-swatch__hex">#1F2937</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #475467;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Secondary Text</div><div class="color-swatch__hex">#475467</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #9CA3AF;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Muted Gray</div><div class="color-swatch__hex">#9CA3AF</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Border Light</div><div class="color-swatch__hex">#E5E7EB</div></div>
+    </div>
+  </div>
+
+  <p class="showcase-label" style="padding-top: 16px;">Light Backgrounds</p>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F8FAFC; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Cool</div><div class="color-swatch__hex">#F8FAFC</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F1F4F9; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Blue</div><div class="color-swatch__hex">#F1F4F9</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F8F5F0; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Warm</div><div class="color-swatch__hex">#F8F5F0</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F3F3F3; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Neutral</div><div class="color-swatch__hex">#F3F3F3</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F8FAF8; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Green Tint</div><div class="color-swatch__hex">#F8FAF8</div></div>
+    </div>
+    <div class="color-swatch">
+      <div class="color-swatch__block" style="background: #F9FAFB; border: 1px solid #E5E7EB;"></div>
+      <div class="color-swatch__info"><div class="color-swatch__name">Light</div><div class="color-swatch__hex">#F9FAFB</div></div>
+    </div>
+  </div>
+
+  <p class="showcase-label" style="padding-top: 16px;">Gradients</p>
+  <div class="gradient-strip" style="background: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);">Hero Gradient</div>
+  <div class="gradient-strip" style="background: linear-gradient(135deg, #101828 0%, #1D2939 100%);">CTA Gradient</div>
+  <div class="gradient-strip" style="background: linear-gradient(135deg, #107569, #12A38C);">Subtle Gradient</div>
+
+  <!-- ============ TYPOGRAPHY ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Typography — Urbanist</p>
+
+  <div class="type-sample">
+    <div style="font-size: 48px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: var(--bm-eigengrau);">Display / 48px / ExtraBold</div>
+    <div class="type-meta">--bm-text-5xl · --bm-weight-extrabold · --bm-leading-tight</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 40px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: var(--bm-eigengrau);">Heading 1 / 40px / ExtraBold</div>
+    <div class="type-meta">--bm-text-4xl · --bm-weight-extrabold · Hero h1</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 32px; font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; color: var(--bm-eigengrau);">Heading 2 / 32px / Bold</div>
+    <div class="type-meta">--bm-text-3xl · --bm-weight-bold · Section headers</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 24px; font-weight: 700; line-height: 1.25; color: var(--bm-eigengrau);">Heading 3 / 24px / Bold</div>
+    <div class="type-meta">--bm-text-2xl · --bm-weight-bold</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 20px; font-weight: 700; line-height: 1.25; color: var(--bm-eigengrau);">Heading 4 / 20px / Bold</div>
+    <div class="type-meta">--bm-text-xl · Card h3</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 18px; font-weight: 500; line-height: 1.5; color: var(--bm-eigengrau);">Large Body / 18px / Medium</div>
+    <div class="type-meta">--bm-text-lg · Section header subtitles</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--bm-eigengrau);">Body / 16px / Regular — The quick brown fox jumps over the lazy dog. Bookmarked helps Texas school districts manage book compliance with confidence.</div>
+    <div class="type-meta">--bm-text-base · --bm-weight-regular · Default body text</div>
+  </div>
+  <div class="type-sample">
+    <div style="font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--bm-secondary-text);">Small / 14px / Regular — Secondary text, table cells, sidebar links</div>
+    <div class="type-meta">--bm-text-sm</div>
+  </div>
+  <div class="type-sample">
+    <div class="bm-eyebrow">Eyebrow Label · 12px · Bold · Uppercase · Teal</div>
+    <div class="type-meta">.bm-eyebrow · --bm-tracking-wider</div>
+  </div>
+  <div class="type-sample">
+    <div class="bm-eyebrow bm-eyebrow--warning">Warning Eyebrow · Pumpkin Variant</div>
+    <div class="type-meta">.bm-eyebrow--warning</div>
+  </div>
+
+  <!-- ============ BUTTONS ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Buttons</p>
+
+  <div class="button-row">
+    <a href="#" class="bm-cta-button">Primary</a>
+    <a href="#" class="bm-cta-button bm-cta-button--teal">Teal</a>
+    <a href="#" class="bm-cta-button bm-cta-button--dark">Dark</a>
+    <a href="#" class="bm-cta-button bm-cta-button--secondary">Secondary</a>
+  </div>
+  <div class="button-row">
+    <a href="#" class="bm-cta-button bm-cta-button--pill">Pill Button</a>
+    <a href="#" class="bm-cta-button bm-cta-button--pill bm-cta-button--teal">Pill Teal</a>
+  </div>
+
+  <!-- ============ BADGES ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Badges</p>
+  <div class="badge-row">
+    <span class="bm-badge bm-badge--success">Active</span>
+    <span class="bm-badge bm-badge--warning">At Risk</span>
+    <span class="bm-badge bm-badge--neutral">Pending</span>
+    <span class="bm-badge bm-badge--info">In Progress</span>
+  </div>
+
+  <!-- ============ CARDS — LIGHT ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Cards — Light Theme</p>
+
+  <div class="bm-feature-grid bm-feature-grid--3" style="margin-top: 16px;">
+    <div class="bm-card">
+      <div class="bm-card__label">Default Card</div>
+      <h3>Standard Card</h3>
+      <p>Basic card with shadow, rounded corners, and hover lift. Uses --bm-card-bg and --bm-card-border from the active theme.</p>
+    </div>
+    <div class="bm-card bm-card--accent">
+      <div class="bm-card__label">Accent Left</div>
+      <h3>Accent Card</h3>
+      <p>4px teal left border for emphasis. Good for callouts, key features, or highlighted information.</p>
+    </div>
+    <div class="bm-card bm-card--warning">
+      <div class="bm-card__label">Warning Left</div>
+      <h3>Warning Card</h3>
+      <p>4px pumpkin left border for alerts, risks, or items needing attention.</p>
+    </div>
+    <div class="bm-card bm-card--top-accent">
+      <div class="bm-card__label">Top Accent</div>
+      <h3>Top Border Card</h3>
+      <p>3px teal top border — alternative emphasis style for card grids.</p>
+    </div>
+    <div class="bm-card bm-card--top-warning">
+      <div class="bm-card__label">Top Warning</div>
+      <h3>Top Warning Card</h3>
+      <p>3px pumpkin top border for at-risk items in dashboards.</p>
+    </div>
+    <div class="bm-card">
+      <div class="bm-card__label">Feature Card</div>
+      <h3>Feature Highlight</h3>
+      <p>Same base card, different content. Every card class auto-themes for light and dark.</p>
+    </div>
+  </div>
+
+  <!-- ============ STATS ROW — LIGHT ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Stats Row — Light Theme</p>
+  <div class="bm-stats-row">
+    <div class="bm-stat-card">
+      <div class="bm-stat-card__number">150+</div>
+      <div class="bm-stat-card__label">Texas Districts</div>
+    </div>
+    <div class="bm-stat-card">
+      <div class="bm-stat-card__number">2.4M</div>
+      <div class="bm-stat-card__label">Books Managed</div>
+    </div>
+    <div class="bm-stat-card">
+      <div class="bm-stat-card__number">97%</div>
+      <div class="bm-stat-card__label">Compliance Rate</div>
+    </div>
+  </div>
+
+  <!-- ============ METRIC CARDS ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Metric Cards (Dashboard KPIs)</p>
+  <div class="bm-feature-grid bm-feature-grid--4" style="margin-top: 16px;">
+    <div class="bm-metric-card">
+      <div class="bm-metric-card__value">$42K</div>
+      <div class="bm-metric-card__label">Monthly Revenue</div>
+      <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 12% vs last month</div>
+    </div>
+    <div class="bm-metric-card">
+      <div class="bm-metric-card__value">89%</div>
+      <div class="bm-metric-card__label">Retention Rate</div>
+      <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 3% vs Q3</div>
+    </div>
+    <div class="bm-metric-card">
+      <div class="bm-metric-card__value">14</div>
+      <div class="bm-metric-card__label">Days to Onboard</div>
+      <div class="bm-metric-card__trend bm-metric-card__trend--down">↓ slower by 2 days</div>
+    </div>
+    <div class="bm-metric-card">
+      <div class="bm-metric-card__value">23</div>
+      <div class="bm-metric-card__label">Open Deals</div>
+      <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 5 new this week</div>
+    </div>
+  </div>
+
+  <!-- ============ TABLE ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Table — Light Theme</p>
+  <table class="bm-table" style="margin-top: 16px;">
+    <thead>
+      <tr>
+        <th>District</th>
+        <th>Status</th>
+        <th>Books</th>
+        <th>Compliance</th>
+        <th>Last Active</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Temple ISD</td>
+        <td><span class="bm-badge bm-badge--success">Active</span></td>
+        <td>12,450</td>
+        <td>98%</td>
+        <td>Today</td>
+      </tr>
+      <tr>
+        <td>Canyon ISD</td>
+        <td><span class="bm-badge bm-badge--success">Active</span></td>
+        <td>8,320</td>
+        <td>95%</td>
+        <td>Yesterday</td>
+      </tr>
+      <tr>
+        <td>Godley ISD</td>
+        <td><span class="bm-badge bm-badge--warning">At Risk</span></td>
+        <td>3,210</td>
+        <td>82%</td>
+        <td>3 days ago</td>
+      </tr>
+      <tr>
+        <td>Belton ISD</td>
+        <td><span class="bm-badge bm-badge--neutral">Pending</span></td>
+        <td>—</td>
+        <td>—</td>
+        <td>Not started</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ============ PROGRESS BARS ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Progress Bars</p>
+  <div style="margin-top: 16px;">
+    <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Onboarding — 85%</div>
+    <div class="bm-progress-bar"><div class="bm-progress-bar__fill" style="width: 85%;"></div></div>
+    <div style="font-size: 14px; font-weight: 600; margin: 20px 0 6px;">Compliance — 42% (at risk)</div>
+    <div class="bm-progress-bar"><div class="bm-progress-bar__fill bm-progress-bar__fill--warning" style="width: 42%;"></div></div>
+    <div style="font-size: 14px; font-weight: 600; margin: 20px 0 6px;">Data Import — 100%</div>
+    <div class="bm-progress-bar"><div class="bm-progress-bar__fill" style="width: 100%;"></div></div>
+  </div>
+
+  <!-- ============ TESTIMONIAL ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Testimonial</p>
+  <div class="bm-testimonial" style="margin-top: 16px;">
+    <div class="bm-testimonial__quote">"Bookmarked turned a 6-week compliance nightmare into a 2-day process. Our librarians can focus on what they do best — connecting kids with books."</div>
+    <div class="bm-testimonial__attribution">— Library Director, Temple ISD</div>
+  </div>
+
+  <!-- ============ TIMELINE ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Timeline</p>
+  <div class="bm-timeline" style="margin-top: 16px;">
+    <div class="bm-timeline__item">
+      <h4>District signs contract</h4>
+      <p>Bookmarked sends welcome packet and schedules kickoff call within 24 hours.</p>
+    </div>
+    <div class="bm-timeline__item">
+      <h4>Data import & configuration</h4>
+      <p>Catalog data uploaded, district policies configured, user accounts provisioned.</p>
+    </div>
+    <div class="bm-timeline__item">
+      <h4>Training & go-live</h4>
+      <p>Librarian training sessions, admin walkthrough, compliance dashboard activated.</p>
+    </div>
+    <div class="bm-timeline__item">
+      <h4>Ongoing support</h4>
+      <p>Dedicated CS contact, quarterly reviews, automated compliance monitoring.</p>
+    </div>
+  </div>
+
+  <!-- ============ COMPARISON TABLE ============ -->
+  <hr class="showcase-divider">
+  <p class="showcase-label">Comparison Table</p>
+  <table class="bm-comparison-table" style="margin-top: 16px;">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Manual Process</th>
+        <th>Bookmarked</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Book review time</td>
+        <td>6–8 weeks per title</td>
+        <td>Instant compliance check</td>
+      </tr>
+      <tr>
+        <td>Catalog audit</td>
+        <td>Spreadsheets + email chains</td>
+        <td>Real-time dashboard</td>
+      </tr>
+      <tr>
+        <td>Board reporting</td>
+        <td>Manual PDF assembly</td>
+        <td>One-click export</td>
+      </tr>
+      <tr>
+        <td>Policy updates</td>
+        <td>Re-review entire catalog</td>
+        <td>Automatic flagging</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div><!-- end light section -->
+
+<!-- ============ DARK THEME SECTION ============ -->
+<div class="bm-theme-dark" style="padding: 64px 0;">
+  <div class="bm-container">
+
+    <p class="showcase-label" style="padding-top: 0; color: #9CA3AF;">Dark Theme — .bm-theme-dark</p>
+    <div class="bm-section-header">
+      <h2>Same components, dark surface</h2>
+      <p>Every component auto-adapts via CSS custom properties. Just wrap in <code style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 13px;">.bm-theme-dark</code> and everything shifts.</p>
+    </div>
+
+    <!-- Dark buttons -->
+    <p class="showcase-label">Buttons on Dark</p>
+    <div class="button-row">
+      <a href="#" class="bm-cta-button bm-cta-button--teal">Teal CTA</a>
+      <a href="#" class="bm-cta-button bm-cta-button--outline">Outline</a>
+      <a href="#" class="bm-cta-button bm-cta-button--secondary">Secondary</a>
+    </div>
+
+    <!-- Dark badges -->
+    <p class="showcase-label">Badges on Dark</p>
+    <div class="badge-row">
+      <span class="bm-badge bm-badge--success">On Track</span>
+      <span class="bm-badge bm-badge--warning">At Risk</span>
+      <span class="bm-badge bm-badge--neutral">Paused</span>
+      <span class="bm-badge bm-badge--info">Active</span>
+    </div>
+
+    <!-- Dark cards -->
+    <p class="showcase-label">Cards on Dark</p>
+    <div class="bm-feature-grid bm-feature-grid--3" style="margin-top: 16px;">
+      <div class="bm-card">
+        <div class="bm-card__label">Default</div>
+        <h3>Dark Card</h3>
+        <p>Background shifts to --bm-card-surface (#1F2937), border goes transparent. Text is white.</p>
+      </div>
+      <div class="bm-card bm-card--accent">
+        <div class="bm-card__label">Accent</div>
+        <h3>Teal Accent</h3>
+        <p>Left border stays teal. Great for callouts in dashboards and briefings.</p>
+      </div>
+      <div class="bm-card bm-card--warning">
+        <div class="bm-card__label">Warning</div>
+        <h3>Pumpkin Alert</h3>
+        <p>Pumpkin left border pops against dark surface. Use for at-risk items.</p>
+      </div>
+    </div>
+
+    <!-- Dark stats -->
+    <p class="showcase-label">Stats on Dark</p>
+    <div class="bm-stats-row">
+      <div class="bm-stat-card">
+        <div class="bm-stat-card__number">150+</div>
+        <div class="bm-stat-card__label">Districts</div>
+      </div>
+      <div class="bm-stat-card">
+        <div class="bm-stat-card__number">$1.2M</div>
+        <div class="bm-stat-card__label">ARR</div>
+      </div>
+      <div class="bm-stat-card">
+        <div class="bm-stat-card__number">4.8★</div>
+        <div class="bm-stat-card__label">CSAT Score</div>
+      </div>
+    </div>
+
+    <!-- Dark metric cards -->
+    <p class="showcase-label">Metric Cards on Dark</p>
+    <div class="bm-feature-grid bm-feature-grid--4" style="margin-top: 16px;">
+      <div class="bm-metric-card">
+        <div class="bm-metric-card__value">$42K</div>
+        <div class="bm-metric-card__label">MRR</div>
+        <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 12%</div>
+      </div>
+      <div class="bm-metric-card">
+        <div class="bm-metric-card__value">89%</div>
+        <div class="bm-metric-card__label">Retention</div>
+        <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 3%</div>
+      </div>
+      <div class="bm-metric-card">
+        <div class="bm-metric-card__value">14d</div>
+        <div class="bm-metric-card__label">Avg Onboard</div>
+        <div class="bm-metric-card__trend bm-metric-card__trend--down">↓ 2d slower</div>
+      </div>
+      <div class="bm-metric-card">
+        <div class="bm-metric-card__value">23</div>
+        <div class="bm-metric-card__label">Pipeline</div>
+        <div class="bm-metric-card__trend bm-metric-card__trend--up">↑ 5 new</div>
+      </div>
+    </div>
+
+    <!-- Dark table -->
+    <p class="showcase-label">Table on Dark</p>
+    <table class="bm-table" style="margin-top: 16px;">
+      <thead>
+        <tr>
+          <th>District</th>
+          <th>Status</th>
+          <th>Books</th>
+          <th>Compliance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Temple ISD</td>
+          <td><span class="bm-badge bm-badge--success">Active</span></td>
+          <td>12,450</td>
+          <td>98%</td>
+        </tr>
+        <tr>
+          <td>Canyon ISD</td>
+          <td><span class="bm-badge bm-badge--success">Active</span></td>
+          <td>8,320</td>
+          <td>95%</td>
+        </tr>
+        <tr>
+          <td>Godley ISD</td>
+          <td><span class="bm-badge bm-badge--warning">At Risk</span></td>
+          <td>3,210</td>
+          <td>82%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Dark progress bars -->
+    <p class="showcase-label">Progress Bars on Dark</p>
+    <div style="margin-top: 16px;">
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Pipeline Coverage — 78%</div>
+      <div class="bm-progress-bar"><div class="bm-progress-bar__fill" style="width: 78%;"></div></div>
+      <div style="font-size: 14px; font-weight: 600; margin: 20px 0 6px;">Churn Risk — 35%</div>
+      <div class="bm-progress-bar"><div class="bm-progress-bar__fill bm-progress-bar__fill--warning" style="width: 35%;"></div></div>
+    </div>
+
+    <!-- Dark comparison table -->
+    <p class="showcase-label">Comparison Table on Dark</p>
+    <table class="bm-comparison-table" style="margin-top: 16px;">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Last Quarter</th>
+          <th>This Quarter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>New Districts</td>
+          <td>8</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>Avg Deal Size</td>
+          <td>$3,200</td>
+          <td>$4,100</td>
+        </tr>
+        <tr>
+          <td>Time to Close</td>
+          <td>42 days</td>
+          <td>31 days</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Dark testimonial -->
+    <p class="showcase-label">Testimonial on Dark</p>
+    <div class="bm-testimonial" style="margin-top: 16px;">
+      <div class="bm-testimonial__quote">"We went from dreading compliance season to barely noticing it. Bookmarked just handles it."</div>
+      <div class="bm-testimonial__attribution">— Superintendent, Godley ISD</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ CTA SECTION ============ -->
+<div class="bm-cta-section">
+  <div class="bm-container">
+    <p class="bm-eyebrow" style="color: var(--bm-teal-accent);">CTA SECTION COMPONENT</p>
+    <h2>Ready to simplify compliance?</h2>
+    <p>Join 150+ Texas districts already using Bookmarked.</p>
+    <a href="#" class="bm-cta-button bm-cta-button--teal bm-cta-button--pill">Book a Walkthrough</a>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="bm-footer">
+  <div class="bm-container" style="text-align: center;">
+    <div style="font-size: 20px; font-weight: 700;">Bookmarked</div>
+    <div class="bm-footer__tagline">Compliance confidence for every Texas school library</div>
+    <div style="margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.5);">© 2026 Bookmarked. All rights reserved.</div>
+  </div>
+</div>
+
+</body>
+</html>

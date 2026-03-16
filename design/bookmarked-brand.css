@@ -190,7 +190,9 @@ img {
 }
 
 /* ==========================================================================
-   THEME: DARK (dashboards, briefings, scorecards)
+   THEME: DARK (INVESTOR DECKS ONLY)
+   Dark backgrounds are reserved for investor presentations and Google Slides.
+   All sales, marketing, customer, and internal output uses light theme.
    Apply with .bm-theme-dark on a container or body
    ========================================================================== */
 

@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Ecosystem Audit | Bookmarked | March 17, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-teal-dark: #0D5A52;
+  --bm-teal-mid: #107569;
+  --bm-teal-light: #12A38C;
+  --bm-dark-surface: #1D2939;
+  --bm-card-surface: #1F2937;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-white: #FFFFFF;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-blue: #F1F4F9;
+  --bm-bg-warm: #F8F5F0;
+  --bm-bg-neutral: #F3F3F3;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, Helvetica, sans-serif;
+  --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+  --bm-gradient-cta: linear-gradient(135deg, #101828 0%, #1D2939 100%);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--bm-font-family);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bm-eigengrau);
+  background: var(--bm-bg-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--bm-teal-accent); text-decoration: none; }
+a:hover { color: var(--bm-deep-green); text-decoration: underline; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.container--narrow { max-width: 900px; }
+
+/* Hero */
+.hero {
+  background: var(--bm-gradient-hero);
+  padding: 80px 0 56px;
+  color: white;
+}
+.hero h1 {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 700px;
+}
+.hero .subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.85);
+  max-width: 620px;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+.hero .meta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 12px;
+}
+
+/* TOC */
+.toc {
+  background: var(--bm-bg-cool);
+  padding: 32px 0;
+  border-bottom: 1px solid var(--bm-border-light);
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.toc-item {
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--bm-border-light);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bm-eigengrau);
+  transition: all 150ms ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.toc-item:hover {
+  border-color: var(--bm-teal-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-decoration: none;
+  color: var(--bm-deep-green);
+}
+.toc-item .num {
+  color: var(--bm-teal-accent);
+  margin-right: 8px;
+}
+
+/* Sections */
+.section { padding: 56px 0; }
+.section--alt { background: var(--bm-bg-cool); }
+.section--warm { background: var(--bm-bg-warm); }
+
+.section-header { margin-bottom: 32px; }
+.section-header .eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bm-teal-accent);
+  margin-bottom: 8px;
+}
+.section-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.section-header p {
+  font-size: 18px;
+  color: var(--bm-secondary-text);
+  margin-top: 12px;
+  max-width: 640px;
+}
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 32px 0;
+}
+.stat-card {
+  text-align: center;
+  padding: 24px 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.stat-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--bm-deep-green);
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bm-secondary-text);
+  margin-top: 8px;
+}
+
+/* Cards */
+.card {
+  background: var(--bm-bg-light);
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid var(--bm-border-light);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+.card--accent { border-left: 4px solid var(--bm-teal-accent); border-radius: 0 12px 12px 0; }
+.card--warning { border-left: 4px solid var(--bm-pumpkin); border-radius: 0 12px 12px 0; }
+.card--top-accent { border-top: 3px solid var(--bm-teal-accent); }
+.card--top-warning { border-top: 3px solid var(--bm-pumpkin); }
+
+.card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.card p, .card li {
+  font-size: 15px;
+  color: var(--bm-secondary-text);
+  line-height: 1.6;
+}
+.card ul { padding-left: 20px; margin-top: 8px; }
+.card li { margin-bottom: 6px; }
+
+/* Grid layouts */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+.badge--success { background: rgba(18,163,140,0.15); color: var(--bm-teal-accent); }
+.badge--warning { background: rgba(255,105,46,0.15); color: var(--bm-pumpkin); }
+.badge--neutral { background: rgba(156,163,175,0.15); color: var(--bm-muted-gray); }
+.badge--info { background: rgba(16,117,105,0.15); color: var(--bm-deep-green); }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th {
+  background: var(--bm-bg-cool);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bm-secondary-text);
+  border-bottom: 2px solid var(--bm-border-light);
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bm-border-light);
+  color: var(--bm-eigengrau);
+  vertical-align: top;
+}
+tr:hover td { background: var(--bm-bg-light); }
+
+/* Persona cards */
+.persona-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid var(--bm-border-light);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 32px;
+}
+.persona-card .persona-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--bm-border-light);
+}
+.persona-card .persona-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--bm-eigengrau);
+}
+.persona-card .persona-title {
+  font-size: 14px;
+  color: var(--bm-secondary-text);
+  margin-top: 4px;
+}
+
+.grade-box {
+  text-align: center;
+  min-width: 80px;
+}
+.grade {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+}
+.grade--a { color: var(--bm-teal-accent); }
+.grade--b { color: var(--bm-deep-green); }
+.grade--c { color: var(--bm-pumpkin); }
+.grade--d { color: #DC2626; }
+.grade-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bm-muted-gray);
+  margin-top: 4px;
+}
+
+/* Ring scores */
+.rings-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.ring-item {
+  text-align: center;
+  padding: 16px 8px;
+  background: var(--bm-bg-cool);
+  border-radius: 8px;
+}
+.ring-score {
+  font-size: 24px;
+  font-weight: 800;
+}
+.ring-score--high { color: var(--bm-teal-accent); }
+.ring-score--mid { color: var(--bm-deep-green); }
+.ring-score--low { color: var(--bm-pumpkin); }
+.ring-score--none { color: var(--bm-muted-gray); }
+.ring-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--bm-secondary-text);
+  margin-top: 4px;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 8px;
+  background: var(--bm-bg-neutral);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #107569, #12A38C);
+  border-radius: 100px;
+}
+.progress-fill--warning { background: var(--bm-pumpkin); }
+
+/* Source tag */
+.source {
+  font-size: 12px;
+  color: var(--bm-muted-gray);
+  font-style: italic;
+  margin-top: 8px;
+}
+.source a { color: var(--bm-teal-accent); font-size: 12px; }
+
+/* JTBD */
+.jtbd-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+.jtbd-item {
+  padding: 16px;
+  background: var(--bm-bg-cool);
+  border-radius: 8px;
+}
+.jtbd-item h5 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bm-teal-accent);
+  margin-bottom: 8px;
+}
+.jtbd-item p {
+  font-size: 13px;
+  color: var(--bm-secondary-text);
+  line-height: 1.5;
+}
+
+/* Recommendation cards */
+.rec-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid var(--bm-border-light);
+  margin-bottom: 16px;
+}
+.rec-card .rec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.rec-priority {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+}
+.rec-priority--critical { background: var(--bm-pumpkin); }
+.rec-priority--high { background: var(--bm-deep-green); }
+.rec-priority--medium { background: var(--bm-teal-accent); }
+.rec-card h4 { font-size: 16px; font-weight: 700; }
+.rec-card p { font-size: 14px; color: var(--bm-secondary-text); line-height: 1.6; }
+
+/* Footer */
+.footer {
+  background: var(--bm-deep-green);
+  color: white;
+  padding: 40px 0;
+  text-align: center;
+}
+.footer .tagline {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-top: 12px;
+}
+
+/* Website audit */
+.website-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bm-border-light);
+}
+.website-row:last-child { border-bottom: none; }
+.persona-label { font-weight: 700; font-size: 15px; }
+.website-desc { font-size: 14px; color: var(--bm-secondary-text); }
+
+/* Callout */
+.callout {
+  background: rgba(18,163,140,0.08);
+  border: 1px solid rgba(18,163,140,0.2);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.callout--warning {
+  background: rgba(255,105,46,0.08);
+  border-color: rgba(255,105,46,0.2);
+}
+.callout h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.callout p {
+  font-size: 14px;
+  color: var(--bm-secondary-text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 28px; }
+  .toc-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .rings-grid { grid-template-columns: repeat(3, 1fr); }
+  .jtbd-grid { grid-template-columns: 1fr; }
+  .website-row { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .hero { background: #107569 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .section { padding: 32px 0; }
+  .persona-card { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="container">
+    <div class="meta">Strategic Marketing Audit</div>
+    <h1>Persona Ecosystem Audit</h1>
+    <p class="subtitle">Comprehensive inventory, quality assessment, and gap analysis of Bookmarked's buyer and user personas across Confluence, codebase, website, HubSpot, and Jira.</p>
+    <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 24px;">March 17, 2026 &bull; Prepared for Steve Wandler, Founder</p>
+  </div>
+</div>
+
+<!-- ========== TOC ========== -->
+<div class="toc">
+  <div class="container">
+    <div class="toc-grid">
+      <a href="#executive-summary" class="toc-item"><span class="num">01</span> Executive Summary</a>
+      <a href="#inventory" class="toc-item"><span class="num">02</span> Persona Inventory</a>
+      <a href="#framework" class="toc-item"><span class="num">03</span> Assessment Framework</a>
+      <a href="#deep-dives" class="toc-item"><span class="num">04</span> Persona Deep-Dives</a>
+      <a href="#website-audit" class="toc-item"><span class="num">05</span> Website Alignment</a>
+      <a href="#product-marketing" class="toc-item"><span class="num">06</span> Product vs. Marketing</a>
+      <a href="#recommendations" class="toc-item"><span class="num">07</span> Recommendations</a>
+      <a href="#source-map" class="toc-item"><span class="num">08</span> Source Map</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 1: EXECUTIVE SUMMARY ========== -->
+<div class="section" id="executive-summary">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 01</div>
+      <h2>Executive Summary</h2>
+      <p>Bookmarked's persona infrastructure is significantly more developed than most startups at this stage &mdash; but it's fragmented across systems and has critical gaps.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Total Personas Found</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Fully Developed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Systems Audited</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Critical Gaps</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card--accent">
+        <h3>What's Strong</h3>
+        <ul>
+          <li><strong>Superintendent persona</strong> is world-class &mdash; deep psychographics, objection frameworks, stakeholder maps, and real customer quotes across multiple systems</li>
+          <li><strong>Librarian persona</strong> is equally strong with product-level (PRD) AND marketing-level detail, including a dedicated website messaging page</li>
+          <li><strong>Psychographic buying segments</strong> (4 segments overlaid on personas) are a sophisticated layer most startups never build</li>
+          <li><strong>Real customer voice</strong> &mdash; ~50 Plaud transcripts ground personas in actual buyer language</li>
+          <li><strong>Governance model</strong> is clear: hub files are CEO-locked, skills are read-only consumers</li>
+        </ul>
+      </div>
+      <div class="card card--warning">
+        <h3>Critical Gaps</h3>
+        <ul>
+          <li><strong>Parent/Guardian persona</strong> &mdash; has a full product PRD (4 epics, API endpoints) but NO marketing persona. OnShelf Engage is a product <em>for</em> parents with no marketing <em>to</em> parents.</li>
+          <li><strong>Teacher persona</strong> &mdash; has a full product PRD (6 epics) but is excluded from ALL marketing persona work. The Classroom Library Module needs a buyer-journey for teacher adoption.</li>
+          <li><strong>HubSpot has no persona property</strong> &mdash; contacts can't be segmented, campaigns can't be targeted, and reporting can't be filtered by persona. This is the operational gap that makes persona work theoretical instead of actionable.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Bottom Line Assessment</h4>
+      <p>Your buyer personas (Superintendent, Librarian, Board Member, ESC Partner) are <strong>strong and actionable</strong> for sales conversations. Your user personas (Teacher, Parent) have deep product specs but <strong>zero marketing presence</strong>. The biggest structural issue isn't persona quality &mdash; it's that personas live in 3 disconnected layers (product PRDs, Confluence marketing pages, local psychographics file) with no single source of truth. And HubSpot can't operationalize any of it because there's no persona field.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 2: PERSONA INVENTORY MATRIX ========== -->
+<div class="section section--alt" id="inventory">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 02</div>
+      <h2>Persona Inventory Matrix</h2>
+      <p>Every persona mapped across every system. Green = present with depth. Orange = referenced but thin. Gray = absent.</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Persona</th>
+          <th>Confluence PRDs</th>
+          <th>Confluence Marketing</th>
+          <th>Local Psychographics</th>
+          <th>Website</th>
+          <th>HubSpot</th>
+          <th>Jira</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Superintendent</strong></td>
+          <td><span class="badge badge--success">Full PRD v2.1</span></td>
+          <td><span class="badge badge--success">5 pages</span></td>
+          <td><span class="badge badge--success">Full profile</span></td>
+          <td><span class="badge badge--success">Homepage hero</span></td>
+          <td><span class="badge badge--warning">jobtitle only</span></td>
+          <td><span class="badge badge--success">Referenced</span></td>
+        </tr>
+        <tr>
+          <td><strong>Librarian</strong></td>
+          <td><span class="badge badge--success">Full PRD v2.2</span></td>
+          <td><span class="badge badge--success">6 pages</span></td>
+          <td><span class="badge badge--success">Full profile</span></td>
+          <td><span class="badge badge--success">Homepage + draft page</span></td>
+          <td><span class="badge badge--warning">jobtitle only</span></td>
+          <td><span class="badge badge--success">Referenced</span></td>
+        </tr>
+        <tr>
+          <td><strong>Board Member</strong></td>
+          <td><span class="badge badge--neutral">Implied only</span></td>
+          <td><span class="badge badge--success">3 pages</span></td>
+          <td><span class="badge badge--success">Full profile</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+        <tr>
+          <td><strong>Curriculum Director</strong></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--warning">Deprioritized</span></td>
+          <td><span class="badge badge--success">Full profile</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+        <tr>
+          <td><strong>ESC Partner</strong></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--success">3 pages</span></td>
+          <td><span class="badge badge--success">Full profile</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+        <tr>
+          <td><strong>Parent/Guardian</strong></td>
+          <td><span class="badge badge--success">Full PRD v1.1</span></td>
+          <td><span class="badge badge--warning">Mentioned only</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--warning">OnShelf Engage mention</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--success">Referenced</span></td>
+        </tr>
+        <tr>
+          <td><strong>Teacher</strong></td>
+          <td><span class="badge badge--success">Full PRD v1.1</span></td>
+          <td><span class="badge badge--warning">Deprioritized</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--success">Referenced</span></td>
+        </tr>
+        <tr>
+          <td><strong>CFO / Business Mgr</strong></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--success">2 pages</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+        <tr>
+          <td><strong>IT Director</strong></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--warning">Cast of Characters</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+        <tr>
+          <td><strong>Publisher</strong></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--warning">Value Props page</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+          <td><span class="badge badge--neutral">Absent</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <h4>Key Pattern</h4>
+      <p>The top two personas (Superintendent, Librarian) have excellent coverage across all systems. Everything below them drops off sharply. Board Member and ESC Partner have strong marketing profiles but no product PRDs. Teacher and Parent have strong product PRDs but no marketing profiles. The CFO, IT Director, and Publisher are stakeholder profiles for sales conversations only &mdash; they're not personas in the traditional marketing sense.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 3: ASSESSMENT FRAMEWORK ========== -->
+<div class="section" id="framework">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 03</div>
+      <h2>Assessment Framework</h2>
+      <p>How we're grading each persona &mdash; and why these frameworks matter for an EdTech startup selling to school districts.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card card--top-accent">
+        <h3>Revella's 5 Rings of Insight</h3>
+        <p>Adele Revella's <em>Buyer Personas</em> framework defines 5 dimensions that separate useful personas from fiction. Each persona is scored on:</p>
+        <ul>
+          <li><strong>Priority Initiatives</strong> &mdash; What triggers them to act?</li>
+          <li><strong>Success Factors</strong> &mdash; What does "good" look like to them?</li>
+          <li><strong>Perceived Barriers</strong> &mdash; What stops them from buying?</li>
+          <li><strong>Decision Criteria</strong> &mdash; How do they evaluate options?</li>
+          <li><strong>Buyer's Journey</strong> &mdash; Where do they go for info? Who influences them?</li>
+        </ul>
+        <p class="source">Source: <em>Buyer Personas</em> by Adele Revella (Wiley, 2015). The gold standard for B2B persona methodology.</p>
+      </div>
+
+      <div class="card card--top-accent">
+        <h3>Jobs-to-Be-Done (JTBD)</h3>
+        <p>Clayton Christensen's JTBD theory says people don't buy products &mdash; they "hire" them to do a job. Each persona is evaluated on 3 job layers:</p>
+        <ul>
+          <li><strong>Functional Job</strong> &mdash; The task they need done (e.g., "vet 200 book orders per semester")</li>
+          <li><strong>Emotional Job</strong> &mdash; How they want to feel (e.g., "protected, not exposed")</li>
+          <li><strong>Social Job</strong> &mdash; How they want to be perceived (e.g., "a responsible superintendent")</li>
+        </ul>
+        <p class="source">Source: <em>Competing Against Luck</em> by Clayton Christensen (HarperBusiness, 2016).</p>
+      </div>
+
+      <div class="card card--top-accent">
+        <h3>Why These Frameworks for Bookmarked</h3>
+        <p>EdTech B2B sales to school districts have unique dynamics:</p>
+        <ul>
+          <li><strong>Multi-stakeholder buying committees</strong> &mdash; librarian champions, superintendent decision-makers, board ratifiers, CFO budget holders</li>
+          <li><strong>Emotional + regulatory triggers</strong> &mdash; fear of liability, professional identity loss, legislative pressure</li>
+          <li><strong>Long decision cycles with external catalysts</strong> &mdash; board meetings, parent complaints, ESC recommendations</li>
+        </ul>
+        <p style="margin-top: 12px;">Revella's 5 Rings capture the multi-stakeholder buying dynamics. JTBD captures the emotional depth that drives librarian advocacy and superintendent urgency. Together, they test whether personas are actually useful for content, sales, and product decisions.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px;">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Grading Scale</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Grade</th>
+            <th>Ring Score</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="grade grade--a" style="font-size: 20px;">A</span></td>
+            <td>9-10 per ring</td>
+            <td>Exceptional. Research-validated, includes real customer language, actionable for content/sales/product decisions. Ready to operationalize.</td>
+          </tr>
+          <tr>
+            <td><span class="grade grade--b" style="font-size: 20px;">B</span></td>
+            <td>7-8 per ring</td>
+            <td>Strong. Well-developed with clear detail but may lack validation against real customer conversations or miss some dimensions.</td>
+          </tr>
+          <tr>
+            <td><span class="grade grade--c" style="font-size: 20px;">C</span></td>
+            <td>5-6 per ring</td>
+            <td>Adequate. Present and directionally correct but based more on assumptions than research. Needs enrichment.</td>
+          </tr>
+          <tr>
+            <td><span class="grade grade--d" style="font-size: 20px;">D/F</span></td>
+            <td>1-4 per ring</td>
+            <td>Thin or absent. Mentioned in passing but not developed as a persona. Cannot inform decisions.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 4: PERSONA DEEP-DIVES ========== -->
+<div class="section section--alt" id="deep-dives">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 04</div>
+      <h2>Individual Persona Deep-Dives</h2>
+      <p>Each persona assessed against Revella's 5 Rings + JTBD analysis, with strengths, gaps, and source locations.</p>
+    </div>
+
+    <!-- SUPERINTENDENT -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Superintendent</div>
+          <div class="persona-title">Superintendent / Assistant Superintendent / Chief Academic Officer &bull; District Size: 5K&ndash;30K students</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--a">A</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">10</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">10</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="jtbd-grid">
+        <div class="jtbd-item">
+          <h5>Functional Job</h5>
+          <p>"Ensure district-wide book compliance without consuming staff resources. Get a defensible system of record before the next board meeting."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Emotional Job</h5>
+          <p>"Stop worrying about being caught unprepared. Feel confident that I won't be in the news for a parent challenge gone wrong."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Social Job</h5>
+          <p>"Be seen as a responsible, proactive leader who got ahead of the compliance issue &mdash; not the one who waited until it blew up."</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What's Strong</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">This is a textbook-quality buyer persona. Core fears and desires are precise and validated by real customer quotes (Keller ISD's 16-month book freeze, Garland ISD's $682K labor cost). The objection-response framework is specific and battle-tested. Buying triggers map to real district events. The stakeholder map correctly identifies the superintendent as decision-maker with librarian as champion. The psychographic segmentation (Proactive Protector at 30%, Crisis Responder at 25%) adds a dimension most personas lack entirely. Decision timeline (30-90 days via ESC, 6-12 months via procurement) is operationally useful.</p>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What Could Improve</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">Missing a day-in-the-life narrative that would make this persona usable for content creation (blog posts, case studies). Could benefit from a named composite persona (like "Paige Turner" for the librarian) to make it tangible for the team. Doesn't capture the superintendent's relationship with their board &mdash; some are board-aligned, others are board-wary, and this affects how they present a Bookmarked recommendation.</p>
+      </div>
+
+      <div class="source">Sources: customer-psychographics.md &bull; Confluence 67698689 (Value Props) &bull; Confluence 62455809 (Company Context) &bull; Confluence 56033476 (Cast of Characters) &bull; Confluence 55935321 (PRD) &bull; Confluence 67665940 (Customer Stories) &bull; Plaud transcripts</div>
+    </div>
+
+    <!-- LIBRARIAN -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Librarian</div>
+          <div class="persona-title">Campus Librarian / Library Media Specialist / Library Director &bull; Named: "Paige Turner"</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--a">A</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">10</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">10</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">10</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="jtbd-grid">
+        <div class="jtbd-item">
+          <h5>Functional Job</h5>
+          <p>"Process book orders in minutes instead of hours. Have a compliance workflow that generates defensible records automatically."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Emotional Job</h5>
+          <p>"Feel like a librarian again, not a compliance clerk. Stop being afraid that one missed book will end my career under SB 412."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Social Job</h5>
+          <p>"Be recognized as the professional who connects students with great books &mdash; not the person who blocks access to them."</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What's Strong</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">The strongest persona in the system. "Paige Turner" is a named composite that makes the persona tangible. Real quotes ("I spend 3 hours creating a single book order") are validated by transcript data. The professional identity dimension is captured perfectly &mdash; "You didn't become a librarian to manage spreadsheets" is locked messaging that came from this persona work. The PRD (11 epics, v2.2) is the most detailed product specification, and the marketing messaging (For Librarians page, 71204893) translates persona into website copy. The SB 412 criminal liability angle is specific and timely.</p>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What Could Improve</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">The Buyer's Journey ring scores 8 (not 10) because while professional channels are identified (TLA, TXLA, #txlchat), the persona doesn't map the <em>internal advocacy journey</em> &mdash; what happens after the librarian decides they want Bookmarked but needs to convince their principal, curriculum director, and superintendent? The escalation path is noted but the content and tools needed at each step aren't defined. Also missing: the librarian's relationship with parents (relevant for OnShelf Engage adoption).</p>
+      </div>
+
+      <div class="source">Sources: customer-psychographics.md &bull; Confluence 56033367/23232516 (PRDs) &bull; Confluence 71204893 (For Librarians Messaging) &bull; Confluence 67698689 (Value Props) &bull; Confluence 56033476 (Cast of Characters) &bull; Plaud transcripts</div>
+    </div>
+
+    <!-- BOARD MEMBER -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Board Member</div>
+          <div class="persona-title">School Board Trustee / Board President</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--b">B</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">7</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">6</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">5</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="jtbd-grid">
+        <div class="jtbd-item">
+          <h5>Functional Job</h5>
+          <p>"Approve spending that demonstrably reduces district liability exposure. See evidence the superintendent's recommendation is sound."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Emotional Job</h5>
+          <p>"Feel protected from personal liability. Know that if a parent raises a challenge, I can point to a documented process."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Social Job</h5>
+          <p>"Be seen as a responsible trustee who takes community concerns seriously without overreacting."</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What's Strong</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">Core fear/desire are accurate. Objection-response framework is specific. Content preferences (board-ready presentations, cost-benefit analyses) are actionable. Correctly identified as a "ratifier" who follows the superintendent's recommendation.</p>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What Could Improve</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">Decision Criteria scores 6 because the persona doesn't capture <em>how board members actually evaluate</em> &mdash; do they compare with peer districts? Do they ask for vendor references? Do they want a pilot period? The Buyer's Journey scores 5 because board members don't independently research solutions; they're influenced through board packets, superintendent presentations, and community pressure. But the persona doesn't map this influence chain in enough detail for content creation. No product PRD exists (correct &mdash; board members don't use the product), but a "Board Member Prototype" was built (Decision 4) suggesting there IS a product angle emerging.</p>
+      </div>
+
+      <div class="source">Sources: customer-psychographics.md &bull; Confluence 56033476 (Cast of Characters) &bull; Confluence 67698689 (Value Props) &bull; PROD Decision Log (56033329, Decision #4)</div>
+    </div>
+
+    <!-- CURRICULUM DIRECTOR -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Curriculum Director</div>
+          <div class="persona-title">Director of Instructional Materials / Chief Academic Officer</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--b">B-</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">7</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">7</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">6</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">5</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Assessment</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">Well-developed in the local psychographics file with specific fears (invisible classroom library exposure), triggers (audit requirements), and objection handling. However, this persona was <strong>explicitly deprioritized</strong> in the Confluence marketing personas page (TS1/67567629, Feb 11, 2026). This creates a tension: the codebase says they matter, Confluence says they don't. No product PRD exists. The Buyer's Journey is thin &mdash; we know they attend conferences and follow superintendent's lead, but the information-gathering and evaluation process isn't mapped. This persona matters most as a <em>champion who escalates to the superintendent</em>, and that advocacy pathway isn't documented.</p>
+      </div>
+
+      <div class="callout--warning callout" style="margin-top: 16px;">
+        <h4>Tension Alert</h4>
+        <p><code>customer-psychographics.md</code> includes Curriculum Director as a full persona (Profile #4). Confluence marketing page (67567629) explicitly lists them as "deprioritized." These need to be reconciled &mdash; is this persona active or not?</p>
+      </div>
+
+      <div class="source">Sources: customer-psychographics.md (Profile #4) &bull; Confluence 67567629 (Marketing Personas &mdash; deprioritized) &bull; Confluence 56033476 (Cast of Characters)</div>
+    </div>
+
+    <!-- ESC PARTNER -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The ESC Partner</div>
+          <div class="persona-title">Executive Director / Program Director at Regional Education Service Center</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--b">B+</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--high">9</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">8</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--mid">7</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="jtbd-grid">
+        <div class="jtbd-item">
+          <h5>Functional Job</h5>
+          <p>"Give my member districts a credible compliance solution when they call asking for help. Enable procurement through our piggyback clause."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Emotional Job</h5>
+          <p>"Feel relevant and valuable to my member districts. Stop fielding compliance questions I can't answer."</p>
+        </div>
+        <div class="jtbd-item">
+          <h5>Social Job</h5>
+          <p>"Be known as the ESC that proactively brought solutions to districts, not the one that waited for someone else to act."</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Assessment</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">This is a uniquely strong persona because it represents Bookmarked's distribution moat. The partnership model, revenue share, and procurement bypass are well-articulated. ESC 12 at 38% regional penetration is strong proof. Objection handling is specific ("we don't endorse vendors" &rarr; "this is a procurement pathway"). Missing: no product PRD (ESC partners don't use the product directly), and the Buyer's Journey could map the ESC director's internal process more clearly &mdash; do they need board approval to add a vendor to their catalog? What's the timeline from interest to active promotion?</p>
+      </div>
+
+      <div class="source">Sources: customer-psychographics.md (Profile #5) &bull; Confluence 67698689 (Value Props) &bull; Confluence 62455809 (Company Context &mdash; GTM section) &bull; Confluence 58982429 (Sales Methodology)</div>
+    </div>
+
+    <!-- PARENT/GUARDIAN -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Parent / Guardian</div>
+          <div class="persona-title">Student's parent or legal guardian &bull; OnShelf Engage user</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--d">D</div>
+          <div class="grade-label">Marketing</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">3</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">2</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">3</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">1</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">1</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="callout--warning callout" style="margin-top: 16px;">
+        <h4>Biggest Gap in the Persona System</h4>
+        <p>The Parent persona has a <strong>full product PRD</strong> (v1.1, 4 epics, complete API endpoints, UI mockups, invite flow, restriction workflows) in Confluence page 29818885. This is the OnShelf Engage product. But there is <strong>no marketing persona</strong> &mdash; not in <code>customer-psychographics.md</code>, not as a full Confluence marketing page, and only a brief mention in the Value Props page. There's no documented understanding of: what kind of parent signs up, what their fears and goals are, what messaging resonates, how they discover Bookmarked, or what their journey from invite to active user looks like.</p>
+        <p style="margin-top: 8px;">This matters because OnShelf Engage is positioned as a key differentiator ("transforms adversarial to collaborative parent relationship") &mdash; but there's no persona to inform the activation messaging, the invite email copy, or the onboarding experience.</p>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">What Exists (Product Side)</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">The Guardian PRD is actually detailed: invite-based onboarding, multi-student dashboard, library browsing, restriction/override controls, permission request workflows. It includes CAN/CANNOT lists, API endpoint mappings, and UI section specifications. The product team knows <em>what</em> the parent does in the app. What's missing is <em>who</em> this parent is and <em>why</em> they engage.</p>
+      </div>
+
+      <div class="source">Sources: Confluence 29818885 (Guardian PRD) &bull; Confluence 67698689 (Value Props &mdash; brief mention) &bull; customer-psychographics.md (absent) &bull; Website (brief OnShelf Engage mention)</div>
+    </div>
+
+    <!-- TEACHER -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The Teacher</div>
+          <div class="persona-title">Classroom teacher with a personal library collection &bull; Classroom Library Module user</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--d">D</div>
+          <div class="grade-label">Marketing</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">3</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">2</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">2</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">1</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--none">1</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div class="callout--warning callout" style="margin-top: 16px;">
+        <h4>Product Rich, Marketing Empty</h4>
+        <p>The Teacher PRD (v1.1, 6 epics) defines classroom library management, roster sync, compliance hierarchy ("The Ceiling Rule" and "The Gap Rule"), circulation, and reporting. This is a real product module with real users. But the teacher is <strong>explicitly deprioritized</strong> in Confluence marketing personas (67567629) and <strong>absent</strong> from <code>customer-psychographics.md</code>. There's no marketing persona, no website presence, no messaging framework.</p>
+        <p style="margin-top: 8px;">The strategic question: Teachers don't buy Bookmarked (superintendents do). But teachers are <em>users</em> who must adopt the Classroom Library Module for it to deliver value. Without a persona, there's no adoption marketing, no onboarding messaging, and no content to help teachers understand why they should catalog their classroom books.</p>
+      </div>
+
+      <div class="source">Sources: Confluence 55869529/30081026 (Teacher PRD) &bull; Confluence 67567629 (Marketing Personas &mdash; deprioritized) &bull; customer-psychographics.md (absent) &bull; Jira BOOK-859, BOOK-868 (referenced)</div>
+    </div>
+
+    <!-- CFO -->
+    <div class="persona-card">
+      <div class="persona-header">
+        <div>
+          <div class="persona-name">The CFO / Business Manager</div>
+          <div class="persona-title">District financial officer &bull; Budget gatekeeper</div>
+        </div>
+        <div class="grade-box">
+          <div class="grade grade--c">C</div>
+          <div class="grade-label">Overall</div>
+        </div>
+      </div>
+
+      <div class="rings-grid">
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">6</div>
+          <div class="ring-name">Priority Initiatives</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">5</div>
+          <div class="ring-name">Success Factors</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">5</div>
+          <div class="ring-name">Perceived Barriers</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">4</div>
+          <div class="ring-name">Decision Criteria</div>
+        </div>
+        <div class="ring-item">
+          <div class="ring-score ring-score--low">3</div>
+          <div class="ring-name">Buyer's Journey</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Assessment</h4>
+        <p style="font-size: 14px; color: var(--bm-secondary-text);">Present in Confluence Cast of Characters and Value Props as a stakeholder &mdash; not as a full persona. Core framing: "$3/student predictable cost vs. compliance failure risk." Correctly positioned as economic influencer, not decision-maker. But there's no detail on how CFOs actually evaluate EdTech spend: Do they compare line-item to line-item? Do they need multi-year commitment data? What's the approval process for sub-$50K purchases vs. larger ones? This is a <em>sales stakeholder profile</em>, not a persona &mdash; which is appropriate for the current stage.</p>
+      </div>
+
+      <div class="source">Sources: Confluence 56033476 (Cast of Characters) &bull; Confluence 67698689 (Value Props) &bull; customer-psychographics.md (referenced in Superintendent's Stakeholder Map as "Economic Buyer")</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== SECTION 5: WEBSITE ALIGNMENT ========== -->
+<div class="section" id="website-audit">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 05</div>
+      <h2>Website-to-Persona Alignment</h2>
+      <p>How well does bookmarked.com speak to each persona? Assessed against the homepage and known pages.</p>
+    </div>
+
+    <div class="card">
+      <div class="website-row" style="border-bottom: 2px solid var(--bm-border-light); font-weight: 700;">
+        <div>Persona</div>
+        <div>Website Presence</div>
+        <div>Alignment</div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Superintendent</div>
+        <div class="website-desc">Homepage hero messaging targets superintendent directly: "SB 13 didn't just create more work for librarians &mdash; it made book compliance a board-level liability." CTA: "Book a 20-Minute Walkthrough." Messaging hierarchy correctly leads with library vitality (Level 1) with compliance as supporting (Level 3).</div>
+        <div><span class="badge badge--success">Strong</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Librarian</div>
+        <div class="website-desc">Homepage features "Your librarians should be matching books with readers &mdash; not managing spreadsheets." Dedicated "For Librarians" page exists in HubSpot (page ID 173284618778) but is still in <strong>DRAFT status</strong>. The messaging page (71204893) has full copy ready. This is the biggest quick win &mdash; the content is written, it just needs to go live.</div>
+        <div><span class="badge badge--warning">Draft exists</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Parent</div>
+        <div class="website-desc">Brief mention of OnShelf Engage as "collaborative visibility" for parents. No dedicated page, no parent-specific messaging, no parent-facing CTA. Parents don't buy the product, but they're end users whose adoption matters for district value delivery.</div>
+        <div><span class="badge badge--warning">Thin</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Board Member</div>
+        <div class="website-desc">Not directly addressed on website. The "board-level liability" messaging targets superintendents <em>about</em> their board, not board members directly. This is likely correct &mdash; board members don't visit vendor websites. They receive board packets from their superintendent.</div>
+        <div><span class="badge badge--neutral">N/A (correct)</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Curriculum Director</div>
+        <div class="website-desc">Not addressed on website. The Classroom Library Module ("we cover the entire district &mdash; not just the library") could resonate with curriculum directors, but there's no page or section targeting them.</div>
+        <div><span class="badge badge--neutral">Absent</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">ESC Partner</div>
+        <div class="website-desc">Not addressed on website. ESC partnerships are the distribution moat, but ESCs are reached through direct outreach and TCASE conferences &mdash; not the website. A "For Partners" or "For ESCs" page could strengthen credibility but isn't a priority.</div>
+        <div><span class="badge badge--neutral">Absent (OK)</span></div>
+      </div>
+
+      <div class="website-row">
+        <div class="persona-label">Teacher</div>
+        <div class="website-desc">Not addressed on website. The Classroom Library Module exists as a product but has no website presence targeting teachers. Teachers are internal users who receive Bookmarked through their district &mdash; but they need to understand why they should use it.</div>
+        <div><span class="badge badge--warning">Absent</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Website Messaging Alignment Check</h4>
+      <p>The homepage correctly implements the locked messaging hierarchy: <strong>Library vitality first</strong> (Level 1), <strong>collection intelligence second</strong> (Level 2), <strong>board-level liability third</strong> (Level 3). The "For Librarians" draft page uses the "Practical Partner" voice mode as specified. Key phrases match the approved list in <code>messaging-consolidated.md</code>. No banned phrases detected. The website is well-aligned with the messaging standards &mdash; the gap is persona coverage, not messaging accuracy.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 6: PRODUCT vs MARKETING ========== -->
+<div class="section section--alt" id="product-marketing">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 06</div>
+      <h2>Product vs. Marketing Persona Alignment</h2>
+      <p>Three persona layers exist independently. Here's where they agree, where they diverge, and what to do about it.</p>
+    </div>
+
+    <div class="card" style="margin-bottom: 32px;">
+      <h3>The Three Layers</h3>
+      <table style="margin-top: 16px;">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Location</th>
+            <th>Purpose</th>
+            <th>Personas Included</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Product PRDs</strong></td>
+            <td>Confluence SD + PROD spaces</td>
+            <td>Engineering specs: epics, user stories, permissions, APIs</td>
+            <td>Librarian, Superintendent, Teacher, Guardian, SuperAdmin</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing Personas</strong></td>
+            <td>Confluence TS1 + SH spaces</td>
+            <td>Sales/marketing: messaging, value props, conversation frameworks</td>
+            <td>Superintendent, Librarian, CFO, Board, Parent, ESC, Publisher, Investor</td>
+          </tr>
+          <tr>
+            <td><strong>Psychographics</strong></td>
+            <td><code>customer-psychographics.md</code> (local)</td>
+            <td>Operational: buying behavior, objections, content preferences, segments</td>
+            <td>Superintendent, Librarian, Board Member, Curriculum Director, ESC Partner</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card--accent">
+        <h3>Where They Align</h3>
+        <ul>
+          <li><strong>Superintendent</strong> &mdash; consistent across all 3 layers. Core fear, buyer role, and messaging match.</li>
+          <li><strong>Librarian</strong> &mdash; consistent across all 3 layers. Named persona "Paige Turner" used in PRDs, product terminology ("Compliance Gatekeeper") aligns with marketing positioning.</li>
+          <li><strong>Board Member</strong> &mdash; marketing and psychographics align as "ratifier" role. No product PRD (correct &mdash; they don't use the product directly).</li>
+        </ul>
+      </div>
+
+      <div class="card card--warning">
+        <h3>Where They Diverge</h3>
+        <ul>
+          <li><strong>Teacher</strong> &mdash; full product PRD, zero marketing presence. Product team built for them; marketing team deprioritized them.</li>
+          <li><strong>Parent</strong> &mdash; full product PRD, minimal marketing mention. OnShelf Engage is built but its users aren't understood from a marketing perspective.</li>
+          <li><strong>Curriculum Director</strong> &mdash; full psychographic profile in codebase, explicitly deprioritized in Confluence marketing. Needs reconciliation.</li>
+          <li><strong>CFO</strong> &mdash; present in Confluence marketing, absent from psychographics file and PRDs. Needs decision: stakeholder profile or full persona?</li>
+          <li><strong>ESC Partner</strong> &mdash; full psychographic + Confluence marketing, but no product PRD. Correct &mdash; they're channel partners, not users.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <h4>The Structural Recommendation</h4>
+      <p>The three layers serve different purposes and <em>should</em> contain different personas. But they need a cross-reference map and a single index that answers: "What do we know about [persona], and where does it live?" The Personas & PRDs Index page (56131585) does this for product but doesn't link to marketing or psychographic sources. <code>customer-psychographics.md</code> references Confluence pages as data sources but doesn't link to PRDs. A unified persona index &mdash; even just a table &mdash; would close this gap.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 7: RECOMMENDATIONS ========== -->
+<div class="section" id="recommendations">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 07</div>
+      <h2>Prioritized Recommendations</h2>
+      <p>Ranked by impact on Bookmarked's ability to sell, onboard, and retain districts.</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--critical">1</div>
+        <h4>Ship the "For Librarians" Website Page</h4>
+        <span class="badge badge--warning">Quick Win</span>
+      </div>
+      <p>The messaging is written (Confluence 71204893), the HubSpot page exists (173284618778), and it's in draft. This is the highest-ROI persona action because librarians are your user-champions who drive adoption from below. Publishing this page means librarians searching for compliance solutions find Bookmarked speaking directly to them in the "Practical Partner" voice, not just the superintendent-facing liability messaging.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Low (content exists, page exists in HubSpot). <strong>Impact:</strong> High (librarian organic discovery + internal advocacy ammunition).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--critical">2</div>
+        <h4>Build a Parent/Guardian Marketing Persona</h4>
+        <span class="badge badge--warning">Critical Gap</span>
+      </div>
+      <p>OnShelf Engage is a differentiated product ("transforms adversarial to collaborative") with a full PRD but zero understanding of the parent as a marketing audience. Build a persona that answers: Who is the parent who engages? (Not all will.) What's their motivation &mdash; is it concern about content, interest in their child's reading, or something else? What triggers activation after they receive the invite email? What does success look like to them? This persona directly informs: (a) the invite email copy, (b) the onboarding flow messaging, (c) whether OnShelf Engage warrants its own website section.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Medium (needs research &mdash; Plaud transcripts may have parent mentions). <strong>Impact:</strong> High (OnShelf Engage adoption is a retention lever and a sales differentiator).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--critical">3</div>
+        <h4>Add HubSpot Persona Property</h4>
+        <span class="badge badge--warning">Operational Blocker</span>
+      </div>
+      <p>Create a custom contact property <code>bookmarked_persona</code> (dropdown: Superintendent, Librarian, Board Member, Curriculum Director, ESC Partner, Parent, Teacher, CFO, IT Director, Other) and a custom property <code>buying_segment</code> (dropdown: Proactive Protector, Crisis Responder, Innovation Leader, Peer Follower, Unknown). Retroactively tag existing contacts using job title mapping. This unlocks: persona-based email campaigns, persona-filtered reporting, persona-specific lead scoring, and ROI tracking by persona. Without this, all your persona work stays theoretical.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Low-Medium (property creation is simple; backfill requires a mapping script). <strong>Impact:</strong> High (operationalizes the entire persona framework).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--high">4</div>
+        <h4>Build a Teacher Adoption Persona</h4>
+      </div>
+      <p>Not a buyer persona &mdash; an <em>adoption persona</em>. Teachers don't buy Bookmarked, but they must adopt the Classroom Library Module for it to deliver district-wide value. This persona should answer: What motivates a teacher to catalog their classroom library? What are their barriers (time, confusion, "another system")? What does the onboarding journey look like? This directly informs in-app messaging, admin rollout guides, and the value narrative for districts considering the Classroom Library Module.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Medium. <strong>Impact:</strong> Medium-High (Classroom Library visibility is a differentiator districts want but only works with teacher adoption).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--high">5</div>
+        <h4>Create a Unified Persona Index</h4>
+      </div>
+      <p>A single Confluence page (or local file) that serves as the master cross-reference: for each persona, link to the product PRD, the marketing persona page, the psychographics section, and note the website presence. This eliminates the "which source do I trust?" confusion and makes persona governance auditable. Model it on the existing Personas & PRDs Index (56131585) but expand it to include marketing sources.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Low. <strong>Impact:</strong> Medium (structural clarity, prevents drift).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--high">6</div>
+        <h4>Reconcile Curriculum Director Status</h4>
+      </div>
+      <p>Decide: Is the Curriculum Director an active persona or not? <code>customer-psychographics.md</code> says yes (full Profile #4). Confluence marketing says "deprioritized." If active, update Confluence. If deprioritized, remove from psychographics and note the reasoning (e.g., "curriculum directors are reached through superintendent, not directly"). Either answer is fine &mdash; the ambiguity is the problem.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Low (decision, not research). <strong>Impact:</strong> Medium (eliminates a governance inconsistency).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--medium">7</div>
+        <h4>Add Day-in-the-Life Narratives to Top 2 Personas</h4>
+      </div>
+      <p>The Superintendent and Librarian personas are strong on psychographics but could benefit from a narrative format: "It's 7:30am on a Tuesday, and Superintendent Johnson opens an email from the ESC about new TEA guidance..." This format makes personas usable for content creation (blog posts, case studies, video scripts) and makes them sticky for the team. Revella calls these "buying insight stories" &mdash; they bring the persona to life beyond bullet points.</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Low-Medium. <strong>Impact:</strong> Medium (content enablement).</p>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-header">
+        <div class="rec-priority rec-priority--medium">8</div>
+        <h4>Name the Superintendent Persona</h4>
+      </div>
+      <p>The librarian has "Paige Turner" &mdash; a memorable composite name that makes the persona tangible. The superintendent doesn't. Give them a name (following the "Paige Turner" naming convention, use something relevant like "Mark Canton" or similar). Named personas are referenced more frequently by teams and create a shared language for decision-making ("Would Mark buy this?" vs. "Would a superintendent buy this?").</p>
+      <p style="margin-top: 8px;"><strong>Effort:</strong> Trivial. <strong>Impact:</strong> Low-Medium (team adoption of persona-driven thinking).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 8: SOURCE MAP ========== -->
+<div class="section section--alt" id="source-map">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Section 08</div>
+      <h2>Complete Source Map</h2>
+      <p>Every finding in this audit traced to its source. Confluence page IDs link directly to pages.</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Content</th>
+          <th>Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>customer-psychographics.md</strong></td>
+          <td>Local file</td>
+          <td><code>team-shared/sales/customer-psychographics.md</code></td>
+          <td>5 personas + 4 psychographic segments + interaction matrix</td>
+          <td>Mar 2, 2026 (v1.0.0)</td>
+        </tr>
+        <tr>
+          <td><strong>messaging-consolidated.md</strong></td>
+          <td>Local file</td>
+          <td><code>team-shared/design/messaging-consolidated.md</code></td>
+          <td>Stakeholder value props, voice modes, channel rules</td>
+          <td>Feb 17, 2026 (v2.0.0)</td>
+        </tr>
+        <tr>
+          <td><strong>company-context.md</strong></td>
+          <td>Local file</td>
+          <td><code>company-context.md</code></td>
+          <td>Positioning facts, ICP, audience framing</td>
+          <td>Current</td>
+        </tr>
+        <tr>
+          <td><strong>competitive-positioning.md</strong></td>
+          <td>Local file</td>
+          <td><code>team-shared/sales/competitive-positioning.md</code></td>
+          <td>4 battle cards with persona-specific objection handling</td>
+          <td>Mar 2, 2026 (v1.0.0)</td>
+        </tr>
+        <tr>
+          <td><strong>founder-narrative.md</strong></td>
+          <td>Local file</td>
+          <td><code>team-shared/design/founder-narrative.md</code></td>
+          <td>Origin story, voice fingerprint, "guide" positioning</td>
+          <td>Mar 3, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Librarian PRD</strong></td>
+          <td>Confluence</td>
+          <td>PROD/56033367, SD/23232516</td>
+          <td>v2.2, 11 epics, full permissions, "Paige Turner"</td>
+          <td>Jan 25, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Superintendent Admin PRD</strong></td>
+          <td>Confluence</td>
+          <td>PROD/55935321, SD/25690114</td>
+          <td>v2.1, 13+ epics, district-wide permissions</td>
+          <td>Jan 25, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Teacher PRD</strong></td>
+          <td>Confluence</td>
+          <td>PROD/55869529, SD/30081026</td>
+          <td>v1.1, 6 epics, Ceiling Rule, Gap Rule</td>
+          <td>Jan 25, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Guardian PRD</strong></td>
+          <td>Confluence</td>
+          <td>SD/29818885</td>
+          <td>v1.1, 4 epics, full API endpoints, UI specs</td>
+          <td>Jan 25, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Personas & PRDs Index</strong></td>
+          <td>Confluence</td>
+          <td>PROD/56131585</td>
+          <td>Navigation page linking all persona PRDs</td>
+          <td>Jan 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Decision Log</strong></td>
+          <td>Confluence</td>
+          <td>PROD/56033329</td>
+          <td>5 decisions including persona-based PRD structure adoption</td>
+          <td>Mar 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Marketing Personas (consolidated)</strong></td>
+          <td>Confluence</td>
+          <td>TS1/67567629</td>
+          <td>8 personas + 2 deprioritized, reconciled from 5 sources</td>
+          <td>Feb 11, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Cast of Characters</strong></td>
+          <td>Confluence</td>
+          <td>SH/56033476</td>
+          <td>7 stakeholder messaging profiles for sales conversations</td>
+          <td>~Feb 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Value Props by Stakeholder</strong></td>
+          <td>Confluence</td>
+          <td>TS1/67698689</td>
+          <td>8 value prop narratives (includes Publisher, Investor)</td>
+          <td>Feb 11, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>For Librarians Messaging</strong></td>
+          <td>Confluence</td>
+          <td>TS1/71204893</td>
+          <td>Website-specific librarian page copy (DRAFT)</td>
+          <td>Feb 16, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>Company Context</strong></td>
+          <td>Confluence</td>
+          <td>SH1/62455809</td>
+          <td>Audience framing, ICP signals, competitive positioning</td>
+          <td>v2</td>
+        </tr>
+        <tr>
+          <td><strong>Sales Methodology</strong></td>
+          <td>Confluence</td>
+          <td>SH1/58982429</td>
+          <td>Challenger Sale + Dunford, best-fit profile, champion profile</td>
+          <td>v1</td>
+        </tr>
+        <tr>
+          <td><strong>Customer Stories & Proof</strong></td>
+          <td>Confluence</td>
+          <td>TS1/67665940</td>
+          <td>11 named districts, real quotes, quantified metrics</td>
+          <td>Feb 21, 2026</td>
+        </tr>
+        <tr>
+          <td><strong>CEO Foundation Document</strong></td>
+          <td>Confluence</td>
+          <td>SH1/58851341 (also BMEOS/80347535)</td>
+          <td>Strategic positioning, value hierarchy, canonical language</td>
+          <td>Feb 25, 2026 (v7)</td>
+        </tr>
+        <tr>
+          <td><strong>Plaud Transcripts</strong></td>
+          <td>Local files</td>
+          <td><code>claude-output/research/plaud-district-transcripts/</code></td>
+          <td>~50 real district conversation recordings</td>
+          <td>Various 2025-2026</td>
+        </tr>
+        <tr>
+          <td><strong>bookmarked.com</strong></td>
+          <td>Website</td>
+          <td>Live site + HubSpot CMS</td>
+          <td>Homepage targets Superintendent + Librarian. For Librarians page in draft (HubSpot 173284618778).</td>
+          <td>Current</td>
+        </tr>
+        <tr>
+          <td><strong>HubSpot CRM</strong></td>
+          <td>CRM</td>
+          <td>Hub ID 39855019</td>
+          <td>No persona property. Job title captured but not segmented.</td>
+          <td>Current</td>
+        </tr>
+        <tr>
+          <td><strong>Jira Tickets</strong></td>
+          <td>Jira</td>
+          <td>BOOK-859, BOOK-868, V2KAN-48</td>
+          <td>Personas referenced ad-hoc in acceptance criteria</td>
+          <td>Various</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  <div class="container">
+    <p style="font-size: 18px; font-weight: 700;">Bookmarked</p>
+    <p class="tagline">The Book Intelligence Company</p>
+    <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 16px;">Persona Ecosystem Audit &bull; March 17, 2026 &bull; Internal use only</p>
+    <p style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 8px;">Assessment frameworks: Adele Revella, <em>Buyer Personas</em> (Wiley 2015); Clayton Christensen, <em>Competing Against Luck</em> (HarperBusiness 2016); HubSpot Buyer Persona Canvas</p>
+  </div>
+</div>
+
+</body>
+</html>

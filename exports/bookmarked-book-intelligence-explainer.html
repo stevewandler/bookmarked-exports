@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Bookmarked's Book Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Embedded brand tokens */
+    :root {
+      --bm-eigengrau: #101828;
+      --bm-deep-green: #107569;
+      --bm-teal-accent: #12A38C;
+      --bm-white: #FFFFFF;
+      --bm-pumpkin: #FF692E;
+      --bm-secondary-text: #475467;
+      --bm-muted-gray: #9CA3AF;
+      --bm-border-light: #E5E7EB;
+      --bm-bg-cool: #F8FAFC;
+      --bm-bg-light: #F9FAFB;
+      --bm-font-family: 'Urbanist', Arial, Helvetica, sans-serif;
+      --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--bm-font-family);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--bm-eigengrau);
+      background: var(--bm-white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--bm-gradient-hero);
+      padding: 64px 0 48px;
+      color: var(--bm-white);
+    }
+
+    .hero-logo {
+      height: 28px;
+      margin-bottom: 32px;
+      filter: brightness(0) invert(1);
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 640px;
+    }
+
+    .hero .subtitle {
+      font-size: 17px;
+      color: rgba(255,255,255,0.85);
+      max-width: 580px;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    /* Sections */
+    .section {
+      padding: 48px 0;
+    }
+
+    .section--alt {
+      background: var(--bm-bg-cool);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--bm-teal-accent);
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-intro {
+      font-size: 17px;
+      color: var(--bm-secondary-text);
+      max-width: 640px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* Pillar cards */
+    .pillar-card {
+      background: var(--bm-white);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--bm-border-light);
+      border-left: 4px solid var(--bm-teal-accent);
+    }
+
+    .section--alt .pillar-card {
+      background: var(--bm-white);
+    }
+
+    .pillar-card .pillar-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .pillar-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--bm-eigengrau);
+    }
+
+    .pillar-card p {
+      font-size: 15px;
+      color: var(--bm-secondary-text);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .pillar-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .pillar-card .highlight {
+      color: var(--bm-deep-green);
+      font-weight: 600;
+    }
+
+    /* Comparison row */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .comparison-box {
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .comparison-box--chatgpt {
+      background: #FFF5F0;
+      border: 1px solid #FFD6C4;
+    }
+
+    .comparison-box--bookmarked {
+      background: #F0FAF8;
+      border: 1px solid #B3E0D8;
+    }
+
+    .comparison-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-box--chatgpt h4 {
+      color: #C4320A;
+    }
+
+    .comparison-box--bookmarked h4 {
+      color: var(--bm-deep-green);
+    }
+
+    .comparison-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .comparison-box li {
+      font-size: 14px;
+      color: var(--bm-secondary-text);
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .comparison-box--chatgpt li::before {
+      content: '✗';
+      position: absolute;
+      left: 0;
+      color: #C4320A;
+      font-weight: 700;
+    }
+
+    .comparison-box--bookmarked li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--bm-deep-green);
+      font-weight: 700;
+    }
+
+    /* Vision section */
+    .vision-card {
+      background: var(--bm-bg-light);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--bm-border-light);
+    }
+
+    .vision-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .vision-card p {
+      font-size: 15px;
+      color: var(--bm-secondary-text);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .vision-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Bottom line */
+    .bottom-line {
+      background: var(--bm-eigengrau);
+      color: var(--bm-white);
+      padding: 48px 0;
+    }
+
+    .bottom-line h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--bm-white);
+    }
+
+    .bottom-line-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .bottom-line-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .bottom-line-item .check {
+      color: var(--bm-teal-accent);
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .bottom-line-item p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bm-deep-green);
+      color: var(--bm-white);
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    .footer-logo {
+      height: 22px;
+      filter: brightness(0) invert(1);
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .footer a {
+      color: var(--bm-white);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .section h2 { font-size: 24px; }
+      .comparison { grid-template-columns: 1fr; }
+      .bottom-line-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Print */
+    @media print {
+      body { font-size: 11pt; }
+      .hero, .bottom-line, .footer {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pillar-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="container">
+      <img src="https://bookmarked.com/images/logo-white.svg" alt="Bookmarked" class="hero-logo" onerror="this.style.display='none'">
+      <h1>Understanding Bookmarked's Book&nbsp;Intelligence</h1>
+      <p class="subtitle">How we help districts make more informed decisions about the books they order — and why that's fundamentally different from typing a title into ChatGPT.</p>
+    </div>
+  </div>
+
+  <!-- What Bookmarked Does -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">What We Do</div>
+      <h2>Research at Scale — So Your Team Doesn't Have To</h2>
+      <p class="section-intro">Bookmarked uses AI to search the internet for publicly available information about books — professional reviews, news coverage, what educators and organizations have published. We collect that information and provide it to your district so your team can make more informed decisions about whether to order a book.</p>
+      <p class="section-intro">Instead of your staff searching the internet for each book one at a time, we do that research for them. For a list of hundreds or thousands of titles, that's the difference between weeks of manual effort and a single, consistent report.</p>
+    </div>
+  </div>
+
+  <!-- Why It's Different -->
+  <div class="section section--alt">
+    <div class="container">
+      <div class="section-label">How It's Different</div>
+      <h2>Why Bookmarked Is Not the Same as ChatGPT</h2>
+      <p class="section-intro">General AI tools like ChatGPT are impressive, but they weren't built for this job. Here's what makes Bookmarked's approach fundamentally different.</p>
+
+      <!-- Pillar 1: Consistency -->
+      <div class="pillar-card">
+        <div class="pillar-icon">🔄</div>
+        <h3>Consistency — One System, One Answer</h3>
+        <p>When a librarian types a book title into ChatGPT, they get a result. When another librarian types the same title with a slightly different prompt, they get a different result. Even the <span class="highlight">same person using the same tool with the exact same prompt</span> can get different answers — because large language models generate responses based on how they were trained, and that changes over time.</p>
+        <p>Multiply that across five staff members, three different AI tools, and thousands of titles, and you have a patchwork of contradicting information — none of it consistent, none of it comparable.</p>
+        <p><span class="highlight">Bookmarked gives every reviewer the same intelligence, in the same framework, every time.</span> One system. One answer. That's what your board and your team need to work from.</p>
+      </div>
+
+      <!-- Pillar 2: Copyright Integrity -->
+      <div class="pillar-card">
+        <div class="pillar-icon">📖</div>
+        <h3>Honesty About What AI Can and Can't Know</h3>
+        <p>Here's something most people don't realize: <span class="highlight">no AI tool has the copyright ability to read what's actually inside a book</span> — especially new titles. When you type a book title into ChatGPT, it's not reading the book. It's generating a response based on training data that may be incomplete, outdated, or entirely fabricated.</p>
+        <p>Bookmarked takes a different approach. We search for information <em>about</em> the book that's publicly available — what people have said, what's been published, what professionals have assessed. We never claim to know what's in a book. We tell you what we found, and if we didn't find much, we tell you that too.</p>
+        <p>That honesty matters. <span class="highlight">ChatGPT will confidently give you an answer about a brand-new book that may be completely made up.</span> Your team deserves to know the difference between real information and a confident guess.</p>
+      </div>
+
+      <!-- Pillar 3: ISBN Fidelity -->
+      <div class="pillar-card">
+        <div class="pillar-icon">🔍</div>
+        <h3>ISBN Fidelity — The Right Book, Not "A" Book</h3>
+        <p>Many districts have policies requiring ISBN-based lookup — and for good reason. A book title alone can refer to multiple editions, formats, and versions, each with different content.</p>
+        <p>ChatGPT doesn't distinguish between ISBNs. It treats "a book called X" as one thing. <span class="highlight">Bookmarked ties intelligence to the specific ISBN</span> — the exact edition your district is considering. That precision is what your process requires.</p>
+      </div>
+
+      <!-- Pillar 4: Collaboration -->
+      <div class="pillar-card">
+        <div class="pillar-icon">👥</div>
+        <h3>Collaboration — One Platform, Not a Hundred Spreadsheets</h3>
+        <p>In many districts today, book review data lives in spreadsheets, email threads, and individual notes. None of it is shared. None of it is searchable. When a committee needs to review a title, they're starting from scratch.</p>
+        <p>Bookmarked gives your librarians and staff a <span class="highlight">single platform to enter notes, share feedback, and collaborate with their committee and board</span>. Every piece of information is captured in one place — accessible to everyone who needs it.</p>
+        <p>When a librarian transfers or retires, the institutional knowledge stays. That's a fundamentally different model from individual ChatGPT conversations that disappear when someone closes a browser tab.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Side-by-side comparison -->
+  <div class="section">
+    <div class="container">
+      <div class="section-label">At a Glance</div>
+      <h2>The Practical Difference</h2>
+      <div class="comparison">
+        <div class="comparison-box comparison-box--chatgpt">
+          <h4>General AI Tools (ChatGPT, Gemini, etc.)</h4>
+          <ul>
+            <li>Different results every time, even with the same prompt</li>
+            <li>Generates answers from training data — may be outdated or fabricated</li>
+            <li>No ISBN-level precision</li>
+            <li>No shared workspace — each person works alone</li>
+            <li>No audit trail or institutional record</li>
+            <li>Confidently answers even when it has no real data</li>
+          </ul>
+        </div>
+        <div class="comparison-box comparison-box--bookmarked">
+          <h4>Bookmarked</h4>
+          <ul>
+            <li>Same intelligence, same framework, every time</li>
+            <li>Sources publicly available information — transparent about what it found</li>
+            <li>Tied to the specific ISBN your district is evaluating</li>
+            <li>Shared platform for team collaboration and notes</li>
+            <li>Permanent record that stays when staff transitions</li>
+            <li>Tells you when information is limited — doesn't guess</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Where We're Headed -->
+  <div class="section section--alt">
+    <div class="container">
+      <div class="section-label">Where We're Headed</div>
+      <h2>The Publisher Partnership</h2>
+      <div class="vision-card">
+        <p>We're building partnerships with publishers to create a secure environment where they provide us with the book itself. Our AI reads the book and generates intelligence that helps districts make informed ordering decisions according to their policies.</p>
+        <p>This model <span class="highlight">protects publishers and authors</span>. We would never release copyright information publicly. Their job is to create, publish, and sell books. Our job is to help districts make informed decisions. The partnership serves both.</p>
+        <p>This is fundamentally different from what a general AI tool can offer. Publishers aren't going to hand their content to a general-purpose chatbot. But they will work with a platform built specifically to protect their intellectual property while helping districts make better decisions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Line -->
+  <div class="bottom-line">
+    <div class="container">
+      <h2>The Bottom Line</h2>
+      <div class="bottom-line-grid">
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Saves your team the time and effort of searching the internet for information on every book, one by one</p>
+        </div>
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Gives everyone on the team the same information, in the same format, from one centralized source</p>
+        </div>
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Tied to the specific ISBN your policy requires — not a general summary of "a book called X"</p>
+        </div>
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Provides a collaborative platform where your team works together — not in isolated spreadsheets and email threads</p>
+        </div>
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Designed for the people doing this work every day — librarians and staff who need a better way to do due diligence at scale</p>
+        </div>
+        <div class="bottom-line-item">
+          <span class="check">✓</span>
+          <p>Transparent about its sources — tells you what it found and what it didn't, instead of generating confident guesses</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="container">
+      <img src="https://bookmarked.com/images/logo-white.svg" alt="Bookmarked" class="footer-logo" onerror="this.style.display='none'">
+      <p><strong>Bookmarked</strong> — The Book Intelligence Company</p>
+      <p style="margin-top: 8px;"><a href="https://bookmarked.com">bookmarked.com</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookmarked V2.0 Completion Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-teal-dark: #0D5A52;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, sans-serif;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--bm-font-family); font-size:16px; line-height:1.5; color: var(--bm-eigengrau); background: var(--bm-white); -webkit-font-smoothing:antialiased; }
+.container { max-width:1100px; margin:0 auto; padding:0 24px; }
+
+/* Hero */
+.hero { background: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%); padding:72px 0 48px; color:#fff; }
+.hero h1 { font-size:40px; font-weight:800; line-height:1.15; letter-spacing:-0.02em; max-width:700px; }
+.hero p { font-size:16px; color:rgba(255,255,255,0.85); max-width:600px; margin-top:16px; line-height:1.6; }
+.hero-meta { display:flex; gap:32px; margin-top:24px; font-size:13px; color:rgba(255,255,255,0.7); font-weight:600; }
+
+/* Summary stats */
+.stats-bar { display:grid; grid-template-columns: repeat(4,1fr); gap:24px; padding:32px 0; border-bottom:1px solid var(--bm-border-light); }
+.stat-item { text-align:center; }
+.stat-num { font-size:36px; font-weight:800; color:var(--bm-deep-green); line-height:1.1; }
+.stat-num.red { color:#DC2626; }
+.stat-num.yellow { color:#D97706; }
+.stat-num.green { color:var(--bm-teal-accent); }
+.stat-label { font-size:13px; color:var(--bm-secondary-text); margin-top:4px; font-weight:600; }
+
+/* Section */
+.section { padding:48px 0; }
+.section-alt { background:var(--bm-bg-cool); }
+.section h2 { font-size:28px; font-weight:700; letter-spacing:-0.02em; margin-bottom:8px; }
+.section h2 .num { color:var(--bm-teal-accent); }
+.section-desc { font-size:16px; color:var(--bm-secondary-text); margin-bottom:32px; max-width:700px; }
+
+/* Module cards */
+.module-grid { display:flex; flex-direction:column; gap:20px; }
+.module-card { background:#fff; border:1px solid var(--bm-border-light); border-radius:12px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
+.section-alt .module-card { background:#fff; }
+.module-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.module-name { font-size:18px; font-weight:700; }
+.module-role { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--bm-teal-accent); margin-bottom:4px; }
+.status-badge { display:inline-block; padding:4px 14px; font-size:11px; font-weight:700; letter-spacing:0.5px; border-radius:100px; text-transform:uppercase; white-space:nowrap; }
+.status-complete { background:rgba(18,163,140,0.15); color:var(--bm-teal-accent); }
+.status-partial { background:rgba(217,119,6,0.15); color:#D97706; }
+.status-needs-def { background:rgba(59,130,246,0.15); color:#3B82F6; }
+.status-buggy { background:rgba(220,38,38,0.15); color:#DC2626; }
+.status-not-built { background:rgba(156,163,175,0.15); color:var(--bm-muted-gray); }
+.status-validate { background:rgba(139,92,246,0.15); color:#8B5CF6; }
+.module-spec { font-size:14px; color:var(--bm-secondary-text); line-height:1.6; margin-bottom:12px; }
+.module-issues { margin-top:12px; padding-top:12px; border-top:1px solid var(--bm-border-light); }
+.module-issues h4 { font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#DC2626; margin-bottom:8px; }
+.issue-list { list-style:none; }
+.issue-list li { font-size:13px; color:var(--bm-secondary-text); padding:4px 0; padding-left:16px; position:relative; }
+.issue-list li::before { content:''; position:absolute; left:0; top:11px; width:6px; height:6px; border-radius:50%; background:#DC2626; }
+.issue-list li .ticket { font-weight:600; color:var(--bm-eigengrau); }
+.module-action { margin-top:12px; padding:12px 16px; background:var(--bm-bg-cool); border-radius:8px; font-size:13px; color:var(--bm-secondary-text); }
+.module-action strong { color:var(--bm-eigengrau); }
+
+/* Permissions matrix */
+.matrix-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+.matrix-table th { padding:10px 12px; text-align:left; font-weight:700; color:var(--bm-secondary-text); border-bottom:2px solid var(--bm-border-light); font-size:11px; text-transform:uppercase; letter-spacing:0.8px; background:var(--bm-bg-cool); }
+.matrix-table td { padding:10px 12px; border-bottom:1px solid var(--bm-border-light); }
+.matrix-table tr:hover td { background:var(--bm-bg-light); }
+.perm-full { color:var(--bm-teal-accent); font-weight:700; }
+.perm-read { color:#3B82F6; }
+.perm-own { color:#D97706; }
+.perm-none { color:var(--bm-muted-gray); }
+
+/* Jira table */
+.jira-table { width:100%; border-collapse:collapse; font-size:13px; }
+.jira-table th { padding:8px 12px; text-align:left; font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.8px; color:var(--bm-secondary-text); border-bottom:2px solid var(--bm-border-light); background:var(--bm-bg-cool); position:sticky; top:0; }
+.jira-table td { padding:8px 12px; border-bottom:1px solid var(--bm-border-light); vertical-align:top; }
+.jira-table tr:hover td { background:var(--bm-bg-light); }
+.jira-table .ticket-key { font-weight:700; color:var(--bm-deep-green); white-space:nowrap; }
+.v20 { background:rgba(18,163,140,0.08); }
+.v21 { background:rgba(156,163,175,0.06); }
+.tag { display:inline-block; padding:2px 8px; font-size:10px; font-weight:700; border-radius:100px; text-transform:uppercase; letter-spacing:0.5px; margin-left:4px; }
+.tag-v20 { background:rgba(18,163,140,0.15); color:var(--bm-teal-accent); }
+.tag-v21 { background:rgba(156,163,175,0.15); color:var(--bm-muted-gray); }
+.tag-bug { background:rgba(220,38,38,0.12); color:#DC2626; }
+.tag-epic { background:rgba(139,92,246,0.12); color:#8B5CF6; }
+.tag-uat { background:rgba(59,130,246,0.12); color:#3B82F6; }
+
+/* Sprint process */
+.sprint-card { background:#fff; border:1px solid var(--bm-border-light); border-radius:12px; padding:24px; margin-bottom:16px; }
+.sprint-card h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
+.sprint-card p, .sprint-card ul { font-size:14px; color:var(--bm-secondary-text); line-height:1.6; }
+.sprint-card ul { padding-left:20px; }
+.sprint-card li { margin-bottom:4px; }
+.sprint-num { display:inline-block; width:28px; height:28px; background:var(--bm-deep-green); color:#fff; border-radius:50%; text-align:center; line-height:28px; font-size:13px; font-weight:700; margin-right:8px; }
+
+/* Footer */
+.footer { background:var(--bm-deep-green); color:#fff; padding:32px 0; margin-top:48px; }
+.footer-inner { display:flex; justify-content:space-between; align-items:center; }
+.footer-brand { font-size:18px; font-weight:700; }
+.footer-meta { font-size:12px; color:rgba(255,255,255,0.7); }
+
+/* Print */
+@media print {
+  .hero { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .module-card { break-inside:avoid; }
+  .footer { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+@media (max-width:768px) {
+  .stats-bar { grid-template-columns: repeat(2,1fr); }
+  .hero h1 { font-size:28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <h1>V2.0 Completion Plan</h1>
+    <p>The definitive feature spec for Bookmarked V2.0. Everything in this document must work before migration begins. Everything not in this document is V2.1+.</p>
+    <div class="hero-meta">
+      <span>Based on: Sarah El Massry's V2 Features & Permissions (March 16, 2026)</span>
+      <span>Platform: prodv2.bookmarked.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY STATS -->
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">13</div>
+      <div class="stat-label">V2.0 Modules</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">User Roles</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num red">11</div>
+      <div class="stat-label">Open Bugs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">89</div>
+      <div class="stat-label">Total Jira Tickets</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: V2.0 FEATURE SPEC -->
+<div class="section">
+  <div class="container">
+    <h2><span class="num">01</span> V2.0 Feature Spec</h2>
+    <p class="section-desc">Sarah's V2 Features & Permissions document (March 16, 2026) is adopted as the definitive V2.0 scope. Five roles, thirteen modules, campus-level RBAC. Anything not listed here is V2.1+.</p>
+
+    <h3 style="font-size:18px; font-weight:700; margin-bottom:16px; margin-top:32px;">Roles & Navigation</h3>
+    <table class="matrix-table">
+      <tr><th>Role</th><th>Access Scope</th><th>Navigation</th><th>Primary Purpose</th></tr>
+      <tr><td><strong>Librarian</strong></td><td>Full campus admin</td><td>Home &middot; Library &middot; Students &middot; Classrooms &middot; Circulation &middot; Reports &middot; Orders &middot; Admin</td><td>Library management, compliance review, circulation, student data</td></tr>
+      <tr><td><strong>Teacher</strong></td><td>Classroom-level</td><td>Home &middot; School Library &middot; Classroom Books</td><td>Classroom library setup, book checkout, classroom compliance</td></tr>
+      <tr><td><strong>Superintendent / Admin</strong></td><td>District-level oversight</td><td>Home &middot; Orders &middot; Compliance &middot; Reports</td><td>Monitor adoption, review compliance, approve orders</td></tr>
+      <tr><td><strong>Parent / Guardian</strong></td><td>Read-only</td><td>Home &middot; Student Activity</td><td>View student reading activity</td></tr>
+      <tr><td><strong>Super Admin</strong></td><td>Internal / all districts</td><td>All sections + Admin panel</td><td>Bookmarked internal administration</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin-bottom:16px; margin-top:32px;">Permissions Matrix (Module-Level)</h3>
+    <table class="matrix-table">
+      <tr><th>Module</th><th>Librarian</th><th>Teacher</th><th>Supt/Admin</th><th>Parent</th><th>Super Admin</th></tr>
+      <tr><td><strong>Dashboard</strong></td><td class="perm-full">Campus</td><td class="perm-own">Classroom</td><td class="perm-full">District</td><td class="perm-none">--</td><td class="perm-full">System</td></tr>
+      <tr><td><strong>Library Mgmt</strong></td><td class="perm-full">Full</td><td class="perm-read">Read-only</td><td class="perm-read">Read + oversight</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Classroom Library</strong></td><td class="perm-read">View all</td><td class="perm-own">Own classroom</td><td class="perm-read">View all</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Compliance Review</strong></td><td class="perm-full">Full triage</td><td class="perm-own">Classroom flags</td><td class="perm-full">District oversight</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Book Circulation</strong></td><td class="perm-full">Full</td><td class="perm-own">Classroom only</td><td class="perm-none">--</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Student/Guardian</strong></td><td class="perm-full">Full</td><td class="perm-none">--</td><td class="perm-read">View only</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Book Orders</strong></td><td class="perm-own">Create & submit</td><td class="perm-none">--</td><td class="perm-full">Review & approve</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Reports</strong></td><td class="perm-own">School-level</td><td class="perm-none">--</td><td class="perm-full">District-level</td><td class="perm-none">--</td><td class="perm-full">All levels</td></tr>
+      <tr><td><strong>Book Intelligence</strong></td><td class="perm-full">Full</td><td class="perm-own">Classroom books</td><td class="perm-full">Full</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>User Management</strong></td><td class="perm-none">--</td><td class="perm-none">--</td><td class="perm-none">--</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>Policy Mgmt</strong></td><td class="perm-none">--</td><td class="perm-none">--</td><td class="perm-full">Upload & manage</td><td class="perm-none">--</td><td class="perm-full">Full</td></tr>
+      <tr><td><strong>User Settings</strong></td><td class="perm-own">Own profile</td><td class="perm-own">Own profile</td><td class="perm-own">Own profile</td><td class="perm-own">Own profile</td><td class="perm-full">All profiles</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin-bottom:16px; margin-top:32px;">Cross-Cutting Infrastructure</h3>
+    <table class="matrix-table">
+      <tr><th>Capability</th><th>V2.0 Spec</th></tr>
+      <tr><td><strong>Authentication</strong></td><td>Username/Password + Google SSO</td></tr>
+      <tr><td><strong>RBAC</strong></td><td>CampusUserPermission table, JWT with campus-role mappings, modular permissions per module, campusId on every API call</td></tr>
+      <tr><td><strong>Multi-Role Support</strong></td><td>Single user can hold different roles at different campuses. UI adapts per campus view.</td></tr>
+      <tr><td><strong>Data Integrations</strong></td><td>ClassLink + SFTP for student roster sync</td></tr>
+      <tr><td><strong>Book Intelligence Pipeline</strong></td><td>Risk levels, AI summaries, educational value, content analysis (Violence/Language/Sexual/Scary), theme tags, ban/challenge risk data</td></tr>
+      <tr><td><strong>Book Status Workflow</strong></td><td>Pending Review &rarr; Allowed &rarr; Limited Access &rarr; Don't Show &rarr; Deleted</td></tr>
+      <tr><td><strong>Order Workflow</strong></td><td>Books to Order &rarr; Books to Review for Order &rarr; Book Orders (Kanban drag-and-drop)</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 2: MODULE COMPLETION STATUS -->
+<div class="section section-alt">
+  <div class="container">
+    <h2><span class="num">02</span> Module Completion Status</h2>
+    <p class="section-desc">Status of each V2.0 module based on Jira ticket analysis and known issues. Modules marked "Needs Validation" require Steve or Patrick to confirm actual working state on prodv2.</p>
+
+    <div class="module-grid">
+
+      <!-- Dashboard -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">All Roles</div>
+            <div class="module-name">1. Dashboard</div>
+          </div>
+          <span class="status-badge status-needs-def">Needs Definition</span>
+        </div>
+        <div class="module-spec">Role-based home screen with key metrics. Librarian: lists awaiting review, books in orders, system alerts. Teacher: classroom-focused. Superintendent: district-wide overview (total lists, lists awaiting review, approved orders, dynamic alerts). Super Admin: full system-wide metrics.</div>
+        <div class="module-action"><strong>Status:</strong> Working with real data. What metrics/widgets belong on each role's dashboard needs defining — this is a content decision, not a build gap. The dashboard renders and connects to data; the question is whether it shows the RIGHT metrics per Sarah's spec above.</div>
+      </div>
+
+      <!-- Library Management -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian</div>
+            <div class="module-name">2. Library Management</div>
+          </div>
+          <span class="status-badge status-buggy">Buggy</span>
+        </div>
+        <div class="module-spec">Add books by ISBN scan or CSV bulk upload. Manage book statuses (Pending Review / Allowed / Limited Access / Don't Show / Deleted).</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-837:</span> CSV Upload — books import without metadata (flags, cover images, author info, ratings). Silent failure — librarian could upload 500 books and not realize none have cover images.</li>
+            <li><span class="ticket">BOOK-879:</span> Librarian bulk-upload returns 403 despite valid campus assignment.</li>
+            <li><span class="ticket">Known issue (Sarah):</span> Manual ISBN input field may be disabled — camera scanner is the current workaround.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Fix BOOK-837 (metadata on CSV upload) and BOOK-879 (403 on bulk upload). Validate whether manual ISBN input works or must be fixed.</div>
+      </div>
+
+      <!-- Compliance Review -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian + Superintendent</div>
+            <div class="module-name">3. Compliance Review / Book Intelligence</div>
+          </div>
+          <span class="status-badge status-partial">Partial</span>
+        </div>
+        <div class="module-spec">Review flagged books using Book Intelligence data: risk tiers, AI summaries, content analysis (Violence/Language/Sexual/Scary), educational value assessments, theme tags, ban/challenge history. Assign vetting decisions. Manage restricted content. Superintendent has district-wide compliance oversight with full Book Intelligence cards.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-894:</span> Ban/challenge data currently hardcoded — needs real data from API.</li>
+            <li><span class="ticket">BOOK-896:</span> FlagsTable using hardcoded defaults instead of real ban/challenge data props.</li>
+            <li><span class="ticket">BOOK-893:</span> Backend needs to expose individual ban and challenge records with counts via book-service API.</li>
+            <li><span class="ticket">BOOK-900:</span> ContentAnalysis ban status card has hardcoded colors instead of dynamic status-based colors.</li>
+            <li><span class="ticket">BOOK-650/649:</span> Age Appropriateness data population and UI — status unclear.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Replace all hardcoded Book Intelligence data with real API data (BOOK-893, 894, 896, 900). Validate age appropriateness status. The compliance review workflow depends on real data — hardcoded demos won't survive migration.</div>
+      </div>
+
+      <!-- Book Circulation -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian + Teacher</div>
+            <div class="module-name">4. Book Circulation</div>
+          </div>
+          <span class="status-badge status-buggy">Buggy</span>
+        </div>
+        <div class="module-spec">Check books in/out to students. Manage overdue returns. Librarian has full circulation; Teacher has classroom-only checkout.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-838:</span> Circulation page book search returns no results and check-in fails for valid ISBNs. <span class="tag tag-uat">UAT</span> — currently in testing.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> BOOK-838 must pass UAT. Circulation is a core workflow — if librarians can't check books in/out, V2.0 is not shippable.</div>
+      </div>
+
+      <!-- Student & Guardian Data -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian</div>
+            <div class="module-name">5. Student & Guardian Data</div>
+          </div>
+          <span class="status-badge status-buggy">Buggy</span>
+        </div>
+        <div class="module-spec">Configure student rosters and guardian access via ClassLink or SFTP integration.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-878:</span> SFTP onboarding dialog never displays password — blocks ALL SFTP connections.</li>
+            <li><span class="ticket">BOOK-767:</span> API errors on Students page for SFTP and ClassLink status.</li>
+            <li><span class="ticket">BOOK-761:</span> Librarian cannot assign users to campus/classroom — 500 error.</li>
+            <li><span class="ticket">BOOK-912:</span> OneRoster 1.1 CSV import rejects valid users.csv due to non-standard header validation.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Fix all 4 bugs. SFTP is the primary data integration path for districts — if it's broken, onboarding is blocked. This module has the highest bug density of any V2.0 module.</div>
+      </div>
+
+      <!-- Book Orders -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian + Superintendent</div>
+            <div class="module-name">6. Book Orders (Kanban)</div>
+          </div>
+          <span class="status-badge status-partial">Partial</span>
+        </div>
+        <div class="module-spec">Librarian: Create book lists, drag-and-drop between "Books to Order" / "Books to Review" / "Book Orders", submit for admin review. Superintendent: Review book lists, see Book Intelligence data, drag between Pending/Approved, approve/reject with feedback notes.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-904:</span> CreateListDialog — books found via search are not saved to the created list.</li>
+            <li><span class="ticket">BOOK-688:</span> Book list creation incorrectly applies quantity multiplier.</li>
+            <li><span class="ticket">BOOK-884:</span> Teacher can only see/manage their own lists in Order. <span class="tag tag-uat">UAT</span></li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Fix BOOK-904 (can't save books to lists — fundamental break) and BOOK-688 (quantity bug). BOOK-884 in UAT needs to pass. Multiple enhancement stories (BOOK-897, 898, 907, 908) may also be needed for basic functionality.</div>
+      </div>
+
+      <!-- Reports -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian + Superintendent</div>
+            <div class="module-name">7. Reports</div>
+          </div>
+          <span class="status-badge status-validate">Needs Validation</span>
+        </div>
+        <div class="module-spec">Generate and export analytics reports: Book Usage, Review Activity, Compliance Summary. Librarian: school-level scope. Superintendent: district-wide, schedule automated delivery, add up to 10 recipients. Export: PDF/CSV/Excel.</div>
+        <div class="module-action"><strong>To validate:</strong> Are reports actually built? The report types Sarah lists (Book Usage, Review Activity, Compliance Summary) — do they exist and pull real data? Can they be exported? Scheduled delivery is likely V2.1 if not built, but basic report generation and export should be V2.0.</div>
+      </div>
+
+      <!-- Book Search -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian</div>
+            <div class="module-name">8. Book Search</div>
+          </div>
+          <span class="status-badge status-validate">Needs Validation</span>
+        </div>
+        <div class="module-spec">Search internal catalog by title/author/ISBN. Fallback to Open Library API. Add books from search results.</div>
+        <div class="module-action"><strong>To validate:</strong> Does internal catalog search work? Does Open Library API fallback work? Can books be added from search results? If the manual ISBN field is disabled (per Sarah's known issue), search becomes the primary way to add individual books.</div>
+      </div>
+
+      <!-- Notes -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Librarian</div>
+            <div class="module-name">9. Notes</div>
+          </div>
+          <span class="status-badge status-partial">Partial</span>
+        </div>
+        <div class="module-spec">Add professional justification notes on flagged books. View reviewer feedback.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-910:</span> Notes CRUD operations need to be connected to notes-service REST API.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> BOOK-910 must be completed — notes need to persist via the API. Public/private toggle (BOOK-901/902) can be V2.1.</div>
+      </div>
+
+      <!-- Classroom Library -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Teacher</div>
+            <div class="module-name">10. Classroom Library</div>
+          </div>
+          <span class="status-badge status-buggy">Buggy</span>
+        </div>
+        <div class="module-spec">Build a classroom book collection tied to a school roster. Add books by ISBN scan or CSV upload. Flag or restrict books at classroom level. Check out books to individual students. View school's main library catalog (read-only).</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-829:</span> Superintendent cannot create classroom. <span class="tag tag-bug">HIGH</span></li>
+            <li><span class="ticket">BOOK-776:</span> Teacher sees no lock icons on restricted/banned books — compliance visibility broken.</li>
+            <li><span class="ticket">BOOK-835:</span> Teacher sees no classroom/school library badges on books — can't distinguish which library a book belongs to.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Fix all 3 issues. BOOK-829 is High priority — if classrooms can't be created, the Teacher role is non-functional. Lock icons (BOOK-776) are a compliance requirement, not a nice-to-have.</div>
+      </div>
+
+      <!-- Order Review & Approval -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Superintendent / Admin</div>
+            <div class="module-name">11. Order Review & Approval</div>
+          </div>
+          <span class="status-badge status-partial">Partial</span>
+        </div>
+        <div class="module-spec">Review book lists submitted by librarians. See detailed Book Intelligence data (cover, title, author, ISBN, ban/challenge counts, age appropriateness, AI summaries). Drag books between Pending and Approved. Approve or reject entire lists with feedback notes.</div>
+        <div class="module-action"><strong>Depends on:</strong> Module 6 (Book Orders) and Module 3 (Book Intelligence). Both have open bugs. Order Review works only as well as the underlying order and intelligence systems work. Same bugs apply.</div>
+      </div>
+
+      <!-- Policy Management -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Superintendent / Admin</div>
+            <div class="module-name">12. Policy Management</div>
+          </div>
+          <span class="status-badge status-validate">Needs Validation</span>
+        </div>
+        <div class="module-spec">Upload district policy guidelines. Flag books that don't meet district policy. Override flags on specific books.</div>
+        <div class="module-action"><strong>To validate:</strong> Is policy management built? Can superintendents upload policies and flag/override books based on them? No Jira bugs reference this module — could mean it works or was never built.</div>
+      </div>
+
+      <!-- Super Admin -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Super Admin (Internal)</div>
+            <div class="module-name">13. User & Permission Management</div>
+          </div>
+          <span class="status-badge status-buggy">Buggy</span>
+        </div>
+        <div class="module-spec">Create, modify, and deactivate user accounts. Assign roles and campus permissions. Manage multi-campus role assignments. View and modify individual user permissions beyond role defaults. System configuration.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-877:</span> Creating non-SUPERINTENDENT_ADMIN user shows "Invalid enum value" error.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Fix BOOK-877. If Super Admin can't create users with roles other than Superintendent, onboarding is blocked. This is an internal tool but critical for district setup.</div>
+      </div>
+
+      <!-- User Settings (cross-cutting) -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">All Roles</div>
+            <div class="module-name">Cross-Cutting: User Settings & Auth</div>
+          </div>
+          <span class="status-badge status-validate">Needs Validation</span>
+        </div>
+        <div class="module-spec">Edit profile, notification preferences, security settings (MFA), interface appearance, reporting preferences. Login: Username/Password + Google SSO. RBAC with CampusUserPermission, JWT scoping, multi-role support.</div>
+        <div class="module-issues">
+          <h4>In Progress (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-740:</span> V2 Login Tracking to HubSpot Integration — <span class="tag tag-uat">IN PROGRESS</span></li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To validate:</strong> Do user settings work? Does MFA work? Does Google SSO work? BOOK-740 (login tracking) is in progress and should be V2.0.</div>
+      </div>
+
+      <!-- Book Intelligence Data Layer -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Data Pipeline</div>
+            <div class="module-name">Cross-Cutting: Book Intelligence Data</div>
+          </div>
+          <span class="status-badge status-partial">Partial</span>
+        </div>
+        <div class="module-spec">The data layer that feeds Compliance Review, Order Review, and Book Intelligence Cards. Includes: risk levels, AI summaries, educational value, content analysis grids (Violence/Language/Sexual/Scary), theme tags, ban/challenge history.</div>
+        <div class="module-issues">
+          <h4>Known Issues (Jira)</h4>
+          <ul class="issue-list">
+            <li><span class="ticket">BOOK-881:</span> Display barcode on Book Intelligence page. <span class="tag tag-uat">UAT</span></li>
+            <li><span class="ticket">BOOK-882:</span> Manage Copies Modal on Book Intelligence page. <span class="tag tag-uat">UAT</span></li>
+            <li><span class="ticket">BOOK-883:</span> API — Manage Book Copies & Barcodes. <span class="tag tag-uat">UAT</span></li>
+            <li><span class="ticket">BOOK-909:</span> Book CRUD operations need to be connected to book-service REST API.</li>
+          </ul>
+        </div>
+        <div class="module-action"><strong>To complete V2.0:</strong> Three items in UAT (BOOK-881/882/883) — these need to pass. BOOK-909 (connecting to real API) is essential. The question is how much of the Book Intelligence PRD v3 (7 data categories) is actually populated with real data vs. demo data.</div>
+      </div>
+
+      <!-- Parent/Guardian -->
+      <div class="module-card">
+        <div class="module-header">
+          <div>
+            <div class="module-role">Parent / Guardian</div>
+            <div class="module-name">Parent / Guardian Portal</div>
+          </div>
+          <span class="status-badge status-validate">Needs Validation</span>
+        </div>
+        <div class="module-spec">Minimal scope for V2.0: View what books their child has checked out, reading history, and current status. Login via credentials from school/district enrollment. Read-only — no library, compliance, or admin access.</div>
+        <div class="module-action"><strong>To validate:</strong> Does the parent login work? Can parents see their child's reading activity? This is intentionally minimal for V2.0 — richer parent features (OnShelf Review community commenting, etc.) are V2.1.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: SPRINT PROCESS FOR V2.0 COMPLETION -->
+<div class="section">
+  <div class="container">
+    <h2><span class="num">03</span> Sprint Process for V2.0 Completion</h2>
+    <p class="section-desc">How Sarah should structure sprints to systematically complete remaining V2.0 work. No new features until this list is green.</p>
+
+    <div class="sprint-card">
+      <h3><span class="sprint-num">1</span> Triage & Validate (Sprint 0)</h3>
+      <p>Before sprinting, validate every module marked "Needs Validation" above. Steve or Patrick walks through prodv2 and confirms:</p>
+      <ul>
+        <li>Reports — are they built? What report types exist?</li>
+        <li>Book Search — does internal catalog search work? Open Library fallback?</li>
+        <li>Policy Management — can superintendents upload policies?</li>
+        <li>User Settings — does MFA work? Google SSO?</li>
+        <li>Parent Portal — does parent login + student activity view work?</li>
+        <li>Dashboard — are the right metrics showing per role?</li>
+      </ul>
+      <p style="margin-top:12px;">This triage converts every "Needs Validation" to either "Complete" or "V2.0 Sprint Work."</p>
+    </div>
+
+    <div class="sprint-card">
+      <h3><span class="sprint-num">2</span> Bug Fix Sprint (Critical Path)</h3>
+      <p>Fix the 11 open bugs. Priority order based on migration impact:</p>
+      <ul>
+        <li><strong>Tier 1 — Blocks onboarding:</strong> BOOK-878 (SFTP password), BOOK-877 (user creation), BOOK-761 (user assignment), BOOK-912 (CSV import)</li>
+        <li><strong>Tier 2 — Blocks core workflow:</strong> BOOK-838 (circulation search), BOOK-837 (CSV metadata), BOOK-879 (bulk upload 403), BOOK-829 (classroom creation)</li>
+        <li><strong>Tier 3 — Compliance/UX:</strong> BOOK-776 (lock icons), BOOK-835 (library badges), BOOK-688 (quantity multiplier), BOOK-904 (list save), BOOK-767 (API errors)</li>
+      </ul>
+    </div>
+
+    <div class="sprint-card">
+      <h3><span class="sprint-num">3</span> Data Integrity Sprint</h3>
+      <p>Replace all hardcoded/demo data with real API data:</p>
+      <ul>
+        <li>BOOK-893: Expose ban/challenge records via API</li>
+        <li>BOOK-894: Replace hardcoded ban/challenge counts with real data</li>
+        <li>BOOK-896: FlagsTable real data props</li>
+        <li>BOOK-900: Dynamic ban status colors</li>
+        <li>BOOK-909: Connect book CRUD to book-service API</li>
+        <li>BOOK-910: Connect notes CRUD to notes-service API</li>
+      </ul>
+    </div>
+
+    <div class="sprint-card">
+      <h3><span class="sprint-num">4</span> UAT Pass Sprint</h3>
+      <p>Get all UAT items through testing:</p>
+      <ul>
+        <li>BOOK-838: Circulation search (currently in UAT)</li>
+        <li>BOOK-881/882/883: Book Intelligence barcode + copies (currently in UAT)</li>
+        <li>BOOK-884: Teacher order list scoping (currently in UAT)</li>
+        <li>BOOK-740: Login tracking to HubSpot (currently in progress)</li>
+      </ul>
+    </div>
+
+    <div class="sprint-card">
+      <h3><span class="sprint-num">5</span> V2.0 Complete Gate</h3>
+      <p><strong>Definition of "V2.0 Complete":</strong></p>
+      <ul>
+        <li>All 11 bugs resolved and verified</li>
+        <li>All hardcoded data replaced with real API data</li>
+        <li>All UAT items passed</li>
+        <li>All "Needs Validation" modules confirmed as working or fixed</li>
+        <li>Every module in this document shows green status</li>
+        <li>Patrick confirms migration readiness (V1 data transfer risks addressed)</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Then:</strong> Begin V1→V2 migration for 140+ districts. Everything else is V2.1.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: JIRA ALIGNMENT -->
+<div class="section section-alt">
+  <div class="container">
+    <h2><span class="num">04</span> Jira Ticket Alignment</h2>
+    <p class="section-desc">All 89 open Jira tickets mapped to V2.0 modules. Tickets that support V2.0 completion stay and get sprinted. Tickets that don't map to V2.0 move to V2.1. Sarah cleans up Jira to match this classification.</p>
+
+    <h3 style="font-size:18px; font-weight:700; margin:24px 0 16px;">V2.0-Required: Bugs (Must Fix)</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>V2.0 Module</th><th>Priority</th><th>Status</th></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-829</td><td>Superintendent cannot create classroom</td><td>Classroom Library</td><td><strong>High</strong></td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-837</td><td>CSV Upload: books import without metadata</td><td>Library Mgmt</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-838</td><td>Circulation search returns no results, check-in fails</td><td>Circulation</td><td>Medium</td><td>UAT</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-761</td><td>Librarian cannot assign users — 500 error</td><td>Student Data</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-767</td><td>API errors on Students page (SFTP/ClassLink)</td><td>Student Data</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-776</td><td>Teacher: no lock icons on restricted/banned books</td><td>Classroom Library</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-877</td><td>Super Admin: creating non-SUPT user shows error</td><td>User Mgmt</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-878</td><td>SFTP onboarding dialog never displays password</td><td>Student Data</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-879</td><td>Librarian bulk-upload returns 403</td><td>Library Mgmt</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-904</td><td>CreateListDialog: books not saved to list</td><td>Book Orders</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-912</td><td>OneRoster CSV import rejects valid users.csv</td><td>Student Data</td><td>Medium</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-688</td><td>Book list creation: quantity multiplier bug</td><td>Book Orders</td><td>Medium</td><td>To Do</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px;">V2.0-Required: Data Integrity (Hardcoded → Real)</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>V2.0 Module</th><th>Status</th></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-893</td><td>Expose ban/challenge records with counts via API</td><td>Book Intelligence</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-894</td><td>Replace hardcoded ban/challenge with real counts</td><td>Compliance Review</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-896</td><td>FlagsTable: use real data props, not hardcoded</td><td>Compliance Review</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-900</td><td>ContentAnalysis: dynamic colors based on status</td><td>Compliance Review</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-909</td><td>Connect book CRUD to book-service REST API</td><td>Book Intelligence</td><td>To Do</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-910</td><td>Connect notes CRUD to notes-service REST API</td><td>Notes</td><td>To Do</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px;">V2.0-Required: In UAT / In Progress</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>V2.0 Module</th><th>Status</th></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-740</td><td>V2 Login Tracking to HubSpot</td><td>Auth / Settings</td><td>In Progress</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-838</td><td>Circulation search (also in bugs above)</td><td>Circulation</td><td>UAT</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-881</td><td>Display barcode on Book Intelligence page</td><td>Book Intelligence</td><td>UAT</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-882</td><td>Manage Copies Modal on BI page</td><td>Book Intelligence</td><td>UAT</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-883</td><td>API — Manage Book Copies & Barcodes</td><td>Book Intelligence</td><td>UAT</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-884</td><td>Teacher: own lists only in Order</td><td>Book Orders</td><td>UAT</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px;">V2.0-Required: Supporting Stories (Likely Needed)</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>V2.0 Module</th><th>Rationale</th></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-835</td><td>Teacher: no classroom/school library badges</td><td>Classroom Library</td><td>UX — teachers can't tell which library a book belongs to</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-895</td><td>Ban/challenge hover cards with drill-down</td><td>Compliance Review</td><td>Needed for compliance decision-making</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-897</td><td>Enrich ListCard with book count + flagged count</td><td>Book Orders</td><td>Basic info needed for order review</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-898</td><td>Wire kanban search bar to filter lists</td><td>Book Orders</td><td>Basic search functionality</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-907</td><td>Map order status enum to kanban bucket names</td><td>Book Orders</td><td>Orders won't display correctly without this</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-908</td><td>Connect order CRUD to order-service API</td><td>Book Orders</td><td>Orders must persist via real API</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-899</td><td>Age Appropriateness: data sources display</td><td>Book Intelligence</td><td>Part of Book Intelligence spec</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-650</td><td>Age Appropriateness: Data Population</td><td>Book Intelligence</td><td>Part of Book Intelligence spec</td></tr>
+      <tr class="v20"><td class="ticket-key">BOOK-649</td><td>Age Appropriateness: UI</td><td>Book Intelligence</td><td>Part of Book Intelligence spec</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px; color:var(--bm-muted-gray);">V2.1-Deferred: New Features & Enhancements</h3>
+    <p style="font-size:14px; color:var(--bm-secondary-text); margin-bottom:16px;">These tickets do NOT map to V2.0 scope. Sarah should move them to a V2.1 epic or label in Jira.</p>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>Type</th><th>Why V2.1</th></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-847</td><td>District-Wide SFTP Student Data Processing</td><td><span class="tag tag-epic">Epic</span></td><td>New capability beyond current SFTP</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-849</td><td>Modify SFTP for District-Wide Updates</td><td>Story</td><td>Enhancement to existing SFTP</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-859</td><td>Book Intelligence Extended Metadata</td><td><span class="tag tag-epic">Epic</span></td><td>Extended beyond V2.0 BI spec</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-836</td><td>Library Duplication & Copy Across Districts</td><td><span class="tag tag-epic">Epic</span></td><td>New cross-district feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-886</td><td>Orders Phase 1 Improvements</td><td><span class="tag tag-epic">Epic</span></td><td>Enhancements beyond basic orders</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-876</td><td>Book Inventory CSV Export Endpoint</td><td>Story</td><td>New export feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-762</td><td>Librarian Student Checkout History Report</td><td>Story</td><td>New report type</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-873</td><td>Impersonation of Users</td><td>Task</td><td>Admin enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-503</td><td>Superadmin: feature flagging</td><td>Task</td><td>Platform enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-697</td><td>Audit trail for rejected books</td><td>Story</td><td>New compliance feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-699</td><td>Aggregated 'Books Ordered' list for reporting</td><td>Story</td><td>New reporting feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-722</td><td>Parent Portal: Book Review</td><td><span class="tag tag-epic">Epic</span></td><td>Enhanced parent features</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-857</td><td>RBAC for District-Wide SIS Management</td><td>Story</td><td>New SIS capability</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-858</td><td>SIS Management UI — Admin Config</td><td>Story</td><td>New SIS capability</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-853</td><td>District-Wide Import Audit Logging</td><td>Task</td><td>Operational enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-634</td><td>Move book between libraries: Librarian</td><td>Task</td><td>New library feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-635</td><td>Move book between libraries: Teacher</td><td>Task</td><td>New library feature</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-636</td><td>Manage Book Copies</td><td>Task</td><td>Enhancement (basic in UAT already)</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-901</td><td>Public/private flag for notes-service</td><td>Story</td><td>Notes enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-902</td><td>Public/private toggle for notes UI</td><td>Story</td><td>Notes enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-903</td><td>Internal catalog search in Add Book dialog</td><td>Story</td><td>Orders enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-905</td><td>Rejection with reason in Finalize dialog</td><td>Story</td><td>Orders enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-906</td><td>CSV template: ISBN and publisher columns</td><td>Story</td><td>Upload enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-911</td><td>Kanban filter dropdowns (date, bucket, My Lists)</td><td>Story</td><td>Orders enhancement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-704</td><td>Single notes field for book order lists</td><td>Story</td><td>V1 feature — deprioritized</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px; color:var(--bm-muted-gray);">V2.1-Deferred: Infrastructure & Tech Debt Epics</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>Why V2.1</th></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-728</td><td>Tech Debt: Code Quality</td><td>Ongoing improvement, not blocking V2.0</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-727</td><td>Infrastructure: Monitoring & Security</td><td>Operational improvement</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-726</td><td>Platform: Authentication & SSO</td><td>SSO enhancements beyond basic auth</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-725</td><td>Admin Settings: Role Permissions</td><td>Permission system enhancements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-724</td><td>Reporting: Dashboard Enhancements</td><td>Dashboard improvements beyond V2.0 baseline</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-723</td><td>Compliance: Flag UI & Categorization</td><td>Compliance enhancements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-721</td><td>Book Ordering: List Workflow</td><td>Ordering enhancements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-720</td><td>Classroom Libraries: Teacher Experience</td><td>Teacher UX improvements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-719</td><td>Libraries: Core Management</td><td>Library management improvements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-718</td><td>Book Intelligence: Flag Detection</td><td>BI pipeline improvements</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-574</td><td>Platform: User Service Refactor</td><td>Backend refactor</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-480</td><td>Infrastructure: AWS Account Migration</td><td>Infrastructure work</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-118</td><td>Infrastructure: Core DevOps</td><td>Foundational infra</td></tr>
+    </table>
+
+    <h3 style="font-size:18px; font-weight:700; margin:32px 0 16px; color:var(--bm-muted-gray);">V2.1-Deferred: Subtasks (Not V2.0-Required)</h3>
+    <table class="jira-table">
+      <tr><th>Ticket</th><th>Summary</th><th>Parent Context</th></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-530</td><td>Book-level deduplication for same ISBN</td><td>Library quality</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-531</td><td>Restore ISBN validation</td><td>Library quality</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-532</td><td>bulk_books → books table sync</td><td>Data migration</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-269–274</td><td>CampusAssignment phases 1–6</td><td>User service refactor</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-36–43</td><td>Audit logging, accessibility, order UI</td><td>Phase 1 infrastructure</td></tr>
+      <tr class="v21"><td class="ticket-key">BOOK-45</td><td>Book-Ordering UI + Drag-and-Drop integration</td><td>Orders Phase 1</td></tr>
+    </table>
+
+    <!-- Summary -->
+    <div style="margin-top:48px; padding:24px; background:#fff; border-radius:12px; border:2px solid var(--bm-deep-green);">
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:16px;">Jira Cleanup Summary for Sarah</h3>
+      <table class="matrix-table">
+        <tr><th>Classification</th><th>Count</th><th>Action</th></tr>
+        <tr><td><strong>V2.0-Required: Bugs</strong></td><td>12 tickets</td><td>Fix in Bug Fix Sprint. Tier by migration impact.</td></tr>
+        <tr><td><strong>V2.0-Required: Data Integrity</strong></td><td>6 tickets</td><td>Fix in Data Integrity Sprint. Replace hardcoded with real.</td></tr>
+        <tr><td><strong>V2.0-Required: UAT/In Progress</strong></td><td>6 tickets</td><td>Complete UAT. Pass or fail and re-sprint.</td></tr>
+        <tr><td><strong>V2.0-Required: Supporting Stories</strong></td><td>9 tickets</td><td>Sprint as needed for module completion.</td></tr>
+        <tr><td style="color:var(--bm-muted-gray);">V2.1-Deferred: Features</td><td>25 tickets</td><td>Move to V2.1 epic/label. Do not sprint until V2.0 complete.</td></tr>
+        <tr><td style="color:var(--bm-muted-gray);">V2.1-Deferred: Infra/Tech Debt</td><td>13 tickets</td><td>Move to V2.1. Ongoing improvement track.</td></tr>
+        <tr><td style="color:var(--bm-muted-gray);">V2.1-Deferred: Subtasks</td><td>18 tickets</td><td>Move to V2.1 with parent epics.</td></tr>
+      </table>
+      <p style="font-size:14px; color:var(--bm-secondary-text); margin-top:16px;"><strong>Bottom line:</strong> 33 tickets are V2.0-required. 56 tickets are V2.1-deferred. Sarah cleans up Jira to reflect this split, then builds sprint structure around the 33 V2.0 tickets organized by the sprint sequence above.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">Bookmarked</div>
+      <div class="footer-meta">V2.0 Completion Plan &middot; March 17, 2026 &middot; Internal</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

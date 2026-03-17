@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookmarked — For Superintendents</title>
+<link rel="stylesheet" href="bookmarked-brand.css">
+<style>
+/* Browser chrome wrapper */
+.browser-chrome {
+  max-width: 1200px; margin: 32px auto; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12); border: 1px solid var(--bm-border-light);
+}
+.browser-bar { background: #F3F3F3; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--bm-border-light); }
+.browser-dot { width: 12px; height: 12px; border-radius: 50%; }
+.browser-dot.red { background: #FF5F57; }
+.browser-dot.yellow { background: #FFBD2E; }
+.browser-dot.green { background: #28C840; }
+.browser-url { flex: 1; margin-left: 12px; background: white; border-radius: 6px; padding: 6px 14px; font-size: 12px; color: var(--bm-muted-gray); border: 1px solid var(--bm-border-light); }
+.browser-body { background: white; }
+
+/* Showcase wrapper */
+.showcase-header { text-align: center; padding: 48px 24px; max-width: 800px; margin: 0 auto; }
+.showcase-header h1 { font-size: 28px; font-weight: 800; color: var(--bm-eigengrau); margin-bottom: 8px; }
+.showcase-header p { font-size: 15px; color: var(--bm-muted-gray); }
+.showcase-label { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(18,163,140,0.1); color: var(--bm-teal-accent); margin-bottom: 8px; }
+
+/* Hero split layout */
+.hero-split { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; }
+.hero-split .hero-text { max-width: 500px; }
+.hero-illustration { display: flex; justify-content: center; }
+
+/* Two-column feature */
+.feature-split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1100px; margin: 0 auto; }
+.feature-split.reverse { direction: rtl; }
+.feature-split.reverse > * { direction: ltr; }
+
+/* Testimonial */
+.testimonial-section { padding: 48px 0; }
+.testimonial-card {
+  max-width: 800px; margin: 0 auto; padding: 32px 40px;
+  background: var(--bm-bg-warm); border-radius: 12px;
+  border-left: 4px solid var(--bm-teal-accent);
+}
+.testimonial-card blockquote { font-size: 18px; font-style: italic; color: var(--bm-secondary-text); line-height: 1.6; margin-bottom: 12px; }
+.testimonial-card .attribution { font-size: 14px; font-weight: 600; color: var(--bm-eigengrau); }
+
+/* CTA option styling */
+.cta-options-divider { text-align: center; padding: 48px 0 16px; border-top: 3px dashed var(--bm-border-light); margin-top: 24px; }
+.cta-options-divider h2 { font-size: 20px; font-weight: 700; color: var(--bm-eigengrau); }
+.cta-options-divider p { font-size: 13px; color: var(--bm-muted-gray); }
+.option-label { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: rgba(255,105,46,0.1); color: var(--bm-pumpkin); margin-bottom: 12px; }
+
+/* CTA Option A: Warm cream */
+.cta-warm {
+  background: var(--bm-bg-warm); padding: 56px 0; text-align: center;
+  border-top: 3px solid var(--bm-teal-accent);
+}
+.cta-warm h2 { font-size: 28px; font-weight: 800; color: var(--bm-eigengrau); max-width: 600px; margin: 0 auto 8px; }
+.cta-warm p { font-size: 15px; color: var(--bm-secondary-text); margin-bottom: 24px; }
+
+/* CTA Option B: Soft teal gradient */
+.cta-teal {
+  background: linear-gradient(135deg, #E6F7F4 0%, #CCFBEF 50%, #F8FAF8 100%);
+  padding: 56px 0; text-align: center;
+}
+.cta-teal h2 { font-size: 28px; font-weight: 800; color: var(--bm-eigengrau); max-width: 600px; margin: 0 auto 8px; }
+.cta-teal p { font-size: 15px; color: var(--bm-secondary-text); margin-bottom: 24px; }
+
+/* CTA Option C: White with illustration accent */
+.cta-white {
+  background: white; padding: 56px 0; text-align: center;
+  border-top: 1px solid var(--bm-border-light);
+}
+.cta-white h2 { font-size: 28px; font-weight: 800; color: var(--bm-eigengrau); max-width: 600px; margin: 0 auto 8px; }
+.cta-white p { font-size: 15px; color: var(--bm-secondary-text); margin-bottom: 24px; }
+.cta-white .cta-illustration { display: flex; justify-content: center; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+
+<!-- Showcase context -->
+<div class="showcase-header">
+  <span class="showcase-label">Round 1 — Website Sample</span>
+  <h1>Superintendent Persona — Website Mockup</h1>
+  <p>Tailored messaging, custom illustrations per section, and 3 CTA options to react to (scroll to bottom).</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     WEBSITE MOCKUP
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="browser-chrome">
+  <div class="browser-bar">
+    <div class="browser-dot red"></div>
+    <div class="browser-dot yellow"></div>
+    <div class="browser-dot green"></div>
+    <div class="browser-url">bookmarked.com/superintendents</div>
+  </div>
+  <div class="browser-body">
+
+    <!-- NAV -->
+    <div class="bm-container">
+      <nav class="bm-nav">
+        <div style="font-size: 18px; font-weight: 800; color: var(--bm-eigengrau); letter-spacing: -0.5px;">Bookmarked</div>
+        <ul class="bm-nav__links">
+          <li><a href="#">Platform</a></li>
+          <li><a href="#">For Districts</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#" class="bm-cta-button" style="padding: 10px 20px; font-size: 12px;">Book a Demo</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         HERO — Split: Messaging left, illustration right
+         Superintendent lens: "Your libraries, your reputation"
+         ════════════════════════════════════════════ -->
+    <div class="bm-hero" style="padding: 72px 0 64px;">
+      <div class="bm-container">
+        <div class="hero-split">
+          <div class="hero-text">
+            <div class="bm-eyebrow" style="color: rgba(255,255,255,0.7);">FOR SUPERINTENDENTS</div>
+            <h1 style="font-size: 38px; margin-bottom: 16px;">Your Libraries Should Be the<br>Pride of Your District</h1>
+            <p style="font-size: 16px; margin-bottom: 28px;">SB 13 made book compliance a board-level liability. Bookmarked handles it — so your librarians can build the vibrant collections your community deserves.</p>
+            <div style="display: flex; gap: 12px;">
+              <a href="#" class="bm-cta-button" style="background: var(--bm-pumpkin); border-color: var(--bm-pumpkin);">Book a Walkthrough</a>
+              <a href="#" class="bm-cta-button bm-cta-button--outline" style="color: white; border-color: rgba(255,255,255,0.5);">See How It Works</a>
+            </div>
+            <div style="margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 600;">Trusted by 150+ Texas districts serving 500K+ students</div>
+          </div>
+          <div class="hero-illustration">
+            <!-- Busy Library Scene — vibrant, active, what a superintendent wants to see -->
+            <svg width="440" height="260" viewBox="0 0 440 260" style="max-width: 100%; height: auto; opacity: 0.9; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));">
+              <rect x="0" y="0" width="440" height="260" rx="12" fill="rgba(255,255,255,0.1)"/>
+              <!-- Back wall bookshelves -->
+              <rect x="10" y="10" width="130" height="120" rx="3" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <rect x="10" y="42" width="130" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+              <rect x="10" y="78" width="130" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+              <rect x="14" y="14" width="8" height="26" rx="1" fill="rgba(255,255,255,0.25)"/>
+              <rect x="24" y="16" width="6" height="24" rx="1" fill="rgba(255,105,46,0.4)"/>
+              <rect x="32" y="12" width="10" height="28" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="44" y="18" width="8" height="22" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="54" y="14" width="6" height="26" rx="1" fill="rgba(255,255,255,0.25)"/>
+              <rect x="62" y="16" width="10" height="24" rx="1" fill="rgba(255,105,46,0.35)"/>
+              <rect x="74" y="12" width="8" height="28" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="84" y="18" width="6" height="22" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="92" y="14" width="10" height="26" rx="1" fill="rgba(255,255,255,0.25)"/>
+              <rect x="104" y="16" width="8" height="24" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="114" y="12" width="10" height="28" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="126" y="18" width="10" height="22" rx="1" fill="rgba(255,255,255,0.25)"/>
+              <!-- Row 2 -->
+              <rect x="14" y="48" width="10" height="28" rx="1" fill="rgba(255,105,46,0.3)"/>
+              <rect x="26" y="50" width="8" height="26" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="36" y="46" width="10" height="30" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="48" y="52" width="6" height="24" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="56" y="48" width="8" height="28" rx="1" fill="rgba(255,105,46,0.25)"/>
+
+              <!-- Second shelf unit -->
+              <rect x="300" y="10" width="130" height="120" rx="3" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <rect x="300" y="42" width="130" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+              <rect x="300" y="78" width="130" height="3" rx="1" fill="rgba(255,255,255,0.1)"/>
+              <rect x="304" y="14" width="10" height="26" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="316" y="18" width="8" height="22" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="326" y="12" width="10" height="28" rx="1" fill="rgba(255,105,46,0.35)"/>
+              <rect x="338" y="16" width="6" height="24" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="346" y="14" width="10" height="26" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="358" y="18" width="8" height="22" rx="1" fill="rgba(255,255,255,0.25)"/>
+              <rect x="368" y="12" width="10" height="28" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="380" y="16" width="8" height="24" rx="1" fill="rgba(255,105,46,0.3)"/>
+
+              <!-- Center table -->
+              <rect x="150" y="152" width="140" height="8" rx="3" fill="rgba(255,255,255,0.15)"/>
+              <rect x="158" y="160" width="4" height="28" rx="1" fill="rgba(255,255,255,0.1)"/>
+              <rect x="278" y="160" width="4" height="28" rx="1" fill="rgba(255,255,255,0.1)"/>
+
+              <!-- STUDENT 1 at table (left) -->
+              <rect x="156" y="120" width="36" height="34" rx="8" fill="rgba(255,105,46,0.7)"/>
+              <circle cx="174" cy="102" r="16" fill="#8D5524"/>
+              <path d="M158 96 C160 84, 174 78, 190 84 C190 90, 190 96, 190 96 C186 88, 162 88, 158 96Z" fill="#1A1A2E"/>
+              <ellipse cx="170" cy="102" rx="1.5" ry="1" fill="#101828"/>
+              <ellipse cx="178" cy="102" rx="1.5" ry="1" fill="#101828"/>
+              <rect x="152" y="140" width="38" height="12" rx="2" fill="rgba(255,255,255,0.25)"/>
+
+              <!-- STUDENT 2 at table (right) -->
+              <rect x="250" y="118" width="36" height="36" rx="8" fill="rgba(18,163,140,0.7)"/>
+              <circle cx="268" cy="100" r="16" fill="#F5D0B0"/>
+              <path d="M252 94 C254 82, 268 76, 284 82 C284 88, 284 94, 284 94 C280 86, 256 86, 252 94Z" fill="#6B4226"/>
+              <ellipse cx="264" cy="100" rx="1.5" ry="1" fill="#101828"/>
+              <ellipse cx="272" cy="100" rx="1.5" ry="1" fill="#101828"/>
+              <rect x="246" y="140" width="40" height="12" rx="2" fill="rgba(255,105,46,0.3)"/>
+
+              <!-- LIBRARIAN walking (middle background) -->
+              <rect x="206" y="64" width="28" height="40" rx="8" fill="rgba(13,90,82,0.8)"/>
+              <circle cx="220" cy="48" r="14" fill="#D4A574"/>
+              <path d="M206 42 C208 32, 220 28, 234 32 C234 38, 234 42, 234 42 C230 36, 210 36, 206 42Z" fill="#2C1810"/>
+              <circle cx="216" cy="48" r="1.5" fill="#101828"/>
+              <circle cx="224" cy="48" r="1.5" fill="#101828"/>
+              <rect x="232" y="68" width="14" height="20" rx="2" fill="rgba(255,105,46,0.5)"/>
+              <rect x="230" y="72" width="14" height="12" rx="2" fill="rgba(18,163,140,0.5)"/>
+
+              <!-- LIBRARY sign -->
+              <rect x="170" y="10" width="100" height="18" rx="4" fill="rgba(255,255,255,0.2)"/>
+              <rect x="186" y="16" width="68" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+
+              <!-- Floor -->
+              <line x1="5" y1="244" x2="435" y2="244" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+              <ellipse cx="220" cy="195" rx="80" ry="10" fill="rgba(255,255,255,0.03)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         PROBLEM — What superintendents face
+         Illustration: Superintendent at desk with burden
+         ════════════════════════════════════════════ -->
+    <div class="bm-section">
+      <div class="bm-container">
+        <div class="feature-split">
+          <div>
+            <div class="bm-eyebrow bm-eyebrow--warning">THE CHALLENGE</div>
+            <h2 style="font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 12px;">SB 13 Didn't Just Create More Work — It Created Board-Level Liability</h2>
+            <p style="font-size: 16px; color: var(--bm-secondary-text); line-height: 1.6; margin-bottom: 20px;">Every challenged book now requires documentation, review committees, board reports, and defensible records. Your librarians are drowning in compliance work instead of connecting kids with books.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div style="padding: 16px; background: var(--bm-bg-cool); border-radius: 8px; border-left: 3px solid var(--bm-pumpkin);">
+                <div style="font-size: 28px; font-weight: 800; color: var(--bm-pumpkin);">6–8 wks</div>
+                <div style="font-size: 12px; color: var(--bm-muted-gray); font-weight: 600;">Per challenged book review</div>
+              </div>
+              <div style="padding: 16px; background: var(--bm-bg-cool); border-radius: 8px; border-left: 3px solid var(--bm-pumpkin);">
+                <div style="font-size: 28px; font-weight: 800; color: var(--bm-pumpkin);">100%</div>
+                <div style="font-size: 12px; color: var(--bm-muted-gray); font-weight: 600;">Board liability exposure</div>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <!-- Time Savings illustration — books with clock, showing the burden -->
+            <svg width="280" height="260" viewBox="0 0 180 160" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.06));">
+              <rect x="20" y="80" width="80" height="16" rx="2" fill="#107569"/>
+              <rect x="22" y="62" width="74" height="16" rx="2" fill="#12A38C"/>
+              <rect x="24" y="46" width="70" height="14" rx="2" fill="#0D5A52"/>
+              <rect x="44" y="87" width="32" height="2" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="46" y="69" width="26" height="2" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <circle cx="130" cy="64" r="32" fill="none" stroke="#12A38C" stroke-width="3"/>
+              <circle cx="130" cy="64" r="28" fill="#12A38C" opacity="0.06"/>
+              <circle cx="130" cy="36" r="2" fill="#107569"/>
+              <circle cx="158" cy="64" r="2" fill="#107569"/>
+              <circle cx="130" cy="92" r="2" fill="#107569"/>
+              <circle cx="102" cy="64" r="2" fill="#107569"/>
+              <line x1="130" y1="64" x2="130" y2="44" stroke="#101828" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="130" y1="64" x2="148" y2="56" stroke="#FF692E" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="130" cy="64" r="3" fill="#101828"/>
+              <path d="M116 110 L124 118 L116 126" fill="none" stroke="#FF692E" stroke-width="2" stroke-linecap="round"/>
+              <path d="M128 110 L136 118 L128 126" fill="none" stroke="#FF692E" stroke-width="2" stroke-linecap="round"/>
+              <path d="M140 110 L148 118 L140 126" fill="none" stroke="#FF692E" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         SOLUTION — How Bookmarked works
+         Illustration: Compliance Pipeline
+         ════════════════════════════════════════════ -->
+    <div class="bm-section bm-section--alt">
+      <div class="bm-container">
+        <div class="bm-section-header" style="text-align: center;">
+          <div class="bm-eyebrow">HOW IT WORKS</div>
+          <h2>From Challenged Book to Compliant Record — Automatically</h2>
+          <p>Bookmarked handles the entire compliance workflow. Your team stays informed, not overwhelmed.</p>
+        </div>
+        <!-- Full-width compliance pipeline illustration -->
+        <div style="display: flex; justify-content: center; margin: 32px 0;">
+          <svg width="660" height="200" viewBox="0 0 440 200" style="max-width: 100%; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.04));">
+            <rect x="0" y="0" width="440" height="200" rx="12" fill="white" stroke="#E5E7EB" stroke-width="1"/>
+            <rect x="20" y="60" width="40" height="60" rx="3" fill="#107569"/>
+            <rect x="20" y="60" width="10" height="60" rx="2" fill="#0D5A52"/>
+            <rect x="34" y="78" width="20" height="2" rx="1" fill="rgba(255,255,255,0.3)"/>
+            <path d="M50 60 L50 52 L54 56 L58 52 L58 60" fill="#FF692E"/>
+            <line x1="68" y1="90" x2="100" y2="90" stroke="#12A38C" stroke-width="2" stroke-dasharray="4 4"/>
+            <polygon points="100,85 112,90 100,95" fill="#12A38C"/>
+            <rect x="118" y="50" width="70" height="80" rx="8" fill="#12A38C" opacity="0.08"/>
+            <rect x="118" y="50" width="70" height="80" rx="8" fill="none" stroke="#12A38C" stroke-width="2"/>
+            <path d="M153 62 L175 72 L175 96 Q175 112, 153 120 Q131 112, 131 96 L131 72Z" fill="#12A38C" opacity="0.2"/>
+            <path d="M145 90 L151 97 L165 82" fill="none" stroke="#12A38C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="153" y="142" text-anchor="middle" font-family="Urbanist, sans-serif" font-size="9" font-weight="700" fill="#107569">REVIEW</text>
+            <line x1="196" y1="90" x2="228" y2="90" stroke="#12A38C" stroke-width="2" stroke-dasharray="4 4"/>
+            <polygon points="228,85 240,90 228,95" fill="#12A38C"/>
+            <circle cx="270" cy="90" r="30" fill="#107569"/>
+            <circle cx="270" cy="90" r="24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <path d="M258 90 L266 99 L284 78" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="270" y="142" text-anchor="middle" font-family="Urbanist, sans-serif" font-size="9" font-weight="700" fill="#107569">COMPLIANT</text>
+            <line x1="308" y1="90" x2="340" y2="90" stroke="#12A38C" stroke-width="2" stroke-dasharray="4 4"/>
+            <polygon points="340,85 352,90 340,95" fill="#12A38C"/>
+            <rect x="358" y="54" width="70" height="72" rx="4" fill="none" stroke="#D1D5DB" stroke-width="1.5"/>
+            <rect x="358" y="54" width="70" height="4" rx="1" fill="#E5E7EB"/>
+            <rect x="358" y="88" width="70" height="3" rx="1" fill="#E5E7EB"/>
+            <rect x="362" y="62" width="12" height="24" rx="1" fill="#107569"/>
+            <rect x="376" y="64" width="10" height="22" rx="1" fill="#FF692E"/>
+            <rect x="388" y="60" width="14" height="26" rx="1" fill="#12A38C"/>
+            <rect x="404" y="66" width="10" height="20" rx="1" fill="#0D5A52"/>
+            <rect x="416" y="62" width="8" height="24" rx="1" fill="#101828"/>
+            <rect x="362" y="94" width="14" height="28" rx="1" fill="#107569"/>
+            <rect x="362" y="94" width="14" height="28" rx="1" fill="none" stroke="#FF692E" stroke-width="1.5"/>
+            <rect x="378" y="96" width="10" height="26" rx="1" fill="#12A38C" opacity="0.5"/>
+            <rect x="390" y="94" width="12" height="28" rx="1" fill="#FF692E" opacity="0.5"/>
+            <text x="393" y="142" text-anchor="middle" font-family="Urbanist, sans-serif" font-size="9" font-weight="700" fill="#107569">CATALOGED</text>
+            <circle cx="248" cy="66" r="2" fill="#FF692E" opacity="0.5"/>
+            <circle cx="294" cy="68" r="1.5" fill="#FF692E" opacity="0.4"/>
+            <circle cx="256" cy="112" r="1.5" fill="#FF692E" opacity="0.4"/>
+          </svg>
+        </div>
+        <div style="text-align: center; font-size: 14px; color: var(--bm-muted-gray); font-weight: 500;">Book enters → AI review → Compliance verified → Cataloged with defensible records</div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         FEATURES — What matters to a superintendent
+         Illustration: Administrator Dashboard + District Network
+         ════════════════════════════════════════════ -->
+    <div class="bm-section">
+      <div class="bm-container">
+
+        <!-- Feature 1: Board-Ready Reports -->
+        <div class="feature-split" style="margin-bottom: 64px;">
+          <div>
+            <div class="bm-eyebrow">BOARD-READY REPORTING</div>
+            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 12px; line-height: 1.2;">One Click. Complete Audit Trail. Board Confidence.</h2>
+            <p style="font-size: 15px; color: var(--bm-secondary-text); line-height: 1.6; margin-bottom: 16px;">Every review decision is documented. Every challenged title has a defensible record. When your board asks, you have answers — not scrambled spreadsheets.</p>
+            <ul style="list-style: none; padding: 0;">
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> One-click board report generation
+              </li>
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> Complete audit history for every title
+              </li>
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> Real-time compliance dashboard
+              </li>
+            </ul>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <!-- Superintendent at desk illustration -->
+            <svg width="280" height="280" viewBox="0 0 200 200" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.06));">
+              <rect x="20" y="130" width="160" height="8" rx="2" fill="#E5E7EB"/>
+              <rect x="28" y="138" width="5" height="36" rx="1" fill="#D1D5DB"/>
+              <rect x="167" y="138" width="5" height="36" rx="1" fill="#D1D5DB"/>
+              <rect x="95" y="82" width="72" height="44" rx="4" fill="#1D2939"/>
+              <rect x="99" y="86" width="64" height="36" rx="2" fill="#12A38C" opacity="0.25"/>
+              <rect x="104" y="92" width="24" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+              <rect x="104" y="98" width="52" height="8" rx="2" fill="rgba(255,255,255,0.1)"/>
+              <rect x="106" y="100" width="12" height="4" rx="1" fill="#12A38C" opacity="0.6"/>
+              <rect x="120" y="101" width="8" height="3" rx="1" fill="#FF692E" opacity="0.6"/>
+              <rect x="130" y="100" width="10" height="4" rx="1" fill="#107569" opacity="0.6"/>
+              <rect x="104" y="110" width="40" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+              <rect x="104" y="115" width="34" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+              <rect x="124" y="126" width="12" height="5" rx="1" fill="#475467"/>
+              <rect x="118" y="129" width="24" height="2" rx="1" fill="#475467"/>
+              <rect x="28" y="110" width="36" height="10" rx="2" fill="#107569"/>
+              <rect x="30" y="98" width="32" height="10" rx="2" fill="#12A38C"/>
+              <rect x="32" y="88" width="28" height="8" rx="2" fill="#0D5A52"/>
+              <rect x="62" y="86" width="40" height="44" rx="10" fill="#101828"/>
+              <path d="M80 86 L82 96 L84 86" fill="#FF692E"/>
+              <rect x="50" y="96" width="14" height="24" rx="7" fill="#101828"/>
+              <rect x="100" y="96" width="14" height="24" rx="7" fill="#101828"/>
+              <circle cx="56" cy="118" r="4" fill="#D4A574"/>
+              <circle cx="108" cy="118" r="4" fill="#D4A574"/>
+              <circle cx="82" cy="62" r="22" fill="#D4A574"/>
+              <path d="M60 54 C62 38, 82 30, 104 38 C104 48, 104 54, 104 54 C96 44, 68 44, 60 54Z" fill="#475467"/>
+              <circle cx="74" cy="62" r="2" fill="#101828"/>
+              <circle cx="90" cy="62" r="2" fill="#101828"/>
+              <path d="M76 72 Q82 76, 88 72" fill="none" stroke="#101828" stroke-width="1.2" stroke-linecap="round"/>
+              <rect x="148" y="116" width="14" height="14" rx="3" fill="#F8F5F0" stroke="#E5E7EB" stroke-width="1"/>
+              <path d="M162 120 C167 120, 167 126, 162 126" fill="none" stroke="#E5E7EB" stroke-width="1.2"/>
+              <circle cx="170" cy="78" r="8" fill="#12A38C" opacity="0.15"/>
+              <path d="M166 78 L169 82 L176 74" fill="none" stroke="#12A38C" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Feature 2: District-Wide Scale -->
+        <div class="feature-split reverse" style="margin-bottom: 48px;">
+          <div>
+            <div class="bm-eyebrow">DISTRICT-WIDE SCALE</div>
+            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 12px; line-height: 1.2;">One Platform for Every Building in Your District</h2>
+            <p style="font-size: 15px; color: var(--bm-secondary-text); line-height: 1.6; margin-bottom: 16px;">Whether you have 3 campuses or 30, Bookmarked gives you a single view across every library. Consistent policies, centralized reporting, no gaps.</p>
+            <ul style="list-style: none; padding: 0;">
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> Centralized district dashboard
+              </li>
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> Per-campus drill-down views
+              </li>
+              <li style="font-size: 14px; color: var(--bm-eigengrau); padding: 6px 0; display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--bm-teal-accent); font-weight: 700;">&#10003;</span> Consistent policies across all buildings
+              </li>
+            </ul>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <!-- District Network illustration -->
+            <svg width="280" height="260" viewBox="0 0 180 160" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.06));">
+              <circle cx="90" cy="80" r="22" fill="#107569"/>
+              <circle cx="90" cy="80" r="18" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+              <rect x="80" y="72" width="20" height="16" rx="2" fill="rgba(255,255,255,0.8)"/>
+              <line x1="90" y1="72" x2="90" y2="88" stroke="#107569" stroke-width="1.5"/>
+              <line x1="90" y1="58" x2="90" y2="28" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <rect x="76" y="10" width="28" height="20" rx="3" fill="#12A38C"/>
+              <path d="M76 10 L90 2 L104 10" fill="#0D5A52"/>
+              <rect x="84" y="18" width="6" height="8" rx="1" fill="rgba(255,255,255,0.4)"/>
+              <line x1="112" y1="80" x2="142" y2="80" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <rect x="142" y="68" width="28" height="20" rx="3" fill="#FF692E"/>
+              <path d="M142 68 L156 60 L170 68" fill="#e55a22"/>
+              <rect x="152" y="76" width="6" height="8" rx="1" fill="rgba(255,255,255,0.4)"/>
+              <line x1="106" y1="96" x2="130" y2="120" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <rect x="126" y="118" width="28" height="20" rx="3" fill="#0D5A52"/>
+              <path d="M126 118 L140 110 L154 118" fill="#093d38"/>
+              <rect x="136" y="126" width="6" height="8" rx="1" fill="rgba(255,255,255,0.4)"/>
+              <line x1="74" y1="96" x2="50" y2="120" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <rect x="28" y="118" width="28" height="20" rx="3" fill="#12A38C"/>
+              <path d="M28 118 L42 110 L56 118" fill="#0D5A52"/>
+              <rect x="38" y="126" width="6" height="8" rx="1" fill="rgba(255,255,255,0.4)"/>
+              <line x1="68" y1="80" x2="38" y2="80" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <rect x="10" y="68" width="28" height="20" rx="3" fill="#101828"/>
+              <path d="M10 68 L24 60 L38 68" fill="#0a1018"/>
+              <rect x="20" y="76" width="6" height="8" rx="1" fill="rgba(255,255,255,0.3)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         STATS ROW
+         ════════════════════════════════════════════ -->
+    <div class="bm-section bm-section--alt">
+      <div class="bm-container">
+        <div class="bm-stats-row">
+          <div class="bm-stat-card">
+            <div class="bm-stat-card__number">150+</div>
+            <div class="bm-stat-card__label">Texas Districts</div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-card__number">500K+</div>
+            <div class="bm-stat-card__label">Students Served</div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-card__number">97%</div>
+            <div class="bm-stat-card__label">Compliance Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         TESTIMONIAL
+         ════════════════════════════════════════════ -->
+    <div class="bm-section testimonial-section">
+      <div class="bm-container">
+        <div class="testimonial-card">
+          <blockquote>"Bookmarked turned a 6-week compliance nightmare into a 2-day process. Our librarians can focus on what they do best — connecting kids with books."</blockquote>
+          <div class="attribution">— Library Director, Temple ISD</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════
+         CTA OPTIONS — 3 alternatives to the dark bar
+         ════════════════════════════════════════════ -->
+
+    <!-- CTA Option A: Warm Cream -->
+    <div class="cta-warm">
+      <div class="bm-container">
+        <span class="option-label">Option A — Warm Cream</span>
+        <h2>Ready to Make Your Libraries the Pride of Your District?</h2>
+        <p>Join 150+ Texas districts already using Bookmarked.</p>
+        <a href="#" class="bm-cta-button" style="background: var(--bm-pumpkin); border-color: var(--bm-pumpkin);">Book a Walkthrough</a>
+        <div style="margin-top: 16px; font-size: 13px; color: var(--bm-muted-gray);">Paige Turner &middot; paige@bookmarked.com &middot; (555) 123-4567</div>
+      </div>
+    </div>
+
+    <!-- CTA Option B: Soft Teal Gradient -->
+    <div class="cta-teal">
+      <div class="bm-container">
+        <span class="option-label">Option B — Soft Teal</span>
+        <h2>Ready to Make Your Libraries the Pride of Your District?</h2>
+        <p>Join 150+ Texas districts already using Bookmarked.</p>
+        <a href="#" class="bm-cta-button" style="background: var(--bm-deep-green); border-color: var(--bm-deep-green);">Book a Walkthrough</a>
+        <div style="margin-top: 16px; font-size: 13px; color: var(--bm-muted-gray);">Paige Turner &middot; paige@bookmarked.com &middot; (555) 123-4567</div>
+      </div>
+    </div>
+
+    <!-- CTA Option C: White with Illustration -->
+    <div class="cta-white">
+      <div class="bm-container">
+        <span class="option-label">Option C — White + Illustration</span>
+        <div class="cta-illustration">
+          <!-- Small reading nook vignette as visual anchor -->
+          <svg width="120" height="100" viewBox="0 0 180 140">
+            <path d="M30 90 C30 80, 35 70, 45 68 L45 100 C35 100, 30 95, 30 90Z" fill="#D4A574"/>
+            <path d="M150 90 C150 80, 145 70, 135 68 L135 100 C145 100, 150 95, 150 90Z" fill="#D4A574"/>
+            <ellipse cx="48" cy="78" rx="5" ry="8" fill="#D4A574"/>
+            <ellipse cx="132" cy="78" rx="5" ry="8" fill="#D4A574"/>
+            <path d="M90 30 Q60 28, 40 34 L40 100 Q60 96, 90 98Z" fill="#FAFAF8" stroke="#E5E7EB" stroke-width="1"/>
+            <path d="M90 30 Q120 28, 140 34 L140 100 Q120 96, 90 98Z" fill="#FFF" stroke="#E5E7EB" stroke-width="1"/>
+            <line x1="90" y1="28" x2="90" y2="100" stroke="#107569" stroke-width="2"/>
+            <rect x="50" y="44" width="32" height="1.5" rx="0.75" fill="#D1D5DB"/>
+            <rect x="50" y="50" width="28" height="1.5" rx="0.75" fill="#D1D5DB"/>
+            <rect x="50" y="56" width="24" height="1.5" rx="0.75" fill="#D1D5DB"/>
+            <rect x="98" y="44" width="32" height="1.5" rx="0.75" fill="#D1D5DB"/>
+            <rect x="98" y="50" width="28" height="1.5" rx="0.75" fill="#D1D5DB"/>
+            <rect x="98" y="56" width="24" height="1.5" rx="0.75" fill="#D1D5DB"/>
+          </svg>
+        </div>
+        <h2>Ready to Make Your Libraries the Pride of Your District?</h2>
+        <p>Join 150+ Texas districts already using Bookmarked.</p>
+        <a href="#" class="bm-cta-button" style="background: var(--bm-pumpkin); border-color: var(--bm-pumpkin);">Book a Walkthrough</a>
+        <div style="margin-top: 16px; font-size: 13px; color: var(--bm-muted-gray);">Paige Turner &middot; paige@bookmarked.com &middot; (555) 123-4567</div>
+      </div>
+    </div>
+
+    <!-- Footer (thin, not dark) -->
+    <div style="background: var(--bm-deep-green); padding: 16px 0; text-align: center;">
+      <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.7);">The Book Intelligence Company</div>
+    </div>
+
+  </div><!-- end browser-body -->
+</div><!-- end browser-chrome -->
+
+<!-- Footer note -->
+<div style="text-align: center; padding: 32px 0 64px; font-size: 13px; color: var(--bm-muted-gray);">
+  End of Round 1. Which CTA option feels right?
+</div>
+
+</body>
+</html>

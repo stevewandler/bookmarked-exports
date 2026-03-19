@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Voices — Share Your Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-warm: #F8F5F0;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, Helvetica, sans-serif;
+  --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--bm-font-family); font-size:16px; color:var(--bm-eigengrau); background:var(--bm-bg-cool); -webkit-font-smoothing:antialiased; line-height:1.6; }
+
+/* Hero */
+.hero { background:var(--bm-gradient-hero); padding:56px 0 48px; color:#fff; text-align:center; }
+.hero-inner { max-width:640px; margin:0 auto; padding:0 24px; }
+.hero .badge { display:inline-block; background:rgba(255,255,255,0.15); color:#fff; font-size:10px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; padding:6px 18px; border-radius:100px; margin-bottom:16px; }
+.hero h1 { font-size:36px; font-weight:800; line-height:1.2; letter-spacing:-0.02em; }
+.hero p { font-size:17px; color:rgba(255,255,255,0.85); margin-top:12px; line-height:1.6; }
+
+/* Container */
+.container { max-width:640px; margin:0 auto; padding:0 24px; }
+
+/* Form card */
+.form-section { padding:40px 0 64px; }
+.form-card { background:#fff; border-radius:16px; padding:40px 36px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid var(--bm-border-light); }
+
+/* Form elements */
+.form-group { margin-bottom:28px; }
+.form-group label { display:block; font-size:15px; font-weight:700; color:var(--bm-eigengrau); margin-bottom:6px; }
+.form-group .hint { font-size:13px; color:var(--bm-muted-gray); margin-bottom:8px; }
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea,
+.form-group select {
+  width:100%; padding:12px 16px; font-family:var(--bm-font-family); font-size:15px;
+  border:1px solid var(--bm-border-light); border-radius:8px; color:var(--bm-eigengrau);
+  background:#fff; transition:border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline:none; border-color:var(--bm-teal-accent); box-shadow:0 0 0 3px rgba(18,163,140,0.1);
+}
+.form-group textarea { min-height:100px; resize:vertical; }
+
+/* Row layout */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:500px) { .form-row { grid-template-columns:1fr; } }
+
+/* Checkbox group */
+.checkbox-group { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+.checkbox-item { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:var(--bm-bg-light); border:1px solid var(--bm-border-light); border-radius:10px; cursor:pointer; transition:all 0.2s; }
+.checkbox-item:hover { border-color:var(--bm-teal-accent); background:#fff; }
+.checkbox-item.selected { border-color:var(--bm-teal-accent); background:rgba(18,163,140,0.04); box-shadow:0 0 0 2px rgba(18,163,140,0.15); }
+.checkbox-item input[type="checkbox"] { margin-top:2px; width:18px; height:18px; accent-color:var(--bm-deep-green); cursor:pointer; flex-shrink:0; }
+.checkbox-item .cb-content { flex:1; }
+.checkbox-item .cb-title { font-size:15px; font-weight:600; color:var(--bm-eigengrau); }
+.checkbox-item .cb-desc { font-size:13px; color:var(--bm-secondary-text); margin-top:2px; line-height:1.4; }
+.checkbox-item .cb-time { font-size:11px; font-weight:700; color:var(--bm-teal-accent); text-transform:uppercase; letter-spacing:1px; }
+
+/* Divider */
+.divider { border:none; border-top:1px solid var(--bm-border-light); margin:32px 0; }
+
+/* Section headers within form */
+.section-label { font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--bm-teal-accent); margin-bottom:16px; }
+
+/* Submit button */
+.submit-btn {
+  display:block; width:100%; padding:16px; font-family:var(--bm-font-family); font-size:16px; font-weight:700;
+  background:var(--bm-deep-green); color:#fff; border:none; border-radius:10px; cursor:pointer;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.submit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(16,117,105,0.25); }
+.submit-btn:active { transform:translateY(0); }
+
+/* Consent */
+.consent-text { font-size:12px; color:var(--bm-muted-gray); text-align:center; margin-top:16px; line-height:1.5; }
+
+/* What happens next */
+.next-steps { background:var(--bm-bg-warm); border-radius:12px; padding:24px; margin-top:28px; }
+.next-steps h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
+.next-steps ol { font-size:14px; color:var(--bm-secondary-text); padding-left:20px; line-height:2; }
+
+/* Thank you state */
+.thank-you { display:none; text-align:center; padding:60px 20px; }
+.thank-you h2 { font-size:28px; font-weight:800; color:var(--bm-deep-green); margin-bottom:12px; }
+.thank-you p { font-size:16px; color:var(--bm-secondary-text); max-width:480px; margin:0 auto; }
+.thank-you .checkmark { font-size:64px; margin-bottom:16px; }
+
+/* Footer */
+.footer { background:var(--bm-deep-green); color:#fff; padding:28px 0; text-align:center; }
+.footer p { font-size:13px; color:rgba(255,255,255,0.6); }
+.footer a { color:rgba(255,255,255,0.8); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge">Bookmarked Community</div>
+    <h1>Share Your Library Story</h1>
+    <p>We're building a community that celebrates librarians and the incredible work happening in school libraries across Texas. We'd love to feature you.</p>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-section">
+  <div class="container">
+    <div class="form-card" id="formCard">
+      <form id="spotlightForm" action="https://formspree.io/f/xdkozpey" method="POST">
+
+        <!-- ABOUT YOU -->
+        <div class="section-label">About You</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required placeholder="First name">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required placeholder="Last name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@district.edu">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="district">School District</label>
+            <input type="text" id="district" name="district" required placeholder="e.g., Temple ISD">
+          </div>
+          <div class="form-group">
+            <label for="role">Your Role</label>
+            <input type="text" id="role" name="role" required placeholder="e.g., Campus Librarian">
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- WHAT INTERESTS YOU -->
+        <div class="section-label">What Sounds Interesting?</div>
+        <div class="form-group">
+          <label>Pick as many as you'd like</label>
+          <div class="hint">We'll follow up with details on whatever you choose. No pressure — you can always change your mind.</div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="quick_conversation">
+              <div class="cb-content">
+                <div class="cb-time">15-20 minutes</div>
+                <div class="cb-title">Quick Conversation</div>
+                <div class="cb-desc">Hop on a casual call with us. We'll ask a few questions, you share what you're passionate about, and we turn it into content you'll be proud of.</div>
+              </div>
+            </label>
+
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="photo_spotlight">
+              <div class="cb-content">
+                <div class="cb-time">15 minutes</div>
+                <div class="cb-title">Photo Spotlight</div>
+                <div class="cb-desc">Send us a photo of yourself in your library and answer 3 short questions. We create a beautiful spotlight for Instagram and LinkedIn.</div>
+              </div>
+            </label>
+
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="written_piece">
+              <div class="cb-content">
+                <div class="cb-time">30-60 minutes</div>
+                <div class="cb-title">Written Piece or Blog Post</div>
+                <div class="cb-desc">Write about a topic you care about — the future of libraries, getting books in kids' hands, innovative approaches. Or we interview you and write it up.</div>
+              </div>
+            </label>
+
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="webinar_panel">
+              <div class="cb-content">
+                <div class="cb-time">60 minutes</div>
+                <div class="cb-title">Webinar Panel Discussion</div>
+                <div class="cb-desc">Join a recorded conversation with peers about topics that matter to the library profession. Not a sales pitch — a real conversation.</div>
+              </div>
+            </label>
+
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="case_study">
+              <div class="cb-content">
+                <div class="cb-time">45 minutes</div>
+                <div class="cb-title">Case Study</div>
+                <div class="cb-desc">Share your Bookmarked experience in a structured interview. We create a co-branded PDF case study you can share with your admin.</div>
+              </div>
+            </label>
+
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')">
+              <input type="checkbox" name="interests" value="esc_regional">
+              <div class="cb-content">
+                <div class="cb-time">15 minutes</div>
+                <div class="cb-title">ESC Regional Feature</div>
+                <div class="cb-desc">A short interview about your region's library wins and challenges. Featured in your ESC partner's materials.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- TOPICS -->
+        <div class="section-label">Topics You Care About</div>
+        <div class="form-group">
+          <label>What would you love to talk about? (Optional)</label>
+          <div class="hint">This helps us tailor the conversation to what matters to you.</div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="vibrant_libraries">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">Creating vibrant libraries kids want to visit</div></div>
+            </label>
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="books_in_hands">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">Getting the right books in kids' hands</div></div>
+            </label>
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="future_libraries">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">The future of school libraries</div></div>
+            </label>
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="ai_libraries">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">AI and technology in library management</div></div>
+            </label>
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="collection_strategy">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">Rethinking book collection strategy</div></div>
+            </label>
+            <label class="checkbox-item" onclick="this.classList.toggle('selected')" style="padding:10px 16px;">
+              <input type="checkbox" name="topics" value="librarian_role">
+              <div class="cb-content"><div class="cb-title" style="font-size:14px;">The evolving role of the school librarian</div></div>
+            </label>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ANYTHING ELSE -->
+        <div class="form-group">
+          <label for="notes">Anything else? (Optional)</label>
+          <div class="hint">Something exciting happening in your library, a topic you're passionate about, or just say hello.</div>
+          <textarea id="notes" name="notes" placeholder="Tell us anything..."></textarea>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="submit-btn">Count Me In</button>
+        <p class="consent-text">By submitting, you're expressing interest in participating. We'll follow up to discuss details and get your approval before publishing anything. Nothing goes live without your say-so.</p>
+
+        <!-- WHAT HAPPENS NEXT -->
+        <div class="next-steps">
+          <h3>What happens next?</h3>
+          <ol>
+            <li>We'll reach out within a few days to chat about what works for you</li>
+            <li>If you chose "Quick Conversation," we'll schedule a 15-20 minute call</li>
+            <li>We create content from our conversation — social posts, spotlight, or blog draft</li>
+            <li>You review and approve everything before it goes live</li>
+            <li>We publish and make you look great</li>
+          </ol>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- THANK YOU (shown after submit) -->
+    <div class="thank-you" id="thankYou">
+      <div class="checkmark">&#10003;</div>
+      <h2>Thank you!</h2>
+      <p>We're excited to feature your story. Someone from our team will reach out within a few days to talk about next steps. In the meantime, keep doing amazing things in your library.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="container">
+    <p><a href="https://bookmarked.com">Bookmarked</a> &middot; The Book Intelligence Company</p>
+    <p style="margin-top:4px;">Questions? Reach out to <a href="mailto:steve@bookmarked.com">steve@bookmarked.com</a></p>
+  </div>
+</div>
+
+<script>
+// Handle form submission with thank you state
+const form = document.getElementById('spotlightForm');
+const formCard = document.getElementById('formCard');
+const thankYou = document.getElementById('thankYou');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      formCard.style.display = 'none';
+      thankYou.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      alert('Something went wrong. Please try again or email steve@bookmarked.com directly.');
+    }
+  }).catch(() => {
+    alert('Something went wrong. Please try again or email steve@bookmarked.com directly.');
+  });
+});
+
+// Toggle checkbox visual state
+document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.closest('.checkbox-item').classList.toggle('selected', this.checked);
+  });
+});
+</script>
+
+</body>
+</html>

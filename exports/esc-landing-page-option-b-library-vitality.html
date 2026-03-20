@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libraries Deserve Better — Bookmarked ESC Partnership</title>
+<meta name="description" content="Bookmarked partners with Texas Education Service Centers to give librarians their mission back. Book Intelligence replaces compliance busywork with confidence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Urbanist', Arial, Helvetica, sans-serif;
+  color: #101828;
+  background: #FFFFFF;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ========== TOKENS ========== */
+:root {
+  --eigengrau: #101828;
+  --deep-green: #107569;
+  --teal-accent: #12A38C;
+  --white: #FFFFFF;
+  --secondary-text: #475467;
+  --border: #E5E7EB;
+  --bg-cool: #F8FAFC;
+  --bg-warm: #F8F5F0;
+  --bg-green-tint: #F8FAF8;
+  --hero-gradient: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+  --radius-card: 12px;
+  --padding-card: 32px;
+  --container: 1200px;
+  --side-pad: 24px;
+}
+
+/* ========== LAYOUT ========== */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--side-pad);
+  padding-right: var(--side-pad);
+}
+section { padding: 96px 0; }
+
+/* ========== TYPOGRAPHY ========== */
+h1 { font-size: 44px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+h2 { font-size: 36px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 16px; }
+h3 { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+p { font-size: 18px; line-height: 1.7; }
+.subtitle { font-size: 20px; color: var(--secondary-text); max-width: 680px; margin-bottom: 48px; }
+.section-label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-accent); margin-bottom: 12px; }
+
+/* ========== BUTTONS ========== */
+.btn {
+  display: inline-block;
+  font-family: 'Urbanist', Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 16px 36px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  text-align: center;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 117, 105, 0.25); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--deep-green); color: var(--white); }
+.btn-primary-inverted { background: var(--white); color: var(--deep-green); }
+.btn-secondary {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.5);
+}
+.btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+/* ========== HEADER ========== */
+.site-header {
+  background: var(--white);
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--deep-green);
+}
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--deep-green);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-icon svg { width: 22px; height: 22px; }
+.header-cta .btn { padding: 12px 28px; font-size: 15px; }
+
+/* ========== HERO ========== */
+.hero {
+  background: var(--hero-gradient);
+  padding: 120px 0 112px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero h1 { color: var(--white); max-width: 800px; margin: 0 auto 28px; position: relative; z-index: 1; }
+.hero-sub {
+  color: var(--white);
+  opacity: 0.92;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto 44px;
+  position: relative;
+  z-index: 1;
+}
+.hero .btn { position: relative; z-index: 1; }
+
+/* ========== STORY SECTION ========== */
+.story { background: var(--bg-warm); }
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.story-text p {
+  color: var(--secondary-text);
+  margin-bottom: 24px;
+  font-size: 18px;
+  line-height: 1.8;
+}
+.story-text p:last-child { margin-bottom: 0; }
+.pull-quote-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 48px 40px;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.pull-quote-card::before {
+  content: '\201C';
+  font-size: 120px;
+  font-weight: 800;
+  color: var(--teal-accent);
+  opacity: 0.15;
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+.pull-quote-card blockquote {
+  font-size: 28px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--deep-green);
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== SOLUTION SECTION ========== */
+.solution { background: var(--white); }
+.solution .subtitle { margin: 0 auto 56px; text-align: center; }
+.solution h2 { text-align: center; }
+.feature-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  margin-bottom: 64px;
+}
+.feature-block:last-child { margin-bottom: 0; }
+.feature-block:nth-child(even) .feature-visual { order: -1; }
+.feature-content h3 { font-size: 24px; color: var(--eigengrau); margin-bottom: 12px; }
+.feature-content p { color: var(--secondary-text); font-size: 18px; line-height: 1.8; }
+.feature-visual {
+  background: var(--bg-cool);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-card);
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+.feature-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--bg-green-tint);
+  color: var(--deep-green);
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  border: 2px solid rgba(16, 117, 105, 0.15);
+}
+
+/* ========== ESC PARTNERSHIP ========== */
+.esc-partnership { background: var(--bg-green-tint); }
+.esc-partnership h2 { text-align: center; }
+.esc-partnership .subtitle { text-align: center; margin: 0 auto 56px; max-width: 720px; }
+.value-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.value-card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: var(--padding-card);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.value-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.value-card-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--bg-green-tint);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.value-card-icon svg { width: 26px; height: 26px; color: var(--deep-green); }
+.value-card h3 { font-size: 20px; margin-bottom: 10px; }
+.value-card p { color: var(--secondary-text); font-size: 16px; line-height: 1.7; }
+.esc-stat {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--deep-green);
+}
+
+/* ========== EMPOWERMENT / BEFORE-AFTER ========== */
+.empowerment { background: var(--white); }
+.empowerment h2 { text-align: center; margin-bottom: 56px; }
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.ba-column { border-radius: var(--radius-card); padding: 40px; }
+.ba-before { background: var(--bg-warm); }
+.ba-after { background: var(--bg-green-tint); border-left: 4px solid var(--teal-accent); }
+.ba-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 100px;
+}
+.ba-before .ba-label { background: rgba(16, 24, 40, 0.07); color: var(--secondary-text); }
+.ba-after .ba-label { background: rgba(16, 117, 105, 0.1); color: var(--deep-green); }
+.ba-column ul { list-style: none; }
+.ba-column li {
+  font-size: 17px;
+  line-height: 1.6;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ba-column li:last-child { border-bottom: none; }
+.ba-icon { flex-shrink: 0; margin-top: 3px; }
+.ba-before .ba-icon { color: #9CA3AF; }
+.ba-after .ba-icon { color: var(--teal-accent); }
+
+/* ========== TESTIMONIAL ========== */
+.testimonial { background: var(--bg-cool); text-align: center; }
+.testimonial-card {
+  max-width: 780px;
+  margin: 0 auto 40px;
+  position: relative;
+  padding: 0 24px;
+}
+.testimonial-card::before {
+  content: '\201C';
+  font-size: 140px;
+  font-weight: 800;
+  color: var(--teal-accent);
+  opacity: 0.12;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+.testimonial-card blockquote {
+  font-size: 26px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--eigengrau);
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+}
+.testimonial-attribution {
+  font-size: 16px;
+  color: var(--secondary-text);
+  font-weight: 500;
+}
+.testimonial-tagline {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--deep-green);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========== FINAL CTA ========== */
+.final-cta {
+  background: var(--hero-gradient);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.final-cta h2 {
+  color: var(--white);
+  font-size: 36px;
+  max-width: 650px;
+  margin: 0 auto 16px;
+  position: relative;
+  z-index: 1;
+}
+.final-cta-sub {
+  color: var(--white);
+  opacity: 0.92;
+  font-size: 20px;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== FOOTER ========== */
+.site-footer {
+  background: var(--deep-green);
+  color: var(--white);
+  padding: 56px 0 40px;
+  text-align: center;
+}
+.footer-logo {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.footer-tagline {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+.footer-contact {
+  font-size: 15px;
+  opacity: 0.75;
+  line-height: 2;
+}
+.footer-contact a { text-decoration: underline; opacity: 0.9; }
+.footer-contact a:hover { opacity: 1; }
+.footer-copyright {
+  margin-top: 32px;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+/* ========== DECORATIVE SVG ELEMENTS ========== */
+.deco-book {
+  position: absolute;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  section { padding: 64px 0; }
+  h1 { font-size: 32px; }
+  h2 { font-size: 28px; }
+  .hero { padding: 80px 0 72px; }
+  .hero-sub { font-size: 18px; }
+  .story-grid { grid-template-columns: 1fr; gap: 40px; }
+  .feature-block { grid-template-columns: 1fr; gap: 32px; }
+  .feature-block:nth-child(even) .feature-visual { order: 0; }
+  .feature-visual { height: 200px; }
+  .value-cards { grid-template-columns: 1fr; }
+  .before-after { grid-template-columns: 1fr; }
+  .ba-after { border-left: none; border-top: 4px solid var(--teal-accent); }
+  .testimonial-card blockquote { font-size: 22px; }
+  .final-cta h2 { font-size: 28px; }
+  .pull-quote-card blockquote { font-size: 22px; }
+  .pull-quote-card { padding: 36px 28px; }
+}
+@media (max-width: 480px) {
+  :root { --side-pad: 16px; }
+  h1 { font-size: 28px; }
+  h2 { font-size: 24px; }
+  .hero { padding: 64px 0 56px; }
+  .hero-sub { font-size: 16px; }
+  .subtitle { font-size: 17px; }
+  .btn { padding: 14px 28px; font-size: 16px; }
+  .ba-column { padding: 28px; }
+  .value-card { padding: 24px; }
+  .testimonial-card blockquote { font-size: 20px; }
+  .pull-quote-card blockquote { font-size: 20px; }
+}
+
+/* ========== PRINT ========== */
+@media print {
+  .site-header { position: static; }
+  .hero, .final-cta { background: #107569 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .btn:hover { transform: none; box-shadow: none; }
+  section { padding: 48px 0; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="https://bookmarked.com" class="logo" aria-label="Bookmarked home">
+      <span class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 2h12a2 2 0 012 2v18l-8-4-8 4V4a2 2 0 012-2z" fill="#FFFFFF"/>
+        </svg>
+      </span>
+      Bookmarked
+    </a>
+    <div class="header-cta">
+      <a href="#walkthrough" class="btn btn-primary">Book a Walkthrough</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" role="region" aria-label="Hero">
+  <div class="container">
+    <h1>Libraries Should Be the Most Vibrant Rooms in a School</h1>
+    <p class="hero-sub">Your librarians didn't go to library school to audit spreadsheets. They went to help kids discover books that change lives. We're here to give them that mission back.</p>
+    <a href="#solution" class="btn btn-primary-inverted">See How Book Intelligence Works</a>
+  </div>
+</section>
+
+<!-- ===== THE STORY ===== -->
+<section class="story" role="region" aria-labelledby="story-heading">
+  <div class="container">
+    <p class="section-label">The Problem</p>
+    <h2 id="story-heading">What Happened to Texas Libraries</h2>
+    <div class="story-grid">
+      <div class="story-text">
+        <p>Compliance paperwork has buried the profession. 26 states passed legislation creating operationally impossible requirements. In Texas, SB 13 didn't just create more work&nbsp;&mdash; it made book compliance a board-level liability.</p>
+        <p>The result? Books aren't being banned. They're just not being ordered. Librarians are so consumed by compliance that the core mission&nbsp;&mdash; matching the right book with the right reader&nbsp;&mdash; has been pushed aside.</p>
+        <p>That's not a library problem. That's a district-wide data infrastructure problem.</p>
+      </div>
+      <div class="pull-quote-card" role="figure" aria-label="Pull quote">
+        <blockquote>Compliance is consuming what it was meant to&nbsp;protect.</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE SOLUTION ===== -->
+<section class="solution" id="solution" role="region" aria-labelledby="solution-heading">
+  <div class="container">
+    <h2 id="solution-heading">Book Intelligence Gives Librarians Their Mission Back</h2>
+    <p class="subtitle" style="text-align:center;">We don't list books. We understand them.</p>
+
+    <!-- Feature 1 -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-number">1</div>
+        <h3>Aggregated Book Intelligence</h3>
+        <p>One consistent, documented source of truth about every book in your collection. Continuously updated. Built specifically for how Texas school libraries actually work.</p>
+      </div>
+      <div class="feature-visual" role="img" aria-label="Book Intelligence product screenshot placeholder">
+        Book Intelligence Screenshot
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-number">2</div>
+        <h3>OnShelf Review</h3>
+        <p>Digital compliance workflows that produce defensible records automatically. When a parent asks a question, the answer is already there.</p>
+      </div>
+      <div class="feature-visual" role="img" aria-label="OnShelf Review product screenshot placeholder">
+        OnShelf Review Screenshot
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-number">3</div>
+        <h3>OnShelf Engage</h3>
+        <p>Parents see what's on the shelves. Transparency builds trust. Collaboration replaces confrontation.</p>
+      </div>
+      <div class="feature-visual" role="img" aria-label="OnShelf Engage product screenshot placeholder">
+        OnShelf Engage Screenshot
+      </div>
+    </div>
+
+    <!-- Feature 4 -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-number">4</div>
+        <h3>Classroom Library Module</h3>
+        <p>Teachers catalog books from their phone in minutes. Districts discover thousands of previously invisible books&nbsp;&mdash; and the compliance exposure they carried.</p>
+      </div>
+      <div class="feature-visual" role="img" aria-label="Classroom Library product screenshot placeholder">
+        Classroom Library Screenshot
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ESC PARTNERSHIP ===== -->
+<section class="esc-partnership" role="region" aria-labelledby="esc-heading">
+  <div class="container">
+    <h2 id="esc-heading">Delivered Through Your ESC&nbsp;&mdash; People You Already Trust</h2>
+    <p class="subtitle" style="text-align:center;">We partner with Texas Education Service Centers because the best solutions are delivered through existing relationships.</p>
+
+    <div class="value-cards">
+      <!-- Card 1 -->
+      <div class="value-card">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h3>Local Expertise</h3>
+        <p>Your ESC knows your region, your districts, your challenges. They recommend Bookmarked because they've seen it work.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="value-card">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3>Seamless Procurement</h3>
+        <p>Purchase through TexBuy cooperative contract. No RFP needed. Your ESC handles it.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="value-card">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <h3>Hands-On Training</h3>
+        <p>ESC-delivered training from people you know. Setup, configuration, and how-to-use sessions built for your team.</p>
+      </div>
+    </div>
+
+    <p class="esc-stat">9 ESC partners covering 2.3 million Texas students</p>
+  </div>
+</section>
+
+<!-- ===== EMPOWERMENT: BEFORE / AFTER ===== -->
+<section class="empowerment" role="region" aria-labelledby="empowerment-heading">
+  <div class="container">
+    <h2 id="empowerment-heading">When Compliance Is Handled, Everything Changes</h2>
+
+    <div class="before-after">
+      <!-- BEFORE -->
+      <div class="ba-column ba-before">
+        <span class="ba-label">Before Bookmarked</span>
+        <ul>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/><line x1="7" y1="7" x2="13" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Hours spent researching individual books
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/><line x1="7" y1="7" x2="13" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg></span>
+            No system of record for decisions made
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/><line x1="7" y1="7" x2="13" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Board meetings feel like minefields
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/><line x1="7" y1="7" x2="13" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Parents and librarians on opposite sides
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#9CA3AF" stroke-width="2"/><line x1="7" y1="7" x2="13" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/><line x1="13" y1="7" x2="7" y2="13" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg></span>
+            Collections shrinking out of caution
+          </li>
+        </ul>
+      </div>
+      <!-- AFTER -->
+      <div class="ba-column ba-after">
+        <span class="ba-label">With Bookmarked</span>
+        <ul>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12A38C" stroke-width="2"/><path d="M7 10l2 2 4-4" stroke="#12A38C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Book Intelligence does the research automatically
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12A38C" stroke-width="2"/><path d="M7 10l2 2 4-4" stroke="#12A38C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Every decision documented and defensible
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12A38C" stroke-width="2"/><path d="M7 10l2 2 4-4" stroke="#12A38C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Board reports generated in minutes
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12A38C" stroke-width="2"/><path d="M7 10l2 2 4-4" stroke="#12A38C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Parents engaged as partners, not adversaries
+          </li>
+          <li>
+            <span class="ba-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12A38C" stroke-width="2"/><path d="M7 10l2 2 4-4" stroke="#12A38C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Collections growing with confidence
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIAL ===== -->
+<section class="testimonial" role="region" aria-labelledby="testimonial-heading">
+  <div class="container">
+    <h2 id="testimonial-heading" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Testimonial</h2>
+    <div class="testimonial-card">
+      <blockquote>&ldquo;Bookmarked didn't just solve our compliance problem&nbsp;&mdash; it gave our librarians their purpose back. They're matching books with readers again, not managing spreadsheets.&rdquo;</blockquote>
+      <p class="testimonial-attribution">&mdash; [ESC Partner Testimonial Placeholder]</p>
+    </div>
+    <p class="testimonial-tagline">Your librarians should be matching books with readers&nbsp;&mdash; not managing spreadsheets.</p>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta" id="walkthrough" role="region" aria-labelledby="cta-heading">
+  <div class="container">
+    <h2 id="cta-heading">The Right Book in the Right Hands Can Change a&nbsp;Life</h2>
+    <p class="final-cta-sub">Let's make sure nothing stands in the way.</p>
+    <div class="cta-buttons">
+      <a href="https://meetings-na2.hubspot.com/wandler/book-a-walkthrough" class="btn btn-primary-inverted">Book a Walkthrough</a>
+      <a href="mailto:jan@bookmarked.com" class="btn btn-secondary">Talk to Your Regional ESC</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 2h12a2 2 0 012 2v18l-8-4-8 4V4a2 2 0 012-2z" fill="#FFFFFF"/>
+      </svg>
+      Bookmarked
+    </div>
+    <p class="footer-tagline">The Book Intelligence Company</p>
+    <div class="footer-contact">
+      <a href="mailto:jan@bookmarked.com">jan@bookmarked.com</a><br>
+      <a href="https://bookmarked.com">bookmarked.com</a>
+    </div>
+    <p class="footer-copyright">&copy; 2026 Bookmarked. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

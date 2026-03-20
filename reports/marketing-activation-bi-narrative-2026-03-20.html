@@ -477,16 +477,30 @@ li { margin-bottom: 6px; }
   <h3>2.3 Website Audit</h3>
 
   <div class="finding-card">
-    <div class="card-label">Finding — Website Messaging</div>
-    <p>Based on the live bookmarked.com website analysis:</p>
+    <div class="card-label">Finding — Website Messaging (Live Playwright Audit)</div>
+    <p>The website has 7 pages: Homepage (<code>/book-intelligence</code>), Platform (<code>/platform</code>), For Districts, For Librarians, About, Blog, Resources. No dedicated pricing page.</p>
     <ul>
-      <li><strong>Homepage hero:</strong> Leads with compliance/library management framing. "Book Intelligence" is mentioned but not explained.</li>
-      <li><strong>No dedicated BI page:</strong> There is no page that explains what Book Intelligence is, how it works, or why it's different. This is the single biggest gap.</li>
-      <li><strong>No "How It Works" page:</strong> No visual explanation of the intelligence pipeline, the three layers, or the trust model.</li>
-      <li><strong>Compliance-heavy positioning:</strong> The site leads with SB 13 compliance and workflow — which is correct per messaging hierarchy for sales conversations, but the website should lead with library vitality (per messaging standards).</li>
-      <li><strong>Missing concepts:</strong> Network Intelligence, ground truth, trust model, ChatGPT comparison, the compliance-to-discovery arc, the PEN America problem — none appear on the website.</li>
-      <li><strong>Product screenshots:</strong> Show the UI but don't explain the intelligence underneath.</li>
+      <li><strong>Homepage hero:</strong> "Your librarians should be matching books with readers — not managing spreadsheets." Leads with empowerment — <em>this actually aligns well with messaging hierarchy.</em> Trust stats: 144 Texas Districts / 500K+ Students / 93K+ Books Reviewed Last Month.</li>
+      <li><strong>Platform page has the deepest BI description:</strong> "Every title gets an objective content profile with metadata, subject classifications, and Aggregated Book Intelligence — flag data from library organizations, news outlets, and school districts, organized by source." Lists three sub-features: Content Profiles, Flagged Intelligence, Continuous Updates.</li>
+      <li><strong>For Librarians page is emotionally resonant:</strong> "You Didn't Become a Librarian to Manage Spreadsheets" — empathy-first, mission-focused. This is strong.</li>
+      <li><strong>No dedicated "How BI Works" page:</strong> Platform page is closest, but it describes features, not the intelligence architecture.</li>
+      <li><strong>ChatGPT blog post exists (Nov 2025)</strong> — but it's buried in the blog, not on any product page. A prospect browsing only main pages would never see it.</li>
+      <li><strong>Network Intelligence mentioned once</strong> — on /for-districts as "coming soon" card. Not on homepage or platform page.</li>
+      <li><strong>Content Scanner mentioned</strong> — in About page and one FAQ ("will analyze what's actually inside the book").</li>
     </ul>
+  </div>
+
+  <div class="gap-card">
+    <div class="card-label">Critical — Language Boundary Violations Found</div>
+    <p>The Playwright audit found language issues that contradict the BI narrative's hard boundaries:</p>
+    <ul>
+      <li><strong>"AI content analysis"</strong> — Platform page architecture diagram labels BI as "AI content analysis." This implies the AI reads book content, which it doesn't.</li>
+      <li><strong>Oct 2025 blog post says BI "goes inside" books</strong> — Quote: "Our Book Intelligence, the 'Bookmarked Brain,' goes <em>inside</em> this secure layer to analyze the content." This is legacy investor-pitch language that directly contradicts the language boundary ("never imply we've read the book").</li>
+      <li><strong>"AI-powered content profiles"</strong> (For Librarians page) — ambiguous; could imply profiles of book content rather than profiles about books.</li>
+      <li><strong>Inconsistent naming:</strong> "Book Intelligence Shield" (homepage) vs "Book Intelligence" (platform) vs "Book Intelligence Profiles" (for-districts). Should be unified.</li>
+      <li><strong>District count stale:</strong> Website shows 144 districts; internal docs say 150+.</li>
+    </ul>
+    <p><strong>Recommendation:</strong> These language issues should be fixed independent of the marketing activation. They create confusion about what BI does today and could expose Bookmarked to credibility risk if a customer or critic compares the website claims to the actual product.</p>
   </div>
 
   <h3>2.4 Confluence Marketing Content</h3>

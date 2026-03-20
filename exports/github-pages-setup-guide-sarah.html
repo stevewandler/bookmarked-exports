@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Pages Setup Guide — Branded HTML Exports</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-light: #F9FAFB;
+  --bm-border-light: #E5E7EB;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Urbanist', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bm-eigengrau);
+  background: var(--bm-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+  padding: 64px 24px 48px;
+  color: white;
+}
+.hero .container { max-width: 900px; margin: 0 auto; }
+.hero .eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: 36px; font-weight: 800; line-height: 1.15;
+  letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.hero p { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 600px; }
+
+/* Container */
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+/* Sections */
+.section { padding: 48px 0; }
+.section--alt { background: var(--bm-bg-cool); }
+
+.section-header { margin-bottom: 32px; }
+.section-header h2 {
+  font-size: 28px; font-weight: 700; line-height: 1.2;
+  letter-spacing: -0.02em; color: var(--bm-eigengrau);
+}
+.section-header p {
+  font-size: 16px; color: var(--bm-secondary-text); margin-top: 8px;
+}
+
+/* Steps */
+.step {
+  background: var(--bm-bg-light);
+  border-radius: 12px;
+  border: 1px solid var(--bm-border-light);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.step-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--bm-deep-green); color: white;
+  font-weight: 700; font-size: 16px; margin-bottom: 16px;
+}
+.step h3 {
+  font-size: 20px; font-weight: 700; color: var(--bm-eigengrau);
+  margin-bottom: 12px;
+}
+.step p { color: var(--bm-secondary-text); margin-bottom: 16px; }
+
+/* Code blocks */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: rgba(16, 117, 105, 0.08);
+  color: var(--bm-deep-green);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+pre {
+  background: var(--bm-eigengrau);
+  color: #E5E7EB;
+  padding: 20px 24px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 16px 0;
+}
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+.code-comment { color: #6B7280; }
+.code-string { color: #12A38C; }
+.code-keyword { color: #FF692E; }
+
+/* Callout */
+.callout {
+  border-left: 4px solid var(--bm-teal-accent);
+  background: rgba(18, 163, 140, 0.06);
+  padding: 20px 24px;
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+}
+.callout--warning {
+  border-left-color: var(--bm-pumpkin);
+  background: rgba(255, 105, 46, 0.06);
+}
+.callout strong { color: var(--bm-eigengrau); }
+.callout p { color: var(--bm-secondary-text); margin: 0; }
+
+/* Template section */
+.template-block {
+  background: var(--bm-eigengrau);
+  border-radius: 12px;
+  padding: 32px;
+  margin: 24px 0;
+}
+.template-block h4 {
+  color: var(--bm-teal-accent);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.template-block pre {
+  background: rgba(255,255,255,0.06);
+  margin: 0;
+}
+
+/* Checklist */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  padding: 10px 0 10px 36px;
+  position: relative;
+  color: var(--bm-secondary-text);
+  border-bottom: 1px solid var(--bm-border-light);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '☐';
+  position: absolute; left: 8px; top: 10px;
+  color: var(--bm-deep-green); font-size: 16px;
+}
+
+/* Footer */
+.footer {
+  background: var(--bm-deep-green);
+  color: white;
+  padding: 32px 0;
+  text-align: center;
+}
+.footer p { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+/* Quick ref table */
+.ref-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14px; margin: 16px 0;
+}
+.ref-table th {
+  background: var(--bm-bg-cool);
+  padding: 12px 16px; text-align: left;
+  font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--bm-secondary-text);
+  border-bottom: 2px solid var(--bm-border-light);
+}
+.ref-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bm-border-light);
+  color: var(--bm-secondary-text);
+}
+.ref-table td:first-child { font-weight: 600; color: var(--bm-eigengrau); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="eyebrow">Bookmarked OS · Team Guide</div>
+    <h1>Publishing Branded HTML Exports with GitHub Pages</h1>
+    <p>How to create shareable, professionally branded reports, dashboards, and documents using Claude Code + GitHub Pages. Takes ~10 minutes to set up, then every future export is automatic.</p>
+  </div>
+</div>
+
+<!-- What This Is -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>What You're Setting Up</h2>
+      <p>A personal GitHub Pages site that lets you publish any HTML file as a shareable link — branded with Bookmarked's design system, no extra work required.</p>
+    </div>
+
+    <table class="ref-table">
+      <tr>
+        <th>Component</th>
+        <th>What It Does</th>
+      </tr>
+      <tr>
+        <td>GitHub Pages Repo</td>
+        <td>A repository that automatically publishes HTML files as web pages</td>
+      </tr>
+      <tr>
+        <td>Brand CSS</td>
+        <td>Bookmarked's master stylesheet — colors, fonts, cards, layouts. Your Claude uses this so everything looks on-brand</td>
+      </tr>
+      <tr>
+        <td>Claude CLAUDE.md Instructions</td>
+        <td>A snippet you add to your project so Claude automatically publishes and brands exports</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      <p><strong>The result:</strong> You tell Claude "create a report on X" → Claude generates branded HTML → pushes to GitHub Pages → gives you a shareable link. One prompt, professional output.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Step 1 -->
+<div class="section section--alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Setup Steps</h2>
+      <p>Do these once. After that, every export is automatic.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <h3>Create Your GitHub Pages Repository</h3>
+      <p>Ask Claude to do this for you. Copy and paste this prompt:</p>
+      <pre><code><span class="code-comment"># Paste this into Claude Code:</span>
+
+Create a GitHub Pages repository for me. Here's what to do:
+
+1. Create a new public repo called "bookmarked-exports" under my GitHub account
+   (my GitHub username is sarah-elmassry)
+2. Add an index.html that just says "Bookmarked Exports"
+3. Enable GitHub Pages on the main branch
+4. Clone it to /tmp/bookmarked-exports so you can push files to it
+
+The repo URL will be:
+https://sarah-elmassry.github.io/bookmarked-exports/</code></pre>
+
+      <div class="callout">
+        <p><strong>Note:</strong> If you already have a <code>bookmarked-exports</code> repo, skip this step. Just make sure it's cloned to <code>/tmp/bookmarked-exports</code>.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <h3>Add the Brand CSS to Your Repo</h3>
+      <p>The brand CSS is the Bookmarked design system as a stylesheet. Ask Claude:</p>
+      <pre><code><span class="code-comment"># Paste this into Claude Code:</span>
+
+Copy the Bookmarked brand CSS into my exports repo:
+
+1. Download the CSS from this URL and save it:
+   https://stevewandler.github.io/bookmarked-exports/design/bookmarked-brand.css
+   Save to: /tmp/bookmarked-exports/design/bookmarked-brand.css
+
+2. Also grab the Bookmarked logos:
+   - Green logo (for light backgrounds):
+     https://stevewandler.github.io/bookmarked-exports/design/bookmarked-logo-green.png
+   - White logo (for dark/teal backgrounds):
+     https://stevewandler.github.io/bookmarked-exports/design/bookmarked-logo-white.png
+   Save to: /tmp/bookmarked-exports/design/
+
+3. Commit and push everything.</code></pre>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3>Add Export Instructions to Your CLAUDE.md</h3>
+      <p>This tells Claude how to handle all HTML output going forward. Add this block to your project's <code>CLAUDE.md</code> file:</p>
+
+      <div class="template-block">
+        <h4>Add to CLAUDE.md</h4>
+        <pre><code>## HTML Export Convention
+
+When creating HTML reports, dashboards, or documents:
+
+1. **Brand CSS** — Always link the Bookmarked brand stylesheet:
+   `&lt;link rel="stylesheet" href="../design/bookmarked-brand.css"&gt;`
+   Or embed the CSS inline for standalone files.
+   Reference: https://sarah-elmassry.github.io/bookmarked-exports/design/bookmarked-brand.css
+
+2. **Use brand classes** — Use the `bm-` prefixed CSS classes:
+   - `.bm-hero` for page headers (teal gradient)
+   - `.bm-card` for content cards
+   - `.bm-badge--success`, `.bm-badge--warning` for status indicators
+   - `.bm-stats-row` + `.bm-stat-card` for metrics
+   - `.bm-table` for data tables
+   - `.bm-cta-button` for action buttons
+   - `.bm-eyebrow` for section labels
+
+3. **Logo** — Always use the actual logo image, never text:
+   `&lt;img src="../design/bookmarked-logo-green.png" height="32"&gt;`
+   Use white version on dark/teal backgrounds.
+
+4. **Publish to GitHub Pages:**
+   - Save file to `/tmp/bookmarked-exports/[category]/[filename].html`
+   - Categories: reports, exports, design, proposals
+   - `cd /tmp/bookmarked-exports && git add . && git commit -m "description" && git push`
+   - Present URL: `https://sarah-elmassry.github.io/bookmarked-exports/[category]/[filename].html`
+
+5. **Also open locally** — After publishing, run `open [filepath]` so I can see it immediately.
+
+6. **Font** — Always use Urbanist (Google Fonts import):
+   `@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap');`</code></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">4</div>
+      <h3>Test It</h3>
+      <p>Ask Claude to create a test page to verify everything works:</p>
+      <pre><code><span class="code-comment"># Paste this into Claude Code:</span>
+
+Create a test HTML page to verify my GitHub Pages setup works.
+Make it a simple branded page with:
+- A hero section with the Bookmarked logo
+- A card with some sample text
+- A stats row with 3 metrics
+Publish it to my bookmarked-exports repo and give me the link.</code></pre>
+      <p>If you see a branded page at your GitHub Pages URL, you're done.</p>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works Day-to-Day -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>How It Works Day-to-Day</h2>
+      <p>After setup, you just ask Claude to create things. It handles the branding and publishing.</p>
+    </div>
+
+    <table class="ref-table">
+      <tr>
+        <th>You Say</th>
+        <th>Claude Does</th>
+      </tr>
+      <tr>
+        <td>"Create a sprint summary report"</td>
+        <td>Generates branded HTML → pushes to GitHub Pages → gives you a shareable link</td>
+      </tr>
+      <tr>
+        <td>"Build a dashboard of our Jira metrics"</td>
+        <td>Pulls data from Jira → creates interactive HTML dashboard → publishes</td>
+      </tr>
+      <tr>
+        <td>"Make a UAT results page for Sprint 63"</td>
+        <td>Formats test results as branded cards → publishes</td>
+      </tr>
+      <tr>
+        <td>"Create a workflow diagram for X"</td>
+        <td>Builds visual HTML schematic → publishes</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      <p><strong>Every link is shareable.</strong> Send it in Slack, paste it in Confluence, share it in a meeting. No login required, works in any browser. The page lives at <code>https://sarah-elmassry.github.io/bookmarked-exports/...</code></p>
+    </div>
+  </div>
+</div>
+
+<!-- Brand Quick Reference -->
+<div class="section section--alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Brand Quick Reference</h2>
+      <p>The CSS handles most of this automatically, but for reference:</p>
+    </div>
+
+    <table class="ref-table">
+      <tr><th>Element</th><th>Value</th></tr>
+      <tr><td>Primary Font</td><td>Urbanist (Google Fonts)</td></tr>
+      <tr><td>Deep Green</td><td><span style="display:inline-block;width:14px;height:14px;background:#107569;border-radius:3px;vertical-align:middle;margin-right:6px;"></span> #107569</td></tr>
+      <tr><td>Teal Accent</td><td><span style="display:inline-block;width:14px;height:14px;background:#12A38C;border-radius:3px;vertical-align:middle;margin-right:6px;"></span> #12A38C</td></tr>
+      <tr><td>Eigengrau (dark)</td><td><span style="display:inline-block;width:14px;height:14px;background:#101828;border-radius:3px;vertical-align:middle;margin-right:6px;"></span> #101828</td></tr>
+      <tr><td>Pumpkin (warnings)</td><td><span style="display:inline-block;width:14px;height:14px;background:#FF692E;border-radius:3px;vertical-align:middle;margin-right:6px;"></span> #FF692E</td></tr>
+      <tr><td>Light Background</td><td>#F9FAFB</td></tr>
+      <tr><td>Logo (light bg)</td><td>bookmarked-logo-green.png</td></tr>
+      <tr><td>Logo (dark bg)</td><td>bookmarked-logo-white.png</td></tr>
+    </table>
+
+    <div class="callout--warning callout">
+      <p><strong>Never use text as a logo.</strong> Always embed the actual PNG. Never type "Bookmarked" as a header and call it the logo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Verification Checklist -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Setup Verification Checklist</h2>
+    </div>
+    <ul class="checklist">
+      <li>GitHub repo <code>bookmarked-exports</code> created and public</li>
+      <li>GitHub Pages enabled (Settings → Pages → Source: main branch)</li>
+      <li>Repo cloned to <code>/tmp/bookmarked-exports</code></li>
+      <li><code>bookmarked-brand.css</code> in the <code>design/</code> folder</li>
+      <li>Both logo PNGs in the <code>design/</code> folder</li>
+      <li>CLAUDE.md updated with export instructions</li>
+      <li>Test page loads at your GitHub Pages URL</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Troubleshooting -->
+<div class="section section--alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Troubleshooting</h2>
+    </div>
+
+    <div class="step" style="border-left: 4px solid var(--bm-pumpkin); border-radius: 0 12px 12px 0;">
+      <h3>404 after pushing</h3>
+      <p>GitHub Pages takes 1-2 minutes to deploy after a push. Wait a minute and refresh. You can check deploy status by asking Claude: <code>gh api repos/sarah-elmassry/bookmarked-exports/pages</code></p>
+    </div>
+
+    <div class="step" style="border-left: 4px solid var(--bm-pumpkin); border-radius: 0 12px 12px 0;">
+      <h3>CSS not loading / unstyled page</h3>
+      <p>Make sure the CSS link path is correct relative to your file. If your file is in <code>/exports/</code>, the CSS is at <code>../design/bookmarked-brand.css</code>. Or use the full URL: <code>https://sarah-elmassry.github.io/bookmarked-exports/design/bookmarked-brand.css</code></p>
+    </div>
+
+    <div class="step" style="border-left: 4px solid var(--bm-pumpkin); border-radius: 0 12px 12px 0;">
+      <h3>Can't push / authentication error</h3>
+      <p>Ask Claude to check your GitHub auth: <code>gh auth status</code>. If not authenticated, run <code>gh auth login</code> and follow the prompts.</p>
+    </div>
+
+    <div class="step" style="border-left: 4px solid var(--bm-pumpkin); border-radius: 0 12px 12px 0;">
+      <h3>Repo not cloned</h3>
+      <p>If Claude says <code>/tmp/bookmarked-exports</code> doesn't exist, just ask it: "Clone my bookmarked-exports repo to /tmp/bookmarked-exports"</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    <p>Bookmarked OS · Internal Team Guide · March 2026</p>
+  </div>
+</div>
+
+</body>
+</html>

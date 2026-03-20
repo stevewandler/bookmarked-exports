@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookmarked — Book Intelligence for Districts</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #101828; background: #FFFFFF; width: 8.5in; height: 11in; overflow: hidden; margin: 0 auto; position: relative; }
+
+  /* === HEADER === */
+  .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 40px 12px 40px; border-bottom: 3px solid #107569; }
+  .header img.logo { height: 34px; width: auto; }
+  .header .tagline { font-family: 'Urbanist', sans-serif; font-size: 11px; color: #107569; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* === HERO === */
+  .hero { background: linear-gradient(135deg, #0D5A52 0%, #107569 50%, #12A38C 100%); padding: 20px 40px 18px 40px; color: #FFFFFF; }
+  .hero .audience-tag { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-family: 'Urbanist', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .hero h1 { font-family: 'Urbanist', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.2; margin-bottom: 8px; }
+  .hero .subhead { font-size: 13px; line-height: 1.5; opacity: 0.92; max-width: 95%; }
+
+  /* === MISSION STRIP === */
+  .mission-strip { background: #F8FAF8; padding: 10px 40px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 10px; }
+  .mission-strip .icon { font-size: 18px; flex-shrink: 0; }
+  .mission-strip p { font-size: 12px; line-height: 1.5; color: #107569; font-weight: 600; font-family: 'Urbanist', sans-serif; }
+
+  /* === SECTION LABEL === */
+  .section-label { padding: 10px 40px 0 40px; font-family: 'Urbanist', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #12A38C; }
+
+  /* === THE PROBLEM === */
+  .problem-section { padding: 8px 40px; display: flex; gap: 14px; }
+  .problem-card { flex: 1; background: #fff0eb; border-radius: 10px; padding: 12px 14px; border-left: 3px solid #FF692E; }
+  .problem-card h4 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 12px; color: #101828; margin-bottom: 4px; }
+  .problem-card p { font-size: 10.5px; line-height: 1.45; color: #475467; }
+
+  /* === WHAT IS BI === */
+  .bi-section { padding: 8px 40px; }
+  .bi-main { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; }
+  .bi-main h3 { font-family: 'Urbanist', sans-serif; font-weight: 800; font-size: 14px; color: #107569; margin-bottom: 6px; }
+  .bi-main p { font-size: 11px; line-height: 1.55; color: #374151; margin-bottom: 6px; }
+  .bi-main p:last-child { margin-bottom: 0; }
+  .bi-main .highlight { color: #107569; font-weight: 700; }
+
+  /* === INTELLIGENCE LAYERS === */
+  .layers { display: flex; gap: 12px; padding: 8px 40px; }
+  .layer-card { flex: 1; background: #FFFFFF; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; position: relative; }
+  .layer-card .layer-badge { display: inline-block; font-family: 'Urbanist', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; border-radius: 20px; padding: 3px 10px; margin-bottom: 6px; }
+  .layer-card .badge-live { background: rgba(18,163,140,0.15); color: #12A38C; }
+  .layer-card .badge-building { background: rgba(16,117,105,0.15); color: #107569; }
+  .layer-card h4 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 12.5px; color: #101828; margin-bottom: 4px; }
+  .layer-card p { font-size: 10.5px; line-height: 1.45; color: #475467; }
+
+  /* === VALUE CARDS === */
+  .value-cards { display: flex; gap: 12px; padding: 8px 40px; }
+  .value-card { flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; }
+  .value-card .card-icon { width: 30px; height: 30px; border-radius: 8px; background: #107569; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #FFFFFF; margin-bottom: 6px; }
+  .value-card h4 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 12px; color: #107569; margin-bottom: 4px; }
+  .value-card p { font-size: 10.5px; line-height: 1.45; color: #475467; }
+
+  /* === STATS BAR === */
+  .stats-bar { display: flex; gap: 0; margin: 8px 40px; border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; }
+  .stat-item { flex: 1; padding: 10px 14px; text-align: center; background: #FFFFFF; border-right: 1px solid #e5e7eb; }
+  .stat-item:last-child { border-right: none; }
+  .stat-item .stat-number { font-family: 'Urbanist', sans-serif; font-weight: 800; font-size: 20px; color: #107569; line-height: 1; margin-bottom: 2px; }
+  .stat-item .stat-label { font-size: 10px; color: #475467; line-height: 1.3; }
+
+  /* === DIFFERENTIATOR === */
+  .diff-callout { margin: 8px 40px; background: #F8FAF8; border: 1px solid #e6f7f4; border-radius: 10px; padding: 12px 18px; }
+  .diff-callout h4 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 12px; color: #107569; margin-bottom: 6px; }
+  .diff-callout .diff-grid { display: flex; gap: 24px; }
+  .diff-callout .diff-col { flex: 1; }
+  .diff-callout .diff-col h5 { font-family: 'Urbanist', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #9CA3AF; margin-bottom: 4px; }
+  .diff-callout .diff-col p { font-size: 10.5px; line-height: 1.45; color: #475467; }
+
+  /* === CTA FOOTER === */
+  .cta-footer { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, #101828 0%, #1D2939 100%); padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .cta-footer .cta-text h3 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 2px; }
+  .cta-footer .cta-text p { font-size: 11px; color: #9CA3AF; }
+  .cta-footer .cta-button { display: inline-block; padding: 10px 24px; background: #107569; color: #FFFFFF; font-family: 'Urbanist', sans-serif; font-size: 12px; font-weight: 700; border-radius: 8px; text-decoration: none; }
+  .cta-footer .cta-contact { font-size: 10px; color: #9CA3AF; text-align: right; }
+  .cta-footer .cta-contact a { color: #12A38C; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img class="logo" src="../design/esc10-logo-transparent.png" alt="Bookmarked" onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<span style=&quot;font-family:Urbanist,sans-serif;font-weight:800;font-size:22px;color:#107569&quot;>Bookmarked</span>')">
+  <span class="tagline">The Book Intelligence Company</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="audience-tag">For District Leaders</div>
+  <h1>Everything Publicly Known About Every Book — Organized for Decision-Making</h1>
+  <p class="subhead">Book Intelligence is the engine underneath OnShelf, giving your district the data infrastructure to make informed, defensible decisions about your collections.</p>
+</div>
+
+<!-- MISSION STRIP -->
+<div class="mission-strip">
+  <span class="icon">📚</span>
+  <p>Libraries should be the most vibrant rooms in a school. Bookmarked gives librarians their time back.</p>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="section-label">The Challenge</div>
+<div class="problem-section">
+  <div class="problem-card">
+    <h4>Compliance Created a Data Problem</h4>
+    <p>SB 13 and SB 412 require districts to review library materials — but the infrastructure to do this systematically never existed. Librarians are left with spreadsheets and guesswork.</p>
+  </div>
+  <div class="problem-card">
+    <h4>Board-Level Liability</h4>
+    <p>SB 13 didn't just create more work for librarians — it made book compliance a board-level liability. A parent challenge without a documented, defensible process becomes a crisis.</p>
+  </div>
+  <div class="problem-card">
+    <h4>No Visibility, No Context</h4>
+    <p>Districts can't see what external sources say about their books, can't benchmark against peer districts, and can't systematically assess risk across their entire collection.</p>
+  </div>
+</div>
+
+<!-- WHAT IS BOOK INTELLIGENCE -->
+<div class="section-label">The Solution</div>
+<div class="bi-section">
+  <div class="bi-main">
+    <h3>Book Intelligence — The Engine Underneath Everything</h3>
+    <p>Book Intelligence aggregates <span class="highlight">everything publicly known about a book</span> from external sources — metadata databases, public reviews, news coverage, ban and challenge lists, organization flags — and organizes it for decision-making. Every screen, every workflow, and every report in OnShelf is powered by Book Intelligence.</p>
+    <p>When your district joins Bookmarked, every title in your collection gets a comprehensive Intelligence Card: identity and metadata, content ratings, grade level suitability, external flags with source attribution, and an AI-enriched content summary — all from publicly available information about the book.</p>
+  </div>
+</div>
+
+<!-- INTELLIGENCE LAYERS -->
+<div class="section-label">Two Intelligence Layers</div>
+<div class="layers">
+  <div class="layer-card">
+    <span class="layer-badge badge-live">Live</span>
+    <h4>Layer 1: External Signals</h4>
+    <p>Everything publicly known about a book from sources outside the book itself — metadata databases, ban and challenge lists, news coverage, organization flags, public reviews, and AI analysis of all that public information. Traceable, sourced, defensible.</p>
+  </div>
+  <div class="layer-card">
+    <span class="layer-badge badge-building">Building</span>
+    <h4>Layer 2: Network Intelligence</h4>
+    <p>Intelligence from the collective activity of 150+ districts. What peer districts decided about specific titles, challenge velocity, placement patterns, and review outcomes — collective wisdom no individual district could access alone.</p>
+  </div>
+</div>
+
+<!-- VALUE CARDS -->
+<div class="section-label">What Your District Gets</div>
+<div class="value-cards">
+  <div class="value-card">
+    <div class="card-icon">🛡️</div>
+    <h4>Defensible System of Record</h4>
+    <p>Every flag is traceable to a specific public source. Every review decision is documented. When a parent challenge arrives, it moves through a defensible process — not a crisis.</p>
+  </div>
+  <div class="value-card">
+    <div class="card-icon">⚡</div>
+    <h4>Intelligence at Point of Decision</h4>
+    <p>Book Intelligence surfaces inside every workflow — orders, reviews, classroom libraries, reports. Your team doesn't leave the workflow to research. The research is already there.</p>
+  </div>
+  <div class="value-card">
+    <div class="card-icon">📊</div>
+    <h4>Collection-Wide Visibility</h4>
+    <p>See flagged books across all school and classroom libraries, access status distribution, order alerts, and risk concentration — from one dashboard. No blind spots.</p>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">150+</div>
+    <div class="stat-label">Texas Districts</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">500K+</div>
+    <div class="stat-label">Texas Students</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">3 hrs</div>
+    <div class="stat-label">Saved Per Book Order</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">9</div>
+    <div class="stat-label">ESC Partners</div>
+  </div>
+</div>
+
+<!-- DIFFERENTIATOR -->
+<div class="diff-callout">
+  <h4>Legacy systems list books. Bookmarked understands books.</h4>
+  <div class="diff-grid">
+    <div class="diff-col">
+      <h5>Without Book Intelligence</h5>
+      <p>Spreadsheets, Google searches, and guesswork. No way to know what external sources say about your books. No benchmarking. No audit trail. A parent challenge with no documented process.</p>
+    </div>
+    <div class="diff-col">
+      <h5>With Book Intelligence</h5>
+      <p>Every book researched automatically. Every flag sourced and attributed. Intelligence embedded in every workflow. Peer benchmarking from 150+ districts. A defensible system of record.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FOOTER -->
+<div class="cta-footer">
+  <div class="cta-text">
+    <h3>See how Book Intelligence works for your district</h3>
+    <p>We provide intelligence, not instructions. Data, not directives.</p>
+  </div>
+  <div style="display:flex; align-items:center; gap: 20px;">
+    <a class="cta-button" href="https://meetings-na2.hubspot.com/wandler/book-a-walkthrough">Book a Walkthrough</a>
+    <div class="cta-contact">
+      bookmarked.com<br>
+      <a href="mailto:info@bookmarked.com">info@bookmarked.com</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESC Engagement Measurement Strategy — Bookmarked</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-green: #107569;
+    --teal: #12A38C;
+    --dark-teal: #0D5A52;
+    --eigengrau: #101828;
+    --secondary-text: #475467;
+    --border: #E5E7EB;
+    --bg-cool: #F8FAFC;
+    --bg-warm: #F8F5F0;
+    --bg-green: #F8FAF8;
+    --white: #FFFFFF;
+    --pumpkin: #FF692E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Urbanist', Arial, sans-serif;
+    color: var(--eigengrau);
+    background: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+    color: var(--white);
+    padding: 60px 0;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .header .subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+  .header .meta {
+    margin-top: 20px;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  /* Sections */
+  section { padding: 48px 0; }
+  section:nth-child(even) { background: var(--bg-cool); }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--deep-green);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--teal);
+  }
+  h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--eigengrau);
+    margin: 24px 0 12px;
+  }
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--deep-green);
+    margin: 16px 0 8px;
+  }
+
+  p { margin-bottom: 14px; color: var(--secondary-text); }
+  strong { color: var(--eigengrau); }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--deep-green);
+    color: var(--white);
+    font-weight: 700;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--secondary-text);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--bg-cool); }
+  td:first-child { font-weight: 600; color: var(--eigengrau); }
+
+  /* Cards */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .metric-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid var(--teal);
+  }
+  .metric-card.primary { border-left-color: var(--deep-green); }
+  .metric-card.warning { border-left-color: var(--pumpkin); }
+  .metric-card h4 { margin-top: 0; }
+  .metric-card .metric-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--deep-green);
+    margin: 8px 0;
+  }
+  .metric-card .metric-label {
+    font-size: 13px;
+    color: var(--secondary-text);
+  }
+
+  /* Funnel */
+  .funnel {
+    margin: 24px 0;
+  }
+  .funnel-stage {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-left: 4px solid var(--teal);
+    background: var(--white);
+    margin-bottom: 4px;
+    border-radius: 0 8px 8px 0;
+  }
+  .funnel-stage:nth-child(1) { border-left-color: var(--dark-teal); }
+  .funnel-stage:nth-child(2) { border-left-color: var(--deep-green); margin-left: 20px; }
+  .funnel-stage:nth-child(3) { border-left-color: var(--teal); margin-left: 40px; }
+  .funnel-stage:nth-child(4) { border-left-color: #12A38C; margin-left: 60px; }
+  .funnel-stage:nth-child(5) { border-left-color: #15C4A8; margin-left: 80px; }
+  .funnel-stage .stage-name {
+    font-weight: 700;
+    color: var(--eigengrau);
+    min-width: 140px;
+  }
+  .funnel-stage .stage-desc {
+    font-size: 14px;
+    color: var(--secondary-text);
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--bg-green);
+    border: 1px solid #D1E7E4;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+  .callout p { margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* Lists */
+  ul, ol {
+    margin: 12px 0 16px 24px;
+    color: var(--secondary-text);
+  }
+  li { margin-bottom: 8px; }
+  li strong { color: var(--eigengrau); }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-green { background: #E8F5F3; color: var(--deep-green); }
+  .badge-orange { background: #FFF0EB; color: var(--pumpkin); }
+  .badge-blue { background: #EFF6FF; color: #2563EB; }
+
+  /* Footer */
+  .footer {
+    background: var(--deep-green);
+    color: var(--white);
+    padding: 32px 0;
+    text-align: center;
+    font-size: 14px;
+  }
+  .footer a { color: var(--teal); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 28px; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .funnel-stage { margin-left: 0 !important; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 10px; }
+  }
+
+  @media print {
+    .header { background: var(--deep-green) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>ESC Engagement Measurement Strategy</h1>
+    <p class="subtitle">How Bookmarked measures ESC partnership success — from first click to district activation</p>
+    <p class="meta">Internal Strategy Document &bull; March 2026 &bull; Bookmarked</p>
+  </div>
+</div>
+
+<!-- SECTION 1: OVERVIEW -->
+<section>
+  <div class="container">
+    <h2>1. What We're Measuring and Why</h2>
+    <p>The ESC partnership channel is Bookmarked's primary distribution strategy. We need to measure three things:</p>
+    <div class="metric-grid">
+      <div class="metric-card primary">
+        <h4>ESC Activation</h4>
+        <p class="metric-label">Are ESC partners actively introducing Bookmarked to their districts? How engaged is each ESC in the partnership?</p>
+      </div>
+      <div class="metric-card primary">
+        <h4>District Conversion</h4>
+        <p class="metric-label">When ESCs introduce Bookmarked, do districts convert? What's the path from introduction to signed contract?</p>
+      </div>
+      <div class="metric-card primary">
+        <h4>Channel ROI</h4>
+        <p class="metric-label">What's the cost per district acquired through ESC vs. direct sales? Is the channel scaling?</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>The core question:</strong> How do we get ESCs to truly partner with us — not just sign an agreement, but actively champion Bookmarked to their districts?</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: THE ESC PARTNERSHIP FUNNEL -->
+<section>
+  <div class="container">
+    <h2>2. The ESC Partnership Funnel</h2>
+    <p>Each ESC relationship moves through a predictable funnel. We track conversion rates between stages and time-in-stage to identify bottlenecks.</p>
+
+    <div class="funnel">
+      <div class="funnel-stage">
+        <span class="stage-name">1. Awareness</span>
+        <span class="stage-desc">ESC knows Bookmarked exists. Initial contact made. <span class="badge badge-blue">HubSpot: Lead</span></span>
+      </div>
+      <div class="funnel-stage">
+        <span class="stage-name">2. Agreement</span>
+        <span class="stage-desc">ESC signs partnership agreement. Commission structure agreed. <span class="badge badge-blue">HubSpot: Partner</span></span>
+      </div>
+      <div class="funnel-stage">
+        <span class="stage-name">3. Enablement</span>
+        <span class="stage-desc">ESC staff trained via Partner Academy. Co-branded assets delivered. <span class="badge badge-green">Trained</span></span>
+      </div>
+      <div class="funnel-stage">
+        <span class="stage-name">4. Activation</span>
+        <span class="stage-desc">ESC makes first district introduction. Sends first email/presents at meeting. <span class="badge badge-green">Active</span></span>
+      </div>
+      <div class="funnel-stage">
+        <span class="stage-name">5. Revenue</span>
+        <span class="stage-desc">First district converts through ESC channel. Commission earned. <span class="badge badge-orange">Revenue</span></span>
+      </div>
+    </div>
+
+    <h3>Key Conversion Metrics</h3>
+    <table>
+      <tr>
+        <th>Stage Transition</th>
+        <th>Metric</th>
+        <th>Target</th>
+        <th>Data Source</th>
+      </tr>
+      <tr>
+        <td>Awareness → Agreement</td>
+        <td>Partnership close rate</td>
+        <td>60%+</td>
+        <td>HubSpot deals</td>
+      </tr>
+      <tr>
+        <td>Agreement → Enablement</td>
+        <td>Training completion rate</td>
+        <td>80%+ within 30 days</td>
+        <td>Partner Academy / HubSpot</td>
+      </tr>
+      <tr>
+        <td>Enablement → Activation</td>
+        <td>First-introduction rate</td>
+        <td>70%+ within 60 days</td>
+        <td>HubSpot + ESC landing page analytics</td>
+      </tr>
+      <tr>
+        <td>Activation → Revenue</td>
+        <td>ESC-sourced conversion rate</td>
+        <td>25%+ of introduced districts</td>
+        <td>HubSpot attribution</td>
+      </tr>
+      <tr>
+        <td>Time: Agreement → First Revenue</td>
+        <td>Time to first commission</td>
+        <td>&lt; 90 days</td>
+        <td>HubSpot deals + invoicing</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 3: LANDING PAGE ANALYTICS -->
+<section>
+  <div class="container">
+    <h2>3. Landing Page Analytics Architecture</h2>
+    <p>Each ESC landing page is instrumented with comprehensive tracking. Here's what we capture and how it maps to business decisions.</p>
+
+    <h3>UTM Parameter Strategy</h3>
+    <p>Every link an ESC sends to districts includes UTM parameters so we know exactly which ESC, which campaign, and which asset drove the traffic.</p>
+
+    <table>
+      <tr>
+        <th>Parameter</th>
+        <th>Value Format</th>
+        <th>Example</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td>utm_source</td>
+        <td>esc-{region}</td>
+        <td>esc-10</td>
+        <td>Which ESC partner sent the traffic</td>
+      </tr>
+      <tr>
+        <td>utm_medium</td>
+        <td>email | presentation | meeting | direct</td>
+        <td>email</td>
+        <td>How the ESC shared the link</td>
+      </tr>
+      <tr>
+        <td>utm_campaign</td>
+        <td>{campaign-name}</td>
+        <td>spring-2026-outreach</td>
+        <td>Which campaign or initiative</td>
+      </tr>
+      <tr>
+        <td>utm_content</td>
+        <td>{asset-type}</td>
+        <td>one-pager-risk</td>
+        <td>Which specific asset included the link</td>
+      </tr>
+      <tr>
+        <td>utm_term</td>
+        <td>{audience}</td>
+        <td>superintendents</td>
+        <td>Target audience segment</td>
+      </tr>
+    </table>
+
+    <h3>On-Page Event Tracking</h3>
+    <p>All three landing page variants (A, B, C) track identical events so we can A/B test across them.</p>
+
+    <table>
+      <tr>
+        <th>Event</th>
+        <th>Trigger</th>
+        <th>Properties Captured</th>
+        <th>Business Question Answered</th>
+      </tr>
+      <tr>
+        <td>Page View</td>
+        <td>Page load</td>
+        <td>page_variant, utm_*, referrer</td>
+        <td>Which ESCs are driving traffic?</td>
+      </tr>
+      <tr>
+        <td>CTA Click</td>
+        <td>Any CTA button click</td>
+        <td>cta_text, cta_url, page_variant, utm_source</td>
+        <td>Which CTAs convert? Which variant performs best?</td>
+      </tr>
+      <tr>
+        <td>Scroll Depth</td>
+        <td>25%, 50%, 75%, 100%</td>
+        <td>depth, page_variant</td>
+        <td>How far do visitors read? Where do they drop off?</td>
+      </tr>
+      <tr>
+        <td>Time on Page</td>
+        <td>30s, 60s, 2min, 5min</td>
+        <td>duration, page_variant</td>
+        <td>Are visitors engaging deeply or bouncing?</td>
+      </tr>
+      <tr>
+        <td>Section Visible</td>
+        <td>Section enters viewport</td>
+        <td>section_id, page_variant</td>
+        <td>Which content sections get attention?</td>
+      </tr>
+      <tr>
+        <td>Form Start</td>
+        <td>First form field focus</td>
+        <td>page_variant, utm_source</td>
+        <td>Conversion intent signal</td>
+      </tr>
+      <tr>
+        <td>Form Submit</td>
+        <td>HubSpot form submission</td>
+        <td>page_variant, utm_*, form_id</td>
+        <td>Actual conversion</td>
+      </tr>
+      <tr>
+        <td>Walkthrough Booked</td>
+        <td>Meetings link clicked</td>
+        <td>page_variant, utm_source</td>
+        <td>High-intent conversion</td>
+      </tr>
+    </table>
+
+    <h3>Page Variant Comparison Framework</h3>
+    <p>We're testing three landing page concepts to find the optimal approach for ESC-driven traffic:</p>
+
+    <table>
+      <tr>
+        <th>Variant</th>
+        <th>Strategic Angle</th>
+        <th>Hypothesis</th>
+        <th>Primary KPI</th>
+      </tr>
+      <tr>
+        <td>Option A: Trusted Network</td>
+        <td>Social proof + trust</td>
+        <td>ESC endorsement builds credibility fastest</td>
+        <td>CTA click rate</td>
+      </tr>
+      <tr>
+        <td>Option B: Library Vitality</td>
+        <td>Mission + emotion</td>
+        <td>Librarians respond to empowerment narrative</td>
+        <td>Scroll depth + time on page</td>
+      </tr>
+      <tr>
+        <td>Option C: Intelligence Advantage</td>
+        <td>Product + data differentiation</td>
+        <td>Decision-makers need the "why different" case</td>
+        <td>Walkthrough bookings</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      <p><strong>A/B Testing Plan:</strong> Initially, send all ESC traffic to a single page (likely Option A for broad appeal). Once we have 200+ visits, split traffic across variants using HubSpot's adaptive page testing. We need ~100 visits per variant for statistical significance on CTA click rate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: HUBSPOT IMPLEMENTATION -->
+<section>
+  <div class="container">
+    <h2>4. HubSpot Implementation</h2>
+
+    <h3>Custom Properties (Contact Level)</h3>
+    <table>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Group</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td>esc_source_region</td>
+        <td>Dropdown (9-20)</td>
+        <td>ESC Attribution</td>
+        <td>Which ESC referred this contact</td>
+      </tr>
+      <tr>
+        <td>esc_landing_page_variant</td>
+        <td>Dropdown (A/B/C)</td>
+        <td>ESC Attribution</td>
+        <td>Which page variant they saw</td>
+      </tr>
+      <tr>
+        <td>esc_first_touch_date</td>
+        <td>Date</td>
+        <td>ESC Attribution</td>
+        <td>When they first arrived via ESC link</td>
+      </tr>
+      <tr>
+        <td>esc_engagement_score</td>
+        <td>Number</td>
+        <td>ESC Attribution</td>
+        <td>Composite score based on page events</td>
+      </tr>
+    </table>
+
+    <h3>Custom Properties (Company/Deal Level)</h3>
+    <table>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Purpose</th>
+      </tr>
+      <tr>
+        <td>esc_partner_source</td>
+        <td>Dropdown</td>
+        <td>Which ESC gets attribution for this deal</td>
+      </tr>
+      <tr>
+        <td>esc_channel_deal</td>
+        <td>Boolean</td>
+        <td>Flag deals sourced through ESC channel</td>
+      </tr>
+      <tr>
+        <td>esc_commission_rate</td>
+        <td>Number</td>
+        <td>Commission percentage for this ESC</td>
+      </tr>
+      <tr>
+        <td>esc_commission_paid</td>
+        <td>Currency</td>
+        <td>Total commission paid on this deal</td>
+      </tr>
+    </table>
+
+    <h3>Workflows to Build</h3>
+    <ol>
+      <li><strong>ESC Source Attribution:</strong> When contact visits ESC landing page with utm_source=esc-{N}, set esc_source_region and esc_first_touch_date automatically.</li>
+      <li><strong>Engagement Scoring:</strong> Increment esc_engagement_score based on events: page view (+1), scroll 50%+ (+2), CTA click (+5), form submit (+10), walkthrough booked (+20).</li>
+      <li><strong>ESC Activity Alerts:</strong> When an ESC's districts show landing page activity, notify Jan (jan@bookmarked.com) so she can follow up.</li>
+      <li><strong>Weekly ESC Partner Report:</strong> Auto-send each ESC partner a weekly summary of their districts' engagement (visits, form fills, bookings).</li>
+      <li><strong>Stale Partner Alert:</strong> If an ESC partner hasn't driven any traffic in 30 days, alert Jan to re-engage.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- SECTION 5: ESC PARTNER SCORECARD -->
+<section>
+  <div class="container">
+    <h2>5. ESC Partner Scorecard</h2>
+    <p>Each ESC partner gets a monthly scorecard measuring their engagement and effectiveness. This is shared with them to reinforce partnership value and motivate activity.</p>
+
+    <h3>Scorecard Metrics</h3>
+    <table>
+      <tr>
+        <th>Metric</th>
+        <th>What It Measures</th>
+        <th>Data Source</th>
+        <th>Healthy Range</th>
+      </tr>
+      <tr>
+        <td>Districts Reached</td>
+        <td>Unique districts that visited the landing page via this ESC's UTM links</td>
+        <td>HubSpot + GA</td>
+        <td>5+ / month</td>
+      </tr>
+      <tr>
+        <td>Walkthroughs Booked</td>
+        <td>Number of districts that booked a walkthrough from ESC-sourced traffic</td>
+        <td>HubSpot meetings</td>
+        <td>2+ / month</td>
+      </tr>
+      <tr>
+        <td>Districts Converted</td>
+        <td>Number of closed deals attributed to this ESC</td>
+        <td>HubSpot deals</td>
+        <td>1+ / quarter</td>
+      </tr>
+      <tr>
+        <td>Pipeline Value</td>
+        <td>Total deal value in pipeline from ESC-sourced districts</td>
+        <td>HubSpot deals</td>
+        <td>Growing quarter over quarter</td>
+      </tr>
+      <tr>
+        <td>Commission Earned</td>
+        <td>Total commission paid to this ESC partner</td>
+        <td>Invoicing / HubSpot</td>
+        <td>Grows with conversions</td>
+      </tr>
+      <tr>
+        <td>Asset Usage</td>
+        <td>Which co-branded assets are being shared (tracked via UTM content parameter)</td>
+        <td>UTM tracking</td>
+        <td>2+ asset types used</td>
+      </tr>
+      <tr>
+        <td>Partner Academy Completion</td>
+        <td>% of ESC staff who completed training modules</td>
+        <td>Partner Academy LMS</td>
+        <td>80%+ completion</td>
+      </tr>
+    </table>
+
+    <h3>ESC Health Score</h3>
+    <p>Each ESC gets a composite health score (0-100) based on weighted scorecard metrics:</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <h4>Activation (40%)</h4>
+        <p class="metric-label">Are they sending traffic? Using assets? Making introductions?</p>
+      </div>
+      <div class="metric-card">
+        <h4>Conversion (35%)</h4>
+        <p class="metric-label">Are their districts converting? Booking walkthroughs? Signing contracts?</p>
+      </div>
+      <div class="metric-card">
+        <h4>Engagement (25%)</h4>
+        <p class="metric-label">Training completion, response time, asset feedback, meeting attendance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: REPORTING CADENCE -->
+<section>
+  <div class="container">
+    <h2>6. Reporting Cadence</h2>
+
+    <table>
+      <tr>
+        <th>Report</th>
+        <th>Audience</th>
+        <th>Frequency</th>
+        <th>Key Contents</th>
+      </tr>
+      <tr>
+        <td>ESC Landing Page Dashboard</td>
+        <td>Steve, Jan</td>
+        <td>Real-time (HubSpot)</td>
+        <td>Page views, CTA clicks, form submissions by variant and ESC source</td>
+      </tr>
+      <tr>
+        <td>Weekly ESC Channel Report</td>
+        <td>Steve, Jan, Teela</td>
+        <td>Weekly (Monday AM)</td>
+        <td>Traffic by ESC, conversion events, new leads, pipeline changes</td>
+      </tr>
+      <tr>
+        <td>ESC Partner Scorecard</td>
+        <td>Each ESC partner</td>
+        <td>Monthly</td>
+        <td>Their districts reached, conversions, commission earned, suggestions</td>
+      </tr>
+      <tr>
+        <td>ESC Channel ROI Analysis</td>
+        <td>Steve</td>
+        <td>Quarterly</td>
+        <td>CAC comparison (ESC vs direct), channel revenue, partner health scores</td>
+      </tr>
+      <tr>
+        <td>A/B Test Results</td>
+        <td>Steve, Jan</td>
+        <td>After 500 visits</td>
+        <td>Variant performance comparison, winning page recommendation</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 7: IMPLEMENTATION ROADMAP -->
+<section>
+  <div class="container">
+    <h2>7. Implementation Roadmap</h2>
+
+    <h3>Phase 1: Foundation (This Week)</h3>
+    <ul>
+      <li><strong>Landing pages live with tracking</strong> — All three variants deployed to HubSpot CMS with full analytics instrumentation</li>
+      <li><strong>UTM links generated</strong> — Create pre-built UTM links for each ESC partner and each asset type</li>
+      <li><strong>HubSpot custom properties created</strong> — esc_source_region, esc_landing_page_variant, esc_engagement_score</li>
+    </ul>
+
+    <h3>Phase 2: Attribution (Week 2)</h3>
+    <ul>
+      <li><strong>Source attribution workflow</strong> — Automatically tag contacts by ESC source</li>
+      <li><strong>Engagement scoring workflow</strong> — Score contacts based on landing page behavior</li>
+      <li><strong>Deal attribution</strong> — Link ESC-sourced contacts to deals for commission tracking</li>
+    </ul>
+
+    <h3>Phase 3: Reporting (Week 3-4)</h3>
+    <ul>
+      <li><strong>HubSpot dashboard</strong> — Real-time ESC channel dashboard with all key metrics</li>
+      <li><strong>Weekly report automation</strong> — Auto-generated weekly email to Steve + Jan</li>
+      <li><strong>Partner scorecard template</strong> — Monthly scorecard for each ESC partner</li>
+    </ul>
+
+    <h3>Phase 4: Optimization (Ongoing)</h3>
+    <ul>
+      <li><strong>A/B test landing page variants</strong> — Determine winning page and roll out</li>
+      <li><strong>Refine engagement scoring</strong> — Adjust weights based on actual conversion data</li>
+      <li><strong>Partner re-engagement automation</strong> — Proactive outreach for stale partners</li>
+      <li><strong>Regional performance analysis</strong> — Compare ESC effectiveness by region</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Success looks like:</strong> Within 90 days, we can answer "Which ESC partner is most effective?", "Which landing page converts best?", "What's our ESC channel CAC?", and "Which districts are closest to converting?" — all from a single HubSpot dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="container">
+    <p>&copy; 2026 Bookmarked. Internal Strategy Document.</p>
+    <p style="margin-top: 8px;"><a href="https://bookmarked.com">bookmarked.com</a></p>
+  </div>
+</div>
+
+</body>
+</html>

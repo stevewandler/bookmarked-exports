@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BI Spec QA Report — March 19, 2026</title>
+<link rel="stylesheet" href="../design/bookmarked-brand.css">
+<style>
+  body { background: var(--bm-bg-cool); }
+  .report-container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .report-header { background: var(--bm-gradient-hero); color: white; padding: 48px 40px; border-radius: var(--bm-radius-lg); margin-bottom: 32px; }
+  .report-header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .report-header p { color: rgba(255,255,255,0.85); font-size: 16px; }
+  .scorecard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .score-card { background: white; border-radius: var(--bm-radius-md); padding: 20px; text-align: center; border: 1px solid var(--bm-border-light); }
+  .score-card .number { font-size: 36px; font-weight: 800; line-height: 1.1; }
+  .score-card .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--bm-secondary-text); margin-top: 4px; }
+  .pass { color: var(--bm-teal-accent); }
+  .warn { color: #E5A100; }
+  .fail { color: #DC2626; }
+  .total-color { color: var(--bm-deep-green); }
+  .category-section { background: white; border-radius: var(--bm-radius-lg); padding: 28px 32px; margin-bottom: 20px; border: 1px solid var(--bm-border-light); }
+  .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .category-header h2 { font-size: 20px; font-weight: 700; color: var(--bm-eigengrau); }
+  .category-badge { display: inline-flex; gap: 8px; }
+  .cat-stat { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px; }
+  .cat-stat.pass-bg { background: rgba(18,163,140,0.12); color: var(--bm-teal-accent); }
+  .cat-stat.warn-bg { background: rgba(229,161,0,0.12); color: #B88600; }
+  .cat-stat.fail-bg { background: rgba(220,38,38,0.12); color: #DC2626; }
+  .finding { padding: 12px 16px; margin-bottom: 8px; border-radius: var(--bm-radius-md); border-left: 4px solid; }
+  .finding.pass-f { border-color: var(--bm-teal-accent); background: rgba(18,163,140,0.04); }
+  .finding.warn-f { border-color: #E5A100; background: rgba(229,161,0,0.04); }
+  .finding.fail-f { border-color: #DC2626; background: rgba(220,38,38,0.06); }
+  .finding-header { display: flex; justify-content: space-between; align-items: center; }
+  .finding-id { font-size: 13px; font-weight: 700; font-family: monospace; }
+  .finding-status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 100px; }
+  .finding-status.pass-s { background: rgba(18,163,140,0.15); color: var(--bm-teal-accent); }
+  .finding-status.warn-s { background: rgba(229,161,0,0.15); color: #B88600; }
+  .finding-status.fail-s { background: rgba(220,38,38,0.15); color: #DC2626; }
+  .finding-body { margin-top: 6px; font-size: 14px; color: var(--bm-secondary-text); line-height: 1.5; }
+  .finding-body strong { color: var(--bm-eigengrau); }
+  .fix-box { margin-top: 8px; padding: 10px 14px; background: var(--bm-bg-blue); border-radius: var(--bm-radius-sm); font-size: 13px; color: var(--bm-eigengrau); }
+  .fix-box::before { content: "FIX: "; font-weight: 700; color: var(--bm-deep-green); }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; }
+  .summary-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--bm-secondary-text); border-bottom: 2px solid var(--bm-border-light); }
+  .summary-table td { padding: 8px 12px; border-bottom: 1px solid var(--bm-border-light); }
+  .summary-table tr:hover td { background: var(--bm-bg-light); }
+  .compact-findings .finding { padding: 8px 14px; margin-bottom: 4px; }
+  .compact-findings .finding-body { margin-top: 2px; font-size: 13px; }
+  @media (max-width: 768px) { .scorecard { grid-template-columns: repeat(2, 1fr); } }
+  @media print { body { background: white; } .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<div class="report-container">
+
+<!-- Header -->
+<div class="report-header">
+  <h1>Book Intelligence Spec — QA Report</h1>
+  <p>65 checks across 8 categories &middot; March 19, 2026 &middot; Spec version: book-intelligence-spec-2026-03-19.md</p>
+</div>
+
+<!-- Scorecard -->
+<div class="scorecard">
+  <div class="score-card">
+    <div class="number total-color">65</div>
+    <div class="label">Total Checks</div>
+  </div>
+  <div class="score-card">
+    <div class="number pass">47</div>
+    <div class="label">Pass</div>
+  </div>
+  <div class="score-card">
+    <div class="number warn">12</div>
+    <div class="label">Warn</div>
+  </div>
+  <div class="score-card">
+    <div class="number fail">6</div>
+    <div class="label">Fail</div>
+  </div>
+</div>
+
+<!-- Summary Table -->
+<div class="category-section">
+  <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Category Summary</h2>
+  <table class="summary-table">
+    <thead>
+      <tr><th>Category</th><th>Checks</th><th>Pass</th><th>Warn</th><th>Fail</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1. Language Boundary Compliance</td><td>8</td><td class="pass">7</td><td class="warn">1</td><td>0</td></tr>
+      <tr><td>2. Internal Consistency</td><td>12</td><td class="pass">9</td><td class="warn">2</td><td class="fail">1</td></tr>
+      <tr><td>3. Cross-Reference Integrity</td><td>9</td><td class="pass">6</td><td class="warn">2</td><td class="fail">1</td></tr>
+      <tr><td>4. ESC Region Scrub</td><td>5</td><td class="pass">5</td><td>0</td><td>0</td></tr>
+      <tr><td>5. Completeness Gaps</td><td>10</td><td class="pass">6</td><td class="warn">3</td><td class="fail">1</td></tr>
+      <tr><td>6. Agent Consumability</td><td>9</td><td class="pass">5</td><td class="warn">4</td><td>0</td></tr>
+      <tr><td>7. Glossary Coverage</td><td>6</td><td class="pass">3</td><td class="warn">0</td><td class="fail">3</td></tr>
+      <tr><td>8. Hard Constraint Enforcement</td><td>6</td><td class="pass">6</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== FAILS FIRST ==================== -->
+<div class="category-section" style="border-left: 4px solid #DC2626;">
+  <div class="category-header">
+    <h2>Action Required: 6 Failures</h2>
+    <div class="category-badge"><span class="cat-stat fail-bg">6 FAIL</span></div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">IC-12 &middot; Internal Consistency</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>"Implied" value creates unresolved inconsistency.</strong> The spec defines a 4-point scale (None/Mild/Moderate/Explicit) but Sexual Content uses a 5-point scale with "Implied." The Grade Level Suitability derivation table (line 248) has no row for "Implied" — an agent cannot determine grade suitability for a book rated "Implied."
+    </div>
+    <div class="fix-box">Add an "Implied" row to the derivation table. Proposed: Sexual Content "Implied" maps to Elementary: Not Recommended, Middle/High: Appropriate. Or standardize to 4-point by merging Implied into Mild.</div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">GC-04 &middot; Glossary Coverage</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>"DEFERRED" and "FUTURE" used as status tags but not defined.</strong> The status tag list (lines 105-111) defines 6 tags: LIVE, DESIGNED, PLANNED, VISION, CONCEPT, UNKNOWN. "DEFERRED" appears at line 748 (Professional Review Aggregation). "FUTURE" appears at lines 150 and 1037.
+    </div>
+    <div class="fix-box">Add to status tag definitions: DEFERRED — Considered and intentionally postponed; will revisit when conditions change. FUTURE — Out of scope for this specification; separate timeline and spec.</div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">GC-06 &middot; Glossary Coverage</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>7 domain terms used 3+ times without glossary definitions:</strong> AI Enrichment (15 uses), ISBNDB (20 uses), Open Library (13 uses), SB 412 (5 uses), SB 13 (3 uses), PEN America (6 uses), Confidence Indicator (4 uses, defined in Trust Hierarchy section but missing from Glossary table).
+    </div>
+    <div class="fix-box">Add glossary rows for each. AI Enrichment, ISBNDB, Open Library, SB 412, SB 13, PEN America need definitions. Confidence Indicator needs a glossary cross-reference to Trust Hierarchy section.</div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">CR-01 &middot; Cross-Reference Integrity</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>Document Index title mismatch for Part 2.</strong> Index says "Part 2: Field-by-Field Specification" but the actual heading is "Part 2: The Intelligence Card — Field-by-Field Specification."
+    </div>
+    <div class="fix-box">Update Document Index line 91 to match actual heading: "Part 2: The Intelligence Card — Field-by-Field Specification"</div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">CG-05 &middot; Completeness Gaps</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>Same as GC-04.</strong> DEFERRED and FUTURE status tags used but not defined. Duplicate finding — single fix covers both.
+    </div>
+    <div class="fix-box">See GC-04 fix above.</div>
+  </div>
+
+  <div class="finding fail-f">
+    <div class="finding-header">
+      <span class="finding-id">GC-02 + GC-06 overlap &middot; Glossary</span>
+      <span class="finding-status fail-s">FAIL</span>
+    </div>
+    <div class="finding-body">
+      <strong>"Accuracy Tier" used throughout Parts 2 and 4 without glossary definition.</strong> Referenced in every Part 2 field table's Tier column and defined structurally in Part 4, but a reader looking at the Glossary would not find it.
+    </div>
+    <div class="fix-box">Add glossary row: "Accuracy Tier — Priority level (1-4) assigned to each BI field based on compliance impact. Tier 1 = Compliance-Critical, Tier 4 = Informational. See Part 4."</div>
+  </div>
+</div>
+
+<!-- ==================== WARNS ==================== -->
+<div class="category-section" style="border-left: 4px solid #E5A100;">
+  <div class="category-header">
+    <h2>Warnings: 12 Items</h2>
+    <div class="category-badge"><span class="cat-stat warn-bg">12 WARN</span></div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">LB-07 &middot; Language Boundary</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Line 119: "what external sources report about a book's <strong>content</strong>" — technically compliant ("about" framing) but "content" could imply knowledge of what's inside.</div>
+    <div class="fix-box">Tighten to "what external sources report about a book" or "what is publicly known about a book's themes, ratings, and reception."</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">IC-06 &middot; Internal Consistency</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body"><strong>Violence tier conflict.</strong> Part 2 (line 223) assigns Violence to Tier 1. Part 4 (line 418) lists Violence under Tier 2. Given SB 412 focuses on sexual content (not violence), Tier 2 is likely correct.</div>
+    <div class="fix-box">Update Part 2 line 223: change Violence from Tier 1 to Tier 2.</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">IC-10 &middot; Internal Consistency</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Several Part 2 inline UNKNOWN items not reflected in Part 9's known issues: Reading Level source question, Synopsis vs. AI Summary distinction, People/Characters hallucination risk.</div>
+    <div class="fix-box">Add a note to Part 9 that inline UNKNOWN questions in Part 2 are tracked via Q-numbers in Part 3, or add the missing items to Part 9's engineering gaps table.</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">CR-07 &middot; Cross-Reference</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">"See Q11" references in Legislative Tracking (line 746) and Curriculum Alignment (line 772) ask different sub-questions than Q11 actually covers (re-enrichment mechanics). Q11 is the closest but doesn't precisely match.</div>
+    <div class="fix-box">Either broaden Q11's text or create Q16/Q17 for the specific sub-questions (legislation mapping logic, TEKS data structure).</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">CR-09 &middot; Cross-Reference</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Changelog first entry (line 1141) says "9-part specification" but document now has 14 parts.</div>
+    <div class="fix-box">Clarify: "Initial draft — 9-part specification (Parts 1-9)" to indicate this was accurate at time of writing.</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">CG-07 &middot; Completeness</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Four "UX design needed" mentions scattered across Parts 11-13 with no consolidated tracking: Curriculum Alignment, Source Contribution, Onboarding batch review, Review Workflow Intelligence.</div>
+    <div class="fix-box">Add a "UX Design Dependencies" subsection to Part 9, or create Q16-Q19 for each with owners.</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">CG-09 &middot; Completeness</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Source Type Tabs (line 284) says "3 categories" without enumerating the actual values. The categories are hinted at in a Known Issues context but not formally defined.</div>
+    <div class="fix-box">Change "3 categories" to explicit enum: "Enum: Library & Advocacy / News & Media / School & District"</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">CG-10 &middot; Completeness</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Parent view boundary uses terms that don't map to defined Part 2 fields: "age range" (which field?), "content advisory" (Content Warnings? Content Ratings?), "summary" (Synopsis? AI Content Summary?).</div>
+    <div class="fix-box">Map parent-view terms to specific Part 2 field names. Add note that PLANNED features need parent-view boundary decisions.</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">AC-01 &middot; Agent Consumability</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Prioritization Engine (Part 13) uses "Highest/High/Medium" weights without numeric values or a defined algorithm. An agent cannot implement ranking from this.</div>
+    <div class="fix-box">Either define numeric weights (e.g., 100/80/50) or flag as "DESIGNED — weights need engineering to define numeric algorithm."</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">AC-05 &middot; Agent Consumability</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Hard Constraints #3 (Not a Rating System) and #4 (Not a Replacement) lack prohibited-phrase lists. HC #2 has one ("do not use: the book contains...") but #3 and #4 don't — agents can't mechanically test compliance.</div>
+    <div class="fix-box">Add prohibited phrases: HC#3 — "Bookmarked rates", "our rating", "we rate". HC#4 — "replaces librarians", "instead of a librarian", "no librarian needed."</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">AC-06 &middot; Agent Consumability</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Trust tier badges have format examples (line 809: verification display) but confidence indicators (Strong/Moderate/Limited) and contradiction surfaces lack concrete display format examples.</div>
+    <div class="fix-box">Add display examples for confidence indicators and contradiction detection. E.g., "[Limited data] Violence: Moderate" or "Sources disagree: Source A says banned; Source B says retained after review."</div>
+  </div>
+
+  <div class="finding warn-f">
+    <div class="finding-header"><span class="finding-id">AC-09 &middot; Agent Consumability</span><span class="finding-status warn-s">WARN</span></div>
+    <div class="finding-body">Same as AC-01 — Prioritization Engine weights are descriptive, not algorithmic. Flagged separately because the ranking factors table needs both ordering and tiebreaker logic.</div>
+    <div class="fix-box">See AC-01 fix. Additionally: define tiebreaker rules (e.g., "when compliance exposure is equal, sort by trust tier, then recency").</div>
+  </div>
+</div>
+
+<!-- ==================== PASSES (COMPACT) ==================== -->
+<div class="category-section compact-findings">
+  <div class="category-header">
+    <h2>All Passing Checks (47)</h2>
+    <div class="category-badge"><span class="cat-stat pass-bg">47 PASS</span></div>
+  </div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 4: ESC Region Scrub (5/5 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">ESC-01 through ESC-05</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">All 3 "ESC" occurrences are exclusion statements or changelog entries. Trend Intelligence and Peer Benchmarking both carry explicit ESC exclusion statements.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 1: Language Boundary (7/8 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">LB-01 through LB-06, LB-08</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">All banned phrases ("in the book", "book contains", "read the book") appear only in "Do NOT use" examples. Every AI-derived field references public sources. All 9 field tables have Source Boundary columns populated. Pipeline diagram uses clean language.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 8: Hard Constraint Enforcement (6/6 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">HC-01 through HC-06</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">All 6 hard constraints hold throughout Parts 10-14. Data boundary respected, Content Scanner always out of scope, no "Bookmarked rates" language, all features position data for human decisions, no auto-blocking, anti-gaming principles consistent with Part 10 architecture.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 2: Internal Consistency (9/12 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">IC-01 through IC-05, IC-07 through IC-09, IC-11</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">Glossary terms used consistently. Document Index status tags match all 14 section headers. Trust tiers and confidence indicators identical in front matter and Part 10. All Part 2 field statuses use defined tags. Layer definitions consistent. Network vs. Community Intelligence boundary clean. Anti-gaming principles match HC#6. Q1-Q15 sequential with no gaps.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 3: Cross-Reference Integrity (6/9 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">CR-02 through CR-06, CR-08</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">All Part references topically correct. Jira tickets (BOOK-859/893/894/896/900) consistent across all mentions. Confluence page IDs present in Inter-Document References. Field Groups A-I all defined and valid. Q1-Q15 cross-references correct. Source Intelligence System stages consistent across Parts 11/12/14.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 7: Glossary Coverage (3/6 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">GC-01, GC-03, GC-05</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">Core product terms (OnShelf, Book Intelligence, Intelligence Card), feature terms (Prioritization Engine, Compliance Posture, Engagement Score, Network Effect), and layer terms (Content Scanner, Network Intelligence, Community Intelligence) all defined.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 5: Completeness Gaps (6/10 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">CG-01 through CG-04, CG-06, CG-08</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">Every UNKNOWN field has owner + Q-number. All PLANNED/DESIGNED features have sufficient detail. Phase transitions defined (with acknowledged open thresholds). Trust tier visual indicators specified. Engineering questions have clear owners. Data model dependencies identified with Q-numbers.</div></div>
+
+  <h3 style="font-size: 14px; font-weight: 700; color: var(--bm-deep-green); margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px;">Category 6: Agent Consumability (5/9 pass)</h3>
+  <div class="finding pass-f"><div class="finding-header"><span class="finding-id">AC-02, AC-03, AC-04, AC-07, AC-08</span><span class="finding-status pass-s">PASS</span></div><div class="finding-body">Grade suitability derivation logic is mechanical (table-driven). LIVE vs PLANNED boundary unambiguous (status tags on every section/field). Open Questions flagged as blockers near relevant features. Table schemas consistent across all field groups.</div></div>
+</div>
+
+<!-- Verdict -->
+<div class="category-section" style="border-top: 4px solid var(--bm-deep-green);">
+  <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 12px;">Verdict</h2>
+  <p style="font-size: 16px; color: var(--bm-secondary-text); line-height: 1.6;">
+    The spec is <strong style="color: var(--bm-eigengrau);">solid but not yet publishable</strong>. The 6 failures are all fixable — primarily glossary additions, one derivation table gap, and status tag definitions. The 12 warnings are quality improvements that would make the spec meaningfully better for agent consumption. Hard constraints hold cleanly across all 14 parts. ESC scrub is complete. Language boundary is respected with one minor tightening opportunity.
+  </p>
+  <p style="font-size: 14px; color: var(--bm-secondary-text); margin-top: 12px;">
+    <strong>Recommended action:</strong> Fix the 6 FAILs (estimated 15 min of edits), address the high-value WARNs (IC-06 violence tier, AC-05 prohibited phrases, CG-10 parent view mapping), then publish.
+  </p>
+</div>
+
+<div style="text-align: center; padding: 24px 0; font-size: 12px; color: var(--bm-muted-gray);">
+  Generated by Bookmarked QA Engine &middot; March 19, 2026
+</div>
+
+</div>
+</body>
+</html>

@@ -4,531 +4,2710 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book Intelligence Product Specification — Bookmarked</title>
-<link rel="stylesheet" href="../design/bookmarked-brand.css">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  body { background: var(--bm-bg-white); }
-  .spec-container { max-width: 960px; margin: 0 auto; padding: 0 24px 96px; }
-  .spec-hero { background: var(--bm-gradient-hero); padding: 64px 0 48px; color: #fff; margin-bottom: 48px; }
-  .spec-hero .bm-container { max-width: 960px; }
-  .spec-hero h1 { font-size: 36px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; }
-  .spec-hero .meta { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.6; }
-  .spec-hero .meta strong { color: #fff; }
-
-  .spec-section { margin-bottom: 48px; }
-  .spec-section h2 { font-size: 28px; font-weight: 700; color: var(--bm-eigengrau); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 3px solid var(--bm-deep-green); }
-  .spec-section h3 { font-size: 20px; font-weight: 700; color: var(--bm-eigengrau); margin: 32px 0 12px; }
-  .spec-section h4 { font-size: 16px; font-weight: 700; color: var(--bm-deep-green); margin: 24px 0 8px; }
-  .spec-section p { font-size: 15px; color: var(--bm-secondary-text); line-height: 1.65; margin-bottom: 12px; }
-  .spec-section strong { color: var(--bm-eigengrau); }
-  .spec-section ul, .spec-section ol { font-size: 15px; color: var(--bm-secondary-text); line-height: 1.65; margin: 0 0 16px 24px; }
-  .spec-section li { margin-bottom: 6px; }
-  .spec-section code { background: var(--bm-bg-cool); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--bm-deep-green); }
-  .spec-section pre { background: var(--bm-bg-cool); padding: 20px; border-radius: 8px; font-size: 13px; line-height: 1.5; overflow-x: auto; margin: 16px 0; color: var(--bm-eigengrau); }
-
-  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0 24px; }
-  .spec-table th { background: var(--bm-bg-cool); padding: 10px 12px; text-align: left; font-weight: 600; color: var(--bm-eigengrau); border-bottom: 2px solid var(--bm-border-light); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .spec-table td { padding: 10px 12px; border-bottom: 1px solid var(--bm-border-light); color: var(--bm-secondary-text); vertical-align: top; line-height: 1.5; }
-  .spec-table tr:hover td { background: var(--bm-bg-light); }
-  .spec-table td:first-child { font-weight: 600; color: var(--bm-eigengrau); }
-
-  .constraint-card { background: var(--bm-bg-cool); border-left: 4px solid var(--bm-deep-green); padding: 16px 20px; margin: 12px 0; border-radius: 0 8px 8px 0; }
-  .constraint-card.critical { border-left-color: var(--bm-pumpkin); background: #FFF8F5; }
-  .constraint-card p { margin: 0; font-size: 14px; }
-  .constraint-card strong { color: var(--bm-deep-green); }
-  .constraint-card.critical strong { color: var(--bm-pumpkin); }
-
-  .status-badge { display: inline-block; padding: 2px 10px; font-size: 11px; font-weight: 700; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
-  .status-live { background: rgba(18,163,140,0.15); color: var(--bm-teal-accent); }
-  .status-designed { background: rgba(16,117,105,0.15); color: var(--bm-deep-green); }
-  .status-planned { background: rgba(255,105,46,0.12); color: var(--bm-pumpkin); }
-  .status-vision { background: rgba(156,163,175,0.15); color: var(--bm-muted-gray); }
-  .status-concept { background: rgba(156,163,175,0.1); color: #6B7280; border: 1px dashed #D1D5DB; }
-  .status-unknown { background: #FEF3CD; color: #92400E; }
-
-  .toc { background: var(--bm-bg-cool); border-radius: 12px; padding: 24px 32px; margin: 0 0 48px; }
-  .toc h3 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--bm-eigengrau); }
-  .toc ul { list-style: none; margin: 0; padding: 0; }
-  .toc li { padding: 4px 0; font-size: 14px; }
-  .toc a { color: var(--bm-deep-green); text-decoration: none; }
-  .toc a:hover { text-decoration: underline; }
-  .toc .toc-part { font-weight: 600; color: var(--bm-eigengrau); }
-
-  .trust-tier-visual { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
-  .trust-card { background: var(--bm-bg-cool); border-radius: 12px; padding: 20px; text-align: center; border-top: 4px solid var(--bm-border-light); }
-  .trust-card.tier-1 { border-top-color: var(--bm-muted-gray); }
-  .trust-card.tier-2 { border-top-color: var(--bm-teal-accent); }
-  .trust-card.tier-3 { border-top-color: var(--bm-deep-green); }
-  .trust-card h4 { margin: 0 0 8px; font-size: 14px; }
-  .trust-card p { font-size: 13px; margin: 0; }
-
-  .phase-card { background: var(--bm-bg-white); border: 1px solid var(--bm-border-light); border-radius: 12px; padding: 20px; margin: 12px 0; }
-  .phase-card h4 { margin-top: 0; }
-  .phase-label { display: inline-block; padding: 3px 12px; font-size: 11px; font-weight: 700; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .phase-1 { background: rgba(18,163,140,0.15); color: var(--bm-teal-accent); }
-  .phase-2 { background: rgba(255,105,46,0.12); color: var(--bm-pumpkin); }
-  .phase-3 { background: rgba(16,117,105,0.15); color: var(--bm-deep-green); }
-
-  .ground-truth-callout { background: linear-gradient(135deg, #F0FDF9, #F8FAF8); border: 2px solid var(--bm-deep-green); border-radius: 12px; padding: 24px; margin: 24px 0; }
-  .ground-truth-callout h4 { color: var(--bm-deep-green); margin-top: 0; font-size: 18px; }
-
-  .spec-divider { border: none; border-top: 1px solid var(--bm-border-light); margin: 48px 0; }
-
-  .spec-footer { text-align: center; padding: 32px 0; font-size: 12px; color: var(--bm-muted-gray); border-top: 1px solid var(--bm-border-light); margin-top: 48px; }
-
-  @media (max-width: 768px) {
-    .spec-hero h1 { font-size: 28px; }
-    .spec-section h2 { font-size: 22px; }
-    .trust-tier-visual { grid-template-columns: 1fr; }
-    .spec-table { font-size: 12px; }
-    .spec-table th, .spec-table td { padding: 8px; }
-  }
+:root{--bm-eigengrau:#101828;--bm-deep-green:#107569;--bm-teal-accent:#12A38C;--bm-white:#FFFFFF;--bm-pumpkin:#FF692E;--bm-secondary-text:#475467;--bm-muted-gray:#9CA3AF;--bm-border-light:#E5E7EB;--bm-bg-cool:#F8FAFC;--bm-bg-light:#F9FAFB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Urbanist',Arial,sans-serif;font-size:16px;line-height:1.6;color:var(--bm-eigengrau);background:var(--bm-white);-webkit-font-smoothing:antialiased}
+.container{max-width:900px;margin:0 auto;padding:40px 32px}
+h1{font-size:32px;font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin:48px 0 16px;color:var(--bm-eigengrau)}
+h2{font-size:24px;font-weight:700;line-height:1.25;letter-spacing:-0.01em;margin:40px 0 12px;padding-top:20px;border-top:2px solid var(--bm-border-light);color:var(--bm-eigengrau)}
+h3{font-size:20px;font-weight:700;margin:28px 0 10px;color:var(--bm-eigengrau)}
+h4{font-size:16px;font-weight:700;margin:20px 0 8px;color:var(--bm-eigengrau)}
+p{margin:8px 0 12px;color:var(--bm-secondary-text)}
+strong{color:var(--bm-eigengrau)}
+a{color:var(--bm-teal-accent);text-decoration:none}
+a:hover{color:var(--bm-deep-green);text-decoration:underline}
+ul,ol{margin:8px 0 16px 24px;color:var(--bm-secondary-text)}
+li{margin:4px 0}
+hr{border:none;border-top:2px solid var(--bm-border-light);margin:32px 0}
+table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+th{background:var(--bm-bg-cool);padding:10px 14px;text-align:left;font-weight:700;color:var(--bm-eigengrau);border-bottom:2px solid var(--bm-border-light);font-size:13px}
+td{padding:10px 14px;border-bottom:1px solid var(--bm-border-light);color:var(--bm-secondary-text);vertical-align:top}
+tr:hover td{background:var(--bm-bg-light)}
+code{background:var(--bm-bg-cool);padding:2px 6px;border-radius:4px;font-size:14px;color:var(--bm-deep-green)}
+pre{background:var(--bm-bg-cool);padding:16px 20px;border-radius:8px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.5;border:1px solid var(--bm-border-light)}
+pre code{background:none;padding:0}
+blockquote{border-left:4px solid var(--bm-teal-accent);padding:12px 20px;margin:16px 0;background:var(--bm-bg-cool);border-radius:0 8px 8px 0}
+.hero{background:linear-gradient(135deg,#0D5A52 0%,#107569 40%,#12A38C 100%);padding:48px 40px;border-radius:12px;margin-bottom:32px;color:white}
+.hero h1{color:white;margin:0 0 8px;font-size:36px;border:none;padding:0}
+.hero p{color:rgba(255,255,255,0.85);margin:0;font-size:16px}
+.footer{text-align:center;padding:24px 0;font-size:12px;color:var(--bm-muted-gray);border-top:1px solid var(--bm-border-light);margin-top:48px}
+@media print{body{font-size:11pt}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}table{font-size:10pt}h2{page-break-after:avoid}}
+@media(max-width:768px){.container{padding:20px 16px}h1{font-size:26px}h2{font-size:20px}table{font-size:12px}th,td{padding:6px 8px}}
 </style>
 </head>
 <body>
-
-<div class="spec-hero">
-  <div class="bm-container" style="max-width:960px">
-    <h1>Book Intelligence Product Specification</h1>
-    <div class="meta">
-      <strong>Last updated:</strong> March 19, 2026<br>
-      <strong>Author:</strong> Steve Wandler, Founder<br>
-      <strong>Status:</strong> Active — Draft for Review<br>
-      <strong>Parts:</strong> 14 sections covering current system, planned enhancements, and strategic vision
-    </div>
-  </div>
+<div class="container">
+<div class="hero">
+<h1>Book Intelligence Product Specification</h1>
+<p>Bookmarked &middot; March 19, 2026 &middot; v2 (QA Pass Applied)</p>
 </div>
+<h1>Book Intelligence Product Specification</h1>
+<p><strong>Last updated:</strong> March 19, 2026
+<strong>Author:</strong> Steve Wandler, Founder
+<strong>Status:</strong> Active — Draft for Review
+<strong>Upstream:</strong> Bookmarked Vision Cascade, Bookmarked Product Vision
+<strong>Downstream:</strong> Engineering (pipeline), Product (features), AI Agent Team (enrichment), Customer Success (data quality), Sales (positioning)</p>
+<hr>
+<h2>Hard Constraints</h2>
+<p>These rules are absolute. Every agent referencing this document must treat these as inviolable.</p>
+<ol>
+<li><p><strong>DATA BOUNDARY:</strong> All book intelligence is derived from EXTERNAL PUBLIC SOURCES (ISBNDB, Open Library, web scraping, AI analysis of publicly available information about books). Bookmarked does NOT read, scan, or process actual book text, PDFs, ePubs, or any digital version of a book&#39;s content. The Content Scanner (Layer 3) is a SEPARATE future capability requiring publisher permission. It is OUT OF SCOPE for this specification.</p>
+</li>
+<li><p><strong>LANGUAGE BOUNDARY:</strong> Never generate UI copy, prompts, descriptions, or documentation that implies Bookmarked has read the book. Use: &quot;external sources report&quot; / &quot;publicly available information indicates&quot; / &quot;based on metadata and public reviews.&quot; Do NOT use: &quot;the book contains&quot; / &quot;what&#39;s inside this book&quot; / &quot;what&#39;s in this book.&quot;</p>
+</li>
+<li><p><strong>NOT A RATING SYSTEM:</strong> Bookmarked does not rate books. We surface intelligence from multiple sources so humans can make informed decisions. Framing our output as &quot;ratings&quot; risks being perceived as censorship. Do NOT use: &quot;Bookmarked rates&quot; / &quot;our rating&quot; / &quot;we rate&quot; / &quot;Bookmarked&#39;s rating&quot; / &quot;rated by Bookmarked.&quot; Use: &quot;AI-generated assessment&quot; / &quot;based on external sources&quot; / &quot;intelligence from public data.&quot;</p>
+</li>
+<li><p><strong>NOT A REPLACEMENT FOR LIBRARIANS:</strong> Librarians make judgment calls. Book Intelligence provides the data infrastructure they never had. Never position the system as replacing professional judgment. Do NOT use: &quot;replaces librarians&quot; / &quot;instead of a librarian&quot; / &quot;no librarian needed&quot; / &quot;eliminates the need for&quot; / &quot;automates the librarian&#39;s job.&quot; Use: &quot;supports&quot; / &quot;empowers&quot; / &quot;provides data for&quot; / &quot;surfaces intelligence so librarians can.&quot;</p>
+</li>
+<li><p><strong>NOT A CENSOR:</strong> We do not decide what books are appropriate. We provide data for districts to make defensible decisions within their regulatory framework.</p>
+</li>
+<li><p><strong>ANTI-GAMING:</strong> Community actions (verifications, disputes, source reports, accuracy feedback) are transparent, attributed, and additive — never subtractive. Community input adds a layer alongside AI-generated data; it never overwrites or removes the baseline. Administrators always see the same data as librarians. Cross-district patterns expose outliers. The system must account for practitioners who may attempt to suppress intelligence they philosophically disagree with — transparency and attribution are the primary defenses.</p>
+</li>
+</ol>
+<hr>
+<h2>Glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Book Intelligence (BI)</strong></td>
+<td>Bookmarked&#39;s system for aggregating publicly available information about books. The intelligence engine underneath every surface in OnShelf.</td>
+</tr>
+<tr>
+<td><strong>OnShelf</strong></td>
+<td>Bookmarked&#39;s product — the platform districts log into.</td>
+</tr>
+<tr>
+<td><strong>Flag</strong></td>
+<td>Any external signal about a book from a third-party source — an organization listing, news article, or website. A flag is informational, not a verified fact. Flags represent what external sources <em>claim</em> about a book.</td>
+</tr>
+<tr>
+<td><strong>Ban</strong></td>
+<td>A claim by an external source that a book has been removed from a library or school system. Bookmarked surfaces these claims but CANNOT independently verify them — external organizations typically lack access to actual library collections. Only Bookmarked customers can verify whether a book is actually on their shelves or removed, because we connect directly to their library systems.</td>
+</tr>
+<tr>
+<td><strong>Challenge</strong></td>
+<td>A claim by an external source that a book&#39;s inclusion in a library has been formally questioned. Same verification limitation applies — these are reported claims, not confirmed facts.</td>
+</tr>
+<tr>
+<td><strong>Challenge Risk</strong></td>
+<td>An AI-generated assessment of how likely a book is to be challenged, based on external signals.</td>
+</tr>
+<tr>
+<td><strong>Content Scanner</strong></td>
+<td>A FUTURE capability (Layer 3) where AI reads actual book content with publisher permission. NOT part of this spec.</td>
+</tr>
+<tr>
+<td><strong>Intelligence Card</strong></td>
+<td>The per-book detail view showing all BI data — the primary surface for Book Intelligence.</td>
+</tr>
+<tr>
+<td><strong>Network Intelligence</strong></td>
+<td>Intelligence derived from aggregated, anonymized data across all Bookmarked districts. Passive — collected automatically from district activity without explicit user action. Layer 2.</td>
+</tr>
+<tr>
+<td><strong>Community Intelligence</strong></td>
+<td>Intelligence derived from deliberate user contributions — verifications, disputes, source reports, accuracy feedback. Active — requires explicit user action. Distinct from Network Intelligence.</td>
+</tr>
+<tr>
+<td><strong>Trust Tier</strong></td>
+<td>Three levels of data credibility: AI-Generated (pipeline output), Community-Informed (practitioner feedback), Bookmarked Verified (ground truth from connected library systems). See Trust Hierarchy section.</td>
+</tr>
+<tr>
+<td><strong>Ground Truth</strong></td>
+<td>Verifiable facts from connected library systems, as opposed to claims from external sources. Bookmarked&#39;s unique ability to confirm or contradict ban/challenge claims because we connect to actual library catalogs.</td>
+</tr>
+<tr>
+<td><strong>Prioritization Engine</strong></td>
+<td>The system that ranks books by urgency for review, based on compliance exposure, recency, trust tier, peer signal, and unreviewed duration.</td>
+</tr>
+<tr>
+<td><strong>Source Intelligence System</strong></td>
+<td>The unified system for tracking source credibility — from initial credibility scoring through user reporting to evolutionary quality scoring over time.</td>
+</tr>
+<tr>
+<td><strong>Compliance Posture</strong></td>
+<td>A readiness indicator measuring whether a district&#39;s flagged and at-risk books have been reviewed, documented, and resolved.</td>
+</tr>
+<tr>
+<td><strong>Engagement Score</strong></td>
+<td>A measure of who is actively using the system — librarian activity, teacher confirmations, parent participation, board member engagement.</td>
+</tr>
+<tr>
+<td><strong>Network Effect</strong></td>
+<td>The compounding value created as more districts join the Bookmarked network — more verifications, better benchmarking, faster source learning, more accurate predictions.</td>
+</tr>
+<tr>
+<td><strong>AI Enrichment</strong></td>
+<td>The pipeline stage where an AI model processes publicly available metadata and reviews to generate content ratings, themes, educational value, grade suitability, risk level, and summaries for each book. Runs at import time.</td>
+</tr>
+<tr>
+<td><strong>ISBNDB</strong></td>
+<td>A commercial ISBN database providing book identity and metadata (title, author, publisher, synopsis, subjects, page count, cover image) via API. Primary external data source.</td>
+</tr>
+<tr>
+<td><strong>Open Library</strong></td>
+<td>An open-source book metadata database (openlibrary.org) used as a secondary source for subjects and additional metadata.</td>
+</tr>
+<tr>
+<td><strong>Accuracy Tier</strong></td>
+<td>Priority level (1-4) assigned to each BI field based on compliance impact. Tier 1 = Compliance-Critical, Tier 2 = Decision-Informing, Tier 3 = Contextual, Tier 4 = Informational. See Part 4.</td>
+</tr>
+<tr>
+<td><strong>Confidence Indicator</strong></td>
+<td>A per-field assessment of evidence strength: Strong signal (3+ sources or 3+ verifications), Moderate signal (1-2 sources), or Limited data (0-1 sources). See Trust Hierarchy section.</td>
+</tr>
+<tr>
+<td><strong>SB 13</strong></td>
+<td>Texas Senate Bill 13, requiring school districts to review library materials for sexual content. TSLAC (Texas State Library and Archives Commission) is the policy body.</td>
+</tr>
+<tr>
+<td><strong>SB 412</strong></td>
+<td>Texas Senate Bill 412, establishing criminal liability for school personnel providing &quot;sexually explicit&quot; material in K-12 settings. Highest regulatory weight for Sexual Content ratings.</td>
+</tr>
+<tr>
+<td><strong>PEN America</strong></td>
+<td>A prominent literary and free expression organization that maintains public lists of banned and challenged books. Frequently referenced as a flag source.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Trust Hierarchy &amp; Confidence</h2>
+<p>This section defines the credibility model for all Book Intelligence data. Every field in BI carries a trust tier and a confidence indicator. These concepts are referenced throughout Parts 10-14.</p>
+<h3>Trust Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Name</th>
+<th>Definition</th>
+<th>Criteria</th>
+<th>Visual Indicator</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>AI-Generated</strong></td>
+<td>Data produced by the BI pipeline from public sources</td>
+<td>Default tier for all pipeline output</td>
+<td>No special badge — baseline</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Community-Informed</strong></td>
+<td>Data that has received practitioner feedback (verifications, disputes, accuracy votes)</td>
+<td>At least 1 community action on the field</td>
+<td>&quot;Community-Informed&quot; badge with count</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Bookmarked Verified</strong></td>
+<td>Data confirmed or contradicted by ground truth from connected library systems</td>
+<td>District library system data directly confirms or contradicts the intelligence</td>
+<td>&quot;Bookmarked Verified&quot; badge with verification date</td>
+</tr>
+</tbody></table>
+<h3>Freshness Dimension</h3>
+<p>Trust signals include a verification date. When significant new intelligence arrives after verification (new flags, source changes, rating updates), the verification status shifts to: <strong>&quot;Verified — new intelligence available since [date].&quot;</strong> This nudges re-review without invalidating the original verification.</p>
+<h3>Confidence Indicators</h3>
+<p>BI assesses its own certainty per field based on available evidence:</p>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Meaning</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Strong signal</strong></td>
+<td>Multiple sources and/or community verification support this value</td>
+<td>3+ public sources OR 3+ community verifications</td>
+</tr>
+<tr>
+<td><strong>Moderate signal</strong></td>
+<td>Some evidence supports this value</td>
+<td>1-2 public sources, no community feedback</td>
+</tr>
+<tr>
+<td><strong>Limited data</strong></td>
+<td>Minimal evidence available — apply professional judgment</td>
+<td>0-1 public sources, AI inference with thin data</td>
+</tr>
+</tbody></table>
+<p>Confidence indicators help the Prioritization Engine: books with low-confidence, high-stakes ratings (Tier 1 fields with limited data) get escalated for human review.</p>
+<hr>
+<h2>Document Index</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Status Tags</th>
+<th>Use When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hard Constraints</td>
+<td>—</td>
+<td>ALWAYS load before producing any BI-related output</td>
+</tr>
+<tr>
+<td>Glossary</td>
+<td>—</td>
+<td>When interpreting BI terminology</td>
+</tr>
+<tr>
+<td>Trust Hierarchy &amp; Confidence</td>
+<td>—</td>
+<td>When working with any trust, verification, or confidence concept</td>
+</tr>
+<tr>
+<td>Part 1: What Book Intelligence Is</td>
+<td>LIVE</td>
+<td>Understanding the system&#39;s purpose and architecture</td>
+</tr>
+<tr>
+<td>Part 2: The Intelligence Card — Field-by-Field Specification</td>
+<td>LIVE / DESIGNED / UNKNOWN</td>
+<td>Building or modifying any BI data field</td>
+</tr>
+<tr>
+<td>Part 3: Data Sources &amp; Pipeline</td>
+<td>LIVE / UNKNOWN</td>
+<td>Working on data ingestion, enrichment, or flag detection</td>
+</tr>
+<tr>
+<td>Part 4: Accuracy Audit Framework</td>
+<td>DESIGNED</td>
+<td>Designing validation, audit, or quality processes</td>
+</tr>
+<tr>
+<td>Part 5: BI Surfaces in the Product</td>
+<td>LIVE</td>
+<td>Building or modifying any BI-related UI</td>
+</tr>
+<tr>
+<td>Part 6: Network Intelligence</td>
+<td>PLANNED</td>
+<td>Network-level intelligence, benchmarking, ground truth</td>
+</tr>
+<tr>
+<td>Part 7: Collection-Level Intelligence</td>
+<td>LIVE</td>
+<td>Current dashboard metrics and collection analytics</td>
+</tr>
+<tr>
+<td>Part 8: Residual Future Ideas</td>
+<td>PLANNED</td>
+<td>Product ideas not yet covered by Parts 10-14</td>
+</tr>
+<tr>
+<td>Part 9: Known Issues &amp; Engineering Gaps</td>
+<td>LIVE</td>
+<td>ALWAYS check before starting any BI engineering work</td>
+</tr>
+<tr>
+<td>Part 10: Trust, Confidence &amp; Anti-Gaming</td>
+<td>DESIGNED</td>
+<td>Designing any community or trust feature</td>
+</tr>
+<tr>
+<td>Part 11: Enhanced Intelligence</td>
+<td>PLANNED</td>
+<td>New intelligence dimensions and source improvements</td>
+</tr>
+<tr>
+<td>Part 12: Community Intelligence</td>
+<td>PLANNED</td>
+<td>User-contributed intelligence features</td>
+</tr>
+<tr>
+<td>Part 13: Intelligence Surfaces &amp; Workflows</td>
+<td>PLANNED</td>
+<td>Dashboard, prioritization, workflow, and alert features</td>
+</tr>
+<tr>
+<td>Part 14: The Learning System</td>
+<td>VISION</td>
+<td>Long-term intelligence improvement and compounding</td>
+</tr>
+</tbody></table>
+<p><strong>Status Tags:</strong></p>
+<ul>
+<li><strong>LIVE</strong> — Exists in production today. Agents can build on it.</li>
+<li><strong>DESIGNED</strong> — Specified but not yet implemented. Requirements are defined.</li>
+<li><strong>PLANNED</strong> — We know what we want but details need engineering input or design work.</li>
+<li><strong>VISION</strong> — Conceptualized at the strategic level. Not yet scoped for implementation. Included for directional planning.</li>
+<li><strong>CONCEPT</strong> — An idea that needs design exploration before it can be specified. Tagged on individual items within sections.</li>
+<li><strong>UNKNOWN</strong> — We need answers before this can move forward. The specific question and owner are noted.</li>
+<li><strong>DEFERRED</strong> — Considered and intentionally postponed. Will revisit when conditions change (e.g., budget, scale, partnerships).</li>
+<li><strong>FUTURE</strong> — Out of scope for this specification. Separate timeline and separate spec.</li>
+</ul>
+<hr>
+<h2>Part 1: What Book Intelligence Is</h2>
+<h3>Specification</h3>
+<p>Book Intelligence is Bookmarked&#39;s system for aggregating publicly available information about books — what external sources report about a book, what&#39;s happening around books in the regulatory and cultural landscape, and how districts across the network are handling specific titles.</p>
+<p>It is not a module or a tab. It is the intelligence engine underneath every surface in OnShelf.</p>
+<p><strong>The Intelligence Hierarchy:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Name</th>
+<th>What It Is</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Company</strong></td>
+<td>Bookmarked</td>
+<td>The Book Intelligence Company</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Product</strong></td>
+<td>OnShelf</td>
+<td>The platform districts log into</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Engine</strong></td>
+<td>Book Intelligence</td>
+<td>The intelligence layer across the entire product</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Modules</strong></td>
+<td>OnShelf Review, Classroom Libraries, Parent Access, Dashboard, Reports</td>
+<td>Specific workflows powered by Book Intelligence</td>
+<td>LIVE</td>
+</tr>
+</tbody></table>
+<p><strong>What Book Intelligence Provides (per book):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Description</th>
+<th>Source Type</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Identity</strong></td>
+<td>Title, author, publisher, ISBN, edition-specific metadata</td>
+<td>Database lookup (ISBNDB, Open Library)</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Content Assessment</strong></td>
+<td>Content ratings, themes, mature content, educational value — all derived from public information about the book, NOT from reading the book</td>
+<td>AI analysis of public metadata and reviews</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Compliance &amp; Risk</strong></td>
+<td>Ban/challenge status, risk level, grade suitability</td>
+<td>Flag detection pipeline + AI assessment</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>External Signals</strong></td>
+<td>Flags from organizations, news coverage, school district actions</td>
+<td>Web scraping and classification</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Network Intelligence</strong></td>
+<td>What districts across the Bookmarked network are doing with this title</td>
+<td>Aggregated anonymized district activity</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Community Intelligence</strong></td>
+<td>Verifications, disputes, accuracy feedback, source contributions from practitioners</td>
+<td>Deliberate user contributions</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Human Intelligence</strong></td>
+<td>Collaborative notes, reviewer justifications, verification</td>
+<td>Staff manual entry in OnShelf</td>
+<td>LIVE</td>
+</tr>
+</tbody></table>
+<p><strong>The Three Intelligence Layers:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Name</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Layer 1</strong></td>
+<td>External Signals</td>
+<td>Publicly available intelligence: challenge/ban lists, news, reviews, metadata, legislation</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Layer 2</strong></td>
+<td>Network Intelligence</td>
+<td>Intelligence from the Bookmarked network: decisions, patterns, outcomes across districts</td>
+<td>PLANNED — data being collected, surfaces not yet built</td>
+</tr>
+<tr>
+<td><strong>Layer 3</strong></td>
+<td>Content Scanner</td>
+<td>Source-verified intelligence from reading actual book content with publisher permission</td>
+<td>FUTURE — separate spec, separate timeline, OUT OF SCOPE</td>
+</tr>
+</tbody></table>
+<p><strong>This specification covers Layer 1 in full detail, Layer 2 in design detail, and references Layer 3 only as an explicit boundary.</strong></p>
+<hr>
+<h2>Part 2: The Intelligence Card — Field-by-Field Specification</h2>
+<h3>Specification</h3>
+<p>Every field that appears on the Book Intelligence card: where the data comes from, what type of data it is, what &quot;correct&quot; looks like, and known issues. This is the engineering and product truth for what Book Intelligence produces.</p>
+<p><strong>Standardized column definitions:</strong></p>
+<ul>
+<li><strong>Field</strong> — Display name in the UI</li>
+<li><strong>Type</strong> — Data type (String, Enum, Integer, Tag list, Text, URL, etc.)</li>
+<li><strong>Source</strong> — Where the data originates</li>
+<li><strong>Source Boundary</strong> — Confirms the data is from public sources, not from reading the book</li>
+<li><strong>Accuracy Tier</strong> — 1 (Compliance-Critical), 2 (Decision-Informing), 3 (Contextual), 4 (Informational) — see Part 4</li>
+<li><strong>Status</strong> — LIVE, DESIGNED, UNKNOWN</li>
+<li><strong>Known Issues</strong> — Current problems or open questions</li>
+</ul>
+<h3>Current Data Sources</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>What It Provides</th>
+<th>Method</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ISBNDB</strong></td>
+<td>Title, author, publisher, ISBN, synopsis, subjects, page count, year, cover image</td>
+<td>API lookup at import</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Open Library</strong></td>
+<td>Subjects (secondary source), additional metadata</td>
+<td>API lookup at import</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>AI Enrichment</strong></td>
+<td>Content ratings, themes, educational value, content warnings, grade suitability, risk level, AI summary, mature themes, potential concerns</td>
+<td>AI model processing of public metadata at import</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Web Scraping / Flag Detection</strong></td>
+<td>Ban/challenge data, organization flags, news mentions</td>
+<td>Scanning pipeline</td>
+<td>LIVE — frequency UNKNOWN</td>
+</tr>
+<tr>
+<td><strong>Staff Input</strong></td>
+<td>Collaborative notes, status changes, reviewer justifications</td>
+<td>Manual entry in OnShelf</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Community Input</strong></td>
+<td>Verifications, disputes, accuracy feedback, source contributions</td>
+<td>Deliberate user actions in OnShelf</td>
+<td>PLANNED — see Part 12</td>
+</tr>
+<tr>
+<td><strong>Network Data</strong></td>
+<td>Placement patterns, review outcomes, ordering trends</td>
+<td>Aggregated from all district activity</td>
+<td>PLANNED</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group A: Identity &amp; Metadata</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Title</strong></td>
+<td>String</td>
+<td>ISBNDB / Open Library</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Generally accurate</td>
+</tr>
+<tr>
+<td><strong>Author</strong></td>
+<td>String</td>
+<td>ISBNDB / Open Library</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Generally accurate. See Field Group I for extended Author Intelligence.</td>
+</tr>
+<tr>
+<td><strong>Publisher</strong></td>
+<td>String</td>
+<td>ISBNDB</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Generally accurate</td>
+</tr>
+<tr>
+<td><strong>ISBN</strong></td>
+<td>String (13-digit)</td>
+<td>District upload / ISBNDB</td>
+<td>District input + database validation</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Source of truth for book identity</td>
+</tr>
+<tr>
+<td><strong>Cover Image</strong></td>
+<td>URL / Image</td>
+<td>ISBNDB / Open Library</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Sometimes missing (placeholder shown)</td>
+</tr>
+<tr>
+<td><strong>Page Count</strong></td>
+<td>Integer</td>
+<td>ISBNDB</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Low priority — informational</td>
+</tr>
+<tr>
+<td><strong>Publication Year</strong></td>
+<td>Integer</td>
+<td>ISBNDB</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Generally accurate</td>
+</tr>
+<tr>
+<td><strong>Synopsis</strong></td>
+<td>Text</td>
+<td>ISBNDB / possibly AI-generated</td>
+<td>Database or AI analysis of public info</td>
+<td>4</td>
+<td>LIVE</td>
+<td>UNKNOWN: always from ISBNDB or sometimes AI?</td>
+</tr>
+<tr>
+<td><strong>Subjects</strong></td>
+<td>Tag list</td>
+<td>ISBNDB + Open Library (dual-source)</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>LIVE</td>
+<td>Dual-source reduces risk</td>
+</tr>
+<tr>
+<td><strong>People / Characters</strong></td>
+<td>List</td>
+<td>AI-generated</td>
+<td>AI analysis of public info about the book</td>
+<td>3</td>
+<td>LIVE</td>
+<td>AI accuracy risk — could hallucinate characters</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group B: Status &amp; Risk Overview</h3>
+<p>Four fields at the top of the intelligence card in colored status cards. First thing a user sees — must be trustworthy.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ban Status</strong></td>
+<td>Enum: Clear / Banned (count)</td>
+<td>Flag detection pipeline</td>
+<td>Web scraping of public sources</td>
+<td>1</td>
+<td>LIVE</td>
+<td>UNKNOWN: what qualifies as &quot;ban&quot; vs. &quot;challenge&quot; in the pipeline logic?</td>
+</tr>
+<tr>
+<td><strong>Challenge Risk</strong></td>
+<td>Enum: Low / Medium / Flagged</td>
+<td>AI-generated (formula unknown)</td>
+<td>AI assessment of public signals</td>
+<td>1</td>
+<td>LIVE</td>
+<td><strong>CRITICAL: 98% of books classified as Medium. No differentiation. #1 accuracy problem. Owner: Anil.</strong></td>
+</tr>
+<tr>
+<td><strong>Parental Guidance</strong></td>
+<td>Boolean: Yes / No</td>
+<td>AI-generated</td>
+<td>AI assessment of public info</td>
+<td>2</td>
+<td>LIVE</td>
+<td>UNKNOWN: purely AI judgment, or derived from content ratings?</td>
+</tr>
+<tr>
+<td><strong>Reading Level</strong></td>
+<td>Enum: Adult / Young Adult / Middle Grade / Children&#39;s</td>
+<td>AI-generated or ISBNDB</td>
+<td>UNKNOWN</td>
+<td>2</td>
+<td>LIVE</td>
+<td>UNKNOWN: from ISBNDB metadata or AI-generated?</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group C: Content Ratings</h3>
+<p>Three content dimensions rated on a severity scale. These directly inform compliance decisions — a &quot;Moderate&quot; or &quot;Explicit&quot; sexual content rating has regulatory implications under SB 13 and SB 412.</p>
+<p><strong>Regulatory context:</strong> Under SB 412, school personnel face criminal liability for &quot;sexually explicit&quot; material in K-12 settings. The accuracy bar for Sexual Content ratings is therefore higher than for other fields. A false &quot;None&quot; on a book with explicit content creates legal exposure for the district.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Violence</strong></td>
+<td>Enum (None/Mild/Moderate/Explicit) + descriptive text</td>
+<td>AI-generated</td>
+<td>AI analysis of public reviews and metadata — NOT from reading the book</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Unaudited. AI may over- or under-rate.</td>
+</tr>
+<tr>
+<td><strong>Sexual Content</strong></td>
+<td>Enum (None/Mild/Implied/Moderate/Explicit) + descriptive text</td>
+<td>AI-generated</td>
+<td>AI analysis of public reviews and metadata — NOT from reading the book</td>
+<td>1</td>
+<td>LIVE</td>
+<td><strong>Scale inconsistency:</strong> &quot;Implied&quot; appears in UI but isn&#39;t in the standard 4-point scale. Highest regulatory weight.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Enum (None/Mild/Moderate/Explicit) + descriptive text</td>
+<td>AI-generated</td>
+<td>AI analysis of public reviews and metadata — NOT from reading the book</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Verify: does every book get descriptive text, or only some?</td>
+</tr>
+</tbody></table>
+<p><strong>Scale definitions:</strong></p>
+<ul>
+<li><strong>None:</strong> Not present.</li>
+<li><strong>Mild:</strong> Present but not graphic (violence: verbal confrontations; sexual: romance/kissing; language: occasional damn/hell).</li>
+<li><strong>Implied:</strong> (Sexual Content only) Sexual activity suggested but not described. Non-standard value — needs standardization.</li>
+<li><strong>Moderate:</strong> Present with some detail.</li>
+<li><strong>Explicit:</strong> Graphic, detailed descriptions.</li>
+</ul>
+<hr>
+<h3>Field Group D: Grade Level Suitability</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Elementary</strong></td>
+<td>Enum: Appropriate / Not Recommended</td>
+<td>AI-generated</td>
+<td>Derived from public info</td>
+<td>1</td>
+<td>LIVE</td>
+<td>UNKNOWN: independently assessed or derived from content ratings?</td>
+</tr>
+<tr>
+<td><strong>Middle School</strong></td>
+<td>Enum: Appropriate / Not Recommended</td>
+<td>AI-generated</td>
+<td>Derived from public info</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Same question</td>
+</tr>
+<tr>
+<td><strong>High School</strong></td>
+<td>Enum: Appropriate / Not Recommended</td>
+<td>AI-generated</td>
+<td>Derived from public info</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Very few books should trigger Not Recommended</td>
+</tr>
+</tbody></table>
+<p><strong>Proposed derivation logic (DESIGNED — not yet implemented):</strong></p>
+<p>Grade Level Suitability should be mechanically derived from Content Ratings, eliminating contradictions:</p>
+<table>
+<thead>
+<tr>
+<th>Content Rating Level</th>
+<th>Elementary</th>
+<th>Middle School</th>
+<th>High School</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All None/Mild</td>
+<td>Appropriate</td>
+<td>Appropriate</td>
+<td>Appropriate</td>
+</tr>
+<tr>
+<td>Sexual Content: Implied</td>
+<td>Not Recommended</td>
+<td>Appropriate</td>
+<td>Appropriate</td>
+</tr>
+<tr>
+<td>Any Moderate</td>
+<td>Not Recommended</td>
+<td>Appropriate</td>
+<td>Appropriate</td>
+</tr>
+<tr>
+<td>Any Explicit (non-sexual)</td>
+<td>Not Recommended</td>
+<td>Not Recommended</td>
+<td>Appropriate</td>
+</tr>
+<tr>
+<td>Sexual Content: Explicit</td>
+<td>Not Recommended</td>
+<td>Not Recommended</td>
+<td>Not Recommended</td>
+</tr>
+</tbody></table>
+<p><strong>Note on &quot;Implied&quot;:</strong> The Sexual Content scale uses a non-standard 5th value (&quot;Implied&quot;) between Mild and Moderate. See Q7 for whether this is intentional or a bug. Until resolved, the derivation table treats &quot;Implied&quot; as equivalent to Moderate for Elementary and equivalent to Mild for Middle/High.</p>
+<hr>
+<h3>Field Group E: Content Analysis Tags</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Potential Concerns</strong></td>
+<td>Tag list</td>
+<td>AI-generated</td>
+<td>AI analysis of public info</td>
+<td>2</td>
+<td>LIVE</td>
+<td>May overlap with Content Warnings — distinction unclear</td>
+</tr>
+<tr>
+<td><strong>Mature Themes</strong></td>
+<td>Tag list</td>
+<td>AI-generated</td>
+<td>AI analysis of public info</td>
+<td>3</td>
+<td>LIVE</td>
+<td>AI hallucination risk — could tag themes not reported in public sources</td>
+</tr>
+<tr>
+<td><strong>Content Warnings</strong></td>
+<td>Tag list (red-highlighted)</td>
+<td>AI-generated</td>
+<td>AI analysis of public info</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Verify: always populated when Content Ratings warrant?</td>
+</tr>
+<tr>
+<td><strong>Themes</strong></td>
+<td>Tag list</td>
+<td>AI-generated</td>
+<td>AI analysis of public info</td>
+<td>3</td>
+<td>LIVE</td>
+<td>Informational, not compliance-critical</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group F: Advisory &amp; Educational Context</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Educational Value</strong></td>
+<td>Text (1-2 sentences)</td>
+<td>AI-generated</td>
+<td>AI analysis of public reviews and metadata</td>
+<td>3</td>
+<td>LIVE</td>
+<td>Verify: always populated? Specific enough to be useful?</td>
+</tr>
+<tr>
+<td><strong>AI Content Summary</strong></td>
+<td>Text (paragraph)</td>
+<td>AI-generated</td>
+<td>AI analysis of public info — NOT from reading the book</td>
+<td>3</td>
+<td>LIVE</td>
+<td>UNKNOWN: how does this differ from Synopsis? Redundant or additive?</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group G: Flags (External Signals)</h3>
+<p>The most defensible data category — every flag is traceable to a public source.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Flag Count</strong></td>
+<td>Integer (badge)</td>
+<td>Aggregated from flag records</td>
+<td>Public sources</td>
+<td>1</td>
+<td>LIVE</td>
+<td>UNKNOWN: do duplicate flags from same source get deduplicated?</td>
+</tr>
+<tr>
+<td><strong>Source Type Tabs</strong></td>
+<td>3 categories</td>
+<td>Categorized from flag records</td>
+<td>Public sources</td>
+<td>2</td>
+<td>LIVE</td>
+<td>AI could misclassify a source type</td>
+</tr>
+<tr>
+<td><strong>Per-Flag: Organization</strong></td>
+<td>String</td>
+<td>Web scraping</td>
+<td>Public source name</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Generally reliable</td>
+</tr>
+<tr>
+<td><strong>Per-Flag: Source Link</strong></td>
+<td>URL</td>
+<td>Web scraping</td>
+<td>Direct link to public source</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Links may go stale — no staleness detection</td>
+</tr>
+<tr>
+<td><strong>Per-Flag: Date</strong></td>
+<td>Date</td>
+<td>Web scraping</td>
+<td>Public source date</td>
+<td>2</td>
+<td>LIVE</td>
+<td>Date extraction may be imprecise</td>
+</tr>
+<tr>
+<td><strong>Per-Flag: Reasons Given</strong></td>
+<td>Text</td>
+<td>Web scraping + AI extraction</td>
+<td>Extracted from public source</td>
+<td>2</td>
+<td>LIVE</td>
+<td>AI extraction may misrepresent reasons</td>
+</tr>
+<tr>
+<td><strong>Per-Flag: Place</strong></td>
+<td>String</td>
+<td>Web scraping</td>
+<td>Public source location</td>
+<td>2</td>
+<td>LIVE</td>
+<td>May be incomplete</td>
+</tr>
+</tbody></table>
+<p><strong>Ban Details popup (Orders view):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>District Name</td>
+<td>String</td>
+<td>Flag pipeline</td>
+<td>LIVE — but UNKNOWN if hardcoded (BOOK-893)</td>
+</tr>
+<tr>
+<td>School Name</td>
+<td>String</td>
+<td>Flag pipeline</td>
+<td>LIVE — same question</td>
+</tr>
+<tr>
+<td>Reason</td>
+<td>Text</td>
+<td>Flag pipeline</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Tag list</td>
+<td>AI-categorized from reason</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>Date</td>
+<td>Flag pipeline</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Source Link</td>
+<td>URL</td>
+<td>Flag pipeline</td>
+<td>LIVE</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Field Group H: Collaborative Notes</h3>
+<p>Human-contributed intelligence — shared across the entire Bookmarked network.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Note Text</strong></td>
+<td>Free text</td>
+<td>Staff member</td>
+<td>Human-authored</td>
+<td>2</td>
+<td>LIVE</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Note Author</strong></td>
+<td>Staff identifier</td>
+<td>System</td>
+<td>System-generated</td>
+<td>—</td>
+<td>LIVE</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Note Date</strong></td>
+<td>Timestamp</td>
+<td>System</td>
+<td>System-generated</td>
+<td>—</td>
+<td>LIVE</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Note Count</strong></td>
+<td>Integer</td>
+<td>Aggregated</td>
+<td>System-generated</td>
+<td>—</td>
+<td>LIVE</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p><strong>Why notes are Book Intelligence:</strong> Notes transform BI from a one-way data feed into a collaborative intelligence system. When a librarian documents why she retained a challenged book, that professional judgment becomes available to every librarian facing the same decision.</p>
+<p><strong>Community Intelligence integration:</strong> The verification, dispute, and accuracy feedback features described in Part 12 extend the collaborative notes concept into structured community actions. Part 12 is the full specification for community-contributed intelligence.</p>
+<hr>
+<h3>Field Group I: Author Intelligence (PLANNED)</h3>
+<p>Extends the basic author string in Field Group A with structured intelligence about the author&#39;s public profile, challenge history, and catalog patterns.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Source</th>
+<th>Source Boundary</th>
+<th>Tier</th>
+<th>Status</th>
+<th>Known Issues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Challenge History</strong></td>
+<td>Integer + detail list</td>
+<td>Aggregated from flag data across all books by this author</td>
+<td>Public flag data</td>
+<td>2</td>
+<td>PLANNED</td>
+<td>Requires cross-catalog flag aggregation</td>
+</tr>
+<tr>
+<td><strong>Catalog Size</strong></td>
+<td>Integer</td>
+<td>ISBNDB / Open Library</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>PLANNED</td>
+<td>Count of known published works</td>
+</tr>
+<tr>
+<td><strong>Publisher Relationships</strong></td>
+<td>List of publishers</td>
+<td>ISBNDB</td>
+<td>Database metadata</td>
+<td>4</td>
+<td>PLANNED</td>
+<td>Extracted from catalog data</td>
+</tr>
+<tr>
+<td><strong>Public Statements</strong></td>
+<td>Summary text</td>
+<td>Web scraping</td>
+<td>Public sources only — factual, not editorial</td>
+<td>3</td>
+<td>PLANNED</td>
+<td>AI must surface statements, NOT interpret or editorialize</td>
+</tr>
+<tr>
+<td><strong>Author Demographics</strong></td>
+<td>Structured fields (as available)</td>
+<td>Public sources</td>
+<td>Factual demographic data from public profiles</td>
+<td>3</td>
+<td>PLANNED</td>
+<td>Surface only self-reported or widely-published facts</td>
+</tr>
+<tr>
+<td><strong>Cross-Catalog Patterns</strong></td>
+<td>Analytics</td>
+<td>Bookmarked network data</td>
+<td>Aggregated from 150+ districts&#39; actual collections</td>
+<td>2</td>
+<td>PLANNED</td>
+<td>&quot;This author&#39;s books appear in 87% of high school libraries in the network&quot;</td>
+</tr>
+<tr>
+<td><strong>Award &amp; Recognition</strong></td>
+<td>List</td>
+<td>ISBNDB / Open Library / web sources</td>
+<td>Database metadata + public sources</td>
+<td>3</td>
+<td>PLANNED</td>
+<td>May already exist in ISBNDB metadata — check before building</td>
+</tr>
+</tbody></table>
+<p><strong>Hard boundary:</strong> Author Intelligence surfaces facts. It NEVER produces &quot;author risk scores,&quot; editorial judgments, or assessments of an author&#39;s ideology. The system presents data; practitioners apply judgment.</p>
+<p><strong>Unique angle:</strong> With 150+ districts&#39; actual collections, Bookmarked can show real cross-catalog patterns no one else can see — which authors appear most frequently, which are most challenged, how collections compare.</p>
+<hr>
+<h2>Part 3: Data Sources &amp; Pipeline</h2>
+<h3>Specification</h3>
+<p>The Book Intelligence pipeline runs as a 5-stage processing pipeline. Documented in Confluence (Bookmarked Intelligence Core, page 43188225).</p>
+<p><strong>Data Flow:</strong></p>
+<pre><code>District uploads ISBNs (CSV or manual entry)
+        ↓
+ISBN Validation &amp; Deduplication
+        ↓
+External Data Lookup (ISBNDB, Open Library)
+  → Identity &amp; Metadata fields populated
+        ↓
+AI Enrichment Pipeline
+  → Content ratings, themes, educational value,
+     grade suitability, risk level, AI summary
+  → All derived from PUBLIC METADATA — not from reading the book
+        ↓
+Flag Detection &amp; Classification
+  → Ban/challenge data, organization flags,
+     news mentions, school district actions
+  → All from PUBLIC WEB SOURCES
+        ↓
+Data stored in database
+        ↓
+Intelligence surfaces in UI
+</code></pre>
+<h3>Open Questions — Investigation Briefs</h3>
+<p>These questions are UNKNOWN and block full specification. Each includes an investigation path that AI agents can execute using available tools. Questions marked <strong>HUMAN REQUIRED</strong> need engineering team input after agent investigation.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Why It Matters</th>
+<th>Investigation Path</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q1</td>
+<td>What AI model powers the enrichment?</td>
+<td>Accuracy characteristics differ by model.</td>
+<td><strong>Agent:</strong> Search Jira BOOK-859 + linked stories for model references. Search Confluence page 43188225 (Bookmarked Intelligence Core) for architecture docs. Search <code>#product-testing</code> Slack history for &quot;model&quot; or &quot;GPT&quot; or &quot;Claude&quot; or &quot;enrichment.&quot; Check AWS CloudWatch logs for API call patterns (model name in request headers). <strong>Success:</strong> Model name identified. <strong>HUMAN REQUIRED if:</strong> No documentation found — ask engineering to document the model choice.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Is enrichment a single prompt or multiple specialized prompts?</td>
+<td>If one prompt generates all fields, a bad prompt affects everything.</td>
+<td><strong>Agent:</strong> Search Confluence page 43188225 for pipeline architecture. Search Jira BOOK-859 stories for prompt-related acceptance criteria. Check if enrichment produces all fields simultaneously (single response) or sequentially (multiple calls) by examining CloudWatch request/response patterns. <strong>Success:</strong> Single vs. multi-prompt confirmed with evidence.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>What prompt(s) are used for enrichment?</td>
+<td>The prompt defines the accuracy ceiling. Can&#39;t improve without seeing it.</td>
+<td><strong>Agent:</strong> Search Confluence for &quot;enrichment prompt&quot; or &quot;AI prompt&quot; in BI-related pages. Search Jira for any story documenting the prompt text. Check if the codebase (bookmarked-os-private) contains prompt templates. <strong>HUMAN REQUIRED:</strong> If prompts are not documented, request engineering publish them to Confluence (redacting any API keys). This is the #1 prerequisite for accuracy improvement.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>How is Challenge Risk calculated?</td>
+<td>Can&#39;t fix 98% Medium without understanding current logic.</td>
+<td><strong>Agent:</strong> Search Jira BOOK-859 for the Challenge Risk sub-story. Search Confluence for &quot;challenge risk&quot; or &quot;risk calculation&quot; or &quot;risk assignment.&quot; Check the codebase for risk calculation logic (function names, enum mappings). Analyze a sample of BI output data to identify patterns (do all books without flags get Medium? Is it threshold-based?). <strong>Success:</strong> Formula or decision tree documented. <strong>HUMAN REQUIRED if:</strong> Logic is embedded in an undocumented prompt — escalate to Q3.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>Is flag scanning continuous or import-only?</td>
+<td>If import-only, books miss flags that appear after they&#39;re added.</td>
+<td><strong>Agent:</strong> Search Confluence page 43188225 for &quot;scanning&quot; or &quot;flag detection&quot; or &quot;pipeline schedule.&quot; Check AWS CloudWatch for recurring jobs or cron patterns related to flag scanning. Search Jira for any story about flag refresh or re-scanning. Check if there&#39;s a scheduled task or Lambda function for flag updates. <strong>Success:</strong> Frequency confirmed (import-only, daily, weekly, etc.).</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q6</td>
+<td>What happens when a book already exists in the system?</td>
+<td>If District B uploads same ISBN as District A — reuse or regenerate?</td>
+<td><strong>Agent:</strong> Test empirically if possible — check if the same ISBN in two different district datasets shows identical BI fields (reuse) or different values (regeneration). Search Jira for deduplication stories. Search Confluence architecture docs for ISBN handling. <strong>Success:</strong> Reuse vs. regenerate behavior confirmed.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q7</td>
+<td>How is the &quot;Implied&quot; value for Sexual Content generated?</td>
+<td>Non-standard 5th value in a 4-point scale. Bug or intentional?</td>
+<td><strong>Agent:</strong> Search codebase for the Sexual Content enum definition — is &quot;Implied&quot; in the schema or generated by the AI model outside the defined scale? Search Jira for any story about sexual content scale. Check 50 books in BI output: how many have &quot;Implied&quot; vs. other values? If it&#39;s rare, likely AI hallucination. If common, likely intentional. <strong>Success:</strong> Confirmed bug or intentional, with evidence.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q8</td>
+<td>How are flag source types categorized?</td>
+<td>What logic determines Library/Advocacy vs. News/Media vs. School/District?</td>
+<td><strong>Agent:</strong> Search codebase for source type classification logic. Search Confluence for flag categorization rules. Check Jira BOOK-859 stories for source type handling. Examine 20 flags in the live product to identify patterns in categorization. <strong>Success:</strong> Classification rules documented (rule-based, AI-classified, or manual).</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q9</td>
+<td>When is BI computed for book orders?</td>
+<td>Import-time vs. on-demand affects Order-Time Intelligence feasibility (Part 13).</td>
+<td><strong>Agent:</strong> Search Jira for order workflow stories. Search Confluence for order pipeline architecture. Check if orders reference pre-computed BI data or trigger on-demand enrichment. Test by examining order flow in the product — does adding a new ISBN to an order show BI data immediately? <strong>Success:</strong> Timing confirmed (pre-computed at import vs. on-demand).</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q10</td>
+<td>What data model supports community verifications?</td>
+<td>Verification/dispute records need a schema — per-field, per-user, timestamped.</td>
+<td><strong>Agent:</strong> This is a DESIGN question, not a discovery question. The CPO agent should propose a schema based on Part 12 requirements: per-field verification records with user_id, district_id, field_name, action (verify/dispute), suggested_value (for disputes), note (optional), timestamp. Cross-reference with existing database schema in Confluence. <strong>Success:</strong> Proposed schema ready for engineering review.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q11</td>
+<td>How would re-enrichment work for legislative/curriculum changes? Also: What does legislative mapping logic look like? Is TEKS available as structured data?</td>
+<td>When laws or standards change, should all books be re-assessed? Batch job? Cost?</td>
+<td><strong>Agent:</strong> Research TEKS availability — search for TEKS API or structured data exports from TEA (Texas Education Agency). Search for legislative text APIs or structured legal databases. Estimate re-enrichment cost: current book count × per-book enrichment cost (requires Q1 answer for model pricing). Search Confluence for any batch processing architecture. <strong>HUMAN REQUIRED:</strong> Engineering must estimate compute cost and timeline for a full re-enrichment pass.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q12</td>
+<td>What&#39;s the minimum dataset for meaningful predictive intelligence?</td>
+<td>At 150 districts, is there enough signal for flag prediction? What threshold?</td>
+<td><strong>Agent:</strong> This is an ANALYSIS question. Pull current network stats: how many districts, how many books, how many flags, how many review outcomes. Run statistical analysis: at what sample size do flag patterns become predictive? Literature review on minimum sample sizes for classification models in similar domains. Check PostHog for actual district activity volume. <strong>Success:</strong> Statistical analysis with recommended threshold and confidence level.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q13</td>
+<td>How do community actions integrate with the existing data model?</td>
+<td>Verifications, disputes, and accuracy votes need to coexist with AI-generated fields.</td>
+<td><strong>Agent:</strong> Same approach as Q10 — this is a DESIGN question. Search Confluence for current database schema. Propose integration approach: separate community_actions table with foreign keys to book_id + field_name, or embedded within existing field records. Must preserve AI-generated baseline (Hard Constraint #6). <strong>Success:</strong> Integration proposal ready for engineering review.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q14</td>
+<td>What does the source credibility data model look like?</td>
+<td>Credibility scores, user reports, and evolutionary weighting need a schema.</td>
+<td><strong>Agent:</strong> DESIGN question. Based on Part 11 Source Intelligence System requirements, propose schema: source_id, credibility_score (computed), factors (source_type, evidence_citation, track_record, recency), user_reports (structured), verification_matches (from ground truth). Cross-reference with existing flag data model. <strong>Success:</strong> Proposed schema ready for engineering review.</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Q15</td>
+<td>Can award/recognition data be extracted from existing ISBNDB or Open Library fields?</td>
+<td>If this data already exists in metadata, no new pipeline work is needed.</td>
+<td><strong>Agent:</strong> Make test API calls to ISBNDB and Open Library for well-known award-winning books (e.g., Newbery winners). Check if response data includes award fields. If ISBNDB API docs are available, search for award-related endpoints or fields. Search Open Library API documentation for award data. <strong>Success:</strong> Confirmed yes/no with API response evidence.</td>
+<td>UNKNOWN</td>
+</tr>
+</tbody></table>
+<h3>Data Freshness</h3>
+<table>
+<thead>
+<tr>
+<th>Data Category</th>
+<th>Current Refresh</th>
+<th>Ideal Refresh</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identity &amp; Metadata</td>
+<td>At import (one-time)</td>
+<td>At import + annual refresh</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Content Ratings</td>
+<td>At import (one-time)</td>
+<td>At import (stable — public info about book content doesn&#39;t change frequently)</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Flags</td>
+<td>UNKNOWN</td>
+<td>Continuous scanning (daily+)</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>Collaborative Notes</td>
+<td>Real-time</td>
+<td>Real-time</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Community Intelligence</td>
+<td>N/A</td>
+<td>Real-time</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td>Network Intelligence</td>
+<td>Not yet surfaced</td>
+<td>Real-time aggregation</td>
+<td>PLANNED</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 4: Accuracy Audit Framework</h2>
+<h3>Specification</h3>
+<p>Book Intelligence has never been systematically audited for accuracy. This section defines what &quot;correct&quot; looks like and how to validate it.</p>
+<h3>Accuracy Priority Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Fields</th>
+<th>Standard</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1: Compliance-Critical</strong></td>
+<td>Sexual Content, Ban Status, Challenge Risk, Grade Level (Elementary)</td>
+<td>Must be accurate. False negatives unacceptable.</td>
+<td>SB 412 criminal liability. Districts rely on these for defensible decisions.</td>
+</tr>
+<tr>
+<td><strong>2: Decision-Informing</strong></td>
+<td>Violence, Language, Parental Guidance, Content Warnings, Potential Concerns, Reading Level</td>
+<td>Should be accurate. Errors are problematic but not legally dangerous.</td>
+<td>Informs librarian/administrator decisions. Wrong data → wrong decisions.</td>
+</tr>
+<tr>
+<td><strong>3: Contextual</strong></td>
+<td>Mature Themes, Themes, Educational Value, AI Summary, People/Characters</td>
+<td>Reasonable accuracy. Users apply judgment.</td>
+<td>Provides context. Incorrect theme tag unlikely to cause compliance failure.</td>
+</tr>
+<tr>
+<td><strong>4: Informational</strong></td>
+<td>Subjects, Page Count, Publication Year, Synopsis, Cover Image</td>
+<td>Best-effort. Sourced from databases, not AI.</td>
+<td>External database data. Generally reliable, low-impact errors.</td>
+</tr>
+</tbody></table>
+<h3>Tier 1 Audit Process (DESIGNED — not yet executed)</h3>
+<ol>
+<li>Select random sample of 50 books from any district dataset</li>
+<li>Verify Sexual Content rating against professional reviews (Kirkus, Common Sense Media, SLJ)</li>
+<li>For each &quot;Clear&quot; Ban Status, search PEN America and major ban lists to confirm</li>
+<li>For each &quot;Medium&quot; Challenge Risk, determine if actual signals justify non-Low</li>
+<li>Verify Grade Level Suitability is consistent with Content Ratings</li>
+<li>Document: accuracy rate, common error patterns, recommendations</li>
+</ol>
+<h3>Community Verification as Accuracy Improvement</h3>
+<p>The community features described in Part 12 create a continuous accuracy improvement mechanism that complements formal audits:</p>
+<ul>
+<li><strong>Verification/Dispute</strong> — practitioners confirm or challenge AI-generated ratings based on professional knowledge</li>
+<li><strong>Accuracy Feedback</strong> — thumbs up/down votes create measurable per-field accuracy metrics over time</li>
+<li><strong>Source Contribution</strong> — users identify sources the pipeline missed, improving flag completeness</li>
+</ul>
+<p>These mechanisms move accuracy from periodic audits to continuous community-driven improvement. See Part 12 for full specification.</p>
+<h3>Known Accuracy Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Tier</th>
+<th>Severity</th>
+<th>Status</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>98% Medium Risk Classification</td>
+<td>1</td>
+<td>Critical</td>
+<td>UNKNOWN — Anil must document current logic</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Content Ratings unaudited</td>
+<td>1</td>
+<td>High</td>
+<td>DESIGNED — framework above, needs execution</td>
+<td>Product</td>
+</tr>
+<tr>
+<td>&quot;Implied&quot; scale inconsistency</td>
+<td>1</td>
+<td>Medium</td>
+<td>UNKNOWN — standardize to 4 or formalize 5-point</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>AI hallucination in themes</td>
+<td>3</td>
+<td>Low</td>
+<td>LIVE — mitigated by tier priority</td>
+<td>Engineering</td>
+</tr>
+<tr>
+<td>Flag staleness</td>
+<td>1</td>
+<td>Medium</td>
+<td>PLANNED — need staleness detection</td>
+<td>Engineering</td>
+</tr>
+<tr>
+<td>Hardcoded UI data</td>
+<td>All</td>
+<td>High</td>
+<td>LIVE — BOOK-894, 896, 893, 900. Sprint 2 V2 DoD</td>
+<td>Engineering</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 5: BI Surfaces in the Product</h2>
+<h3>Specification</h3>
+<p>Book Intelligence appears on six surfaces. Each shows different density appropriate to the user&#39;s task. Additional planned surfaces are described in Part 13.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Where</th>
+<th>Primary Users</th>
+<th>BI Density</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Book Detail Page</strong></td>
+<td>Library → click book → BI section</td>
+<td>Librarians, Administrators</td>
+<td>Full — all Field Groups A-I</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Orders/Book Lists</strong></td>
+<td>Orders → book list → per-book view</td>
+<td>Librarians, Teachers, SLAC, Superintendents</td>
+<td>Compact — review decision without leaving workflow</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Dashboard</strong></td>
+<td>Home screen</td>
+<td>Librarians, Administrators, Superintendents</td>
+<td>Aggregated — collection-wide metrics</td>
+<td>LIVE (partially hardcoded)</td>
+</tr>
+<tr>
+<td><strong>Classroom Library</strong></td>
+<td>Classrooms → click classroom → click book</td>
+<td>Teachers, Librarians, Administrators</td>
+<td>Full — same as Book Detail</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Reports</strong></td>
+<td>Reports tab</td>
+<td>Librarians, Superintendents</td>
+<td>Aggregated, formatted for presentation</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td><strong>Parent/Guardian View</strong></td>
+<td>Parent portal</td>
+<td>Parents/Guardians</td>
+<td>Simplified — informed choice, not professional assessment</td>
+<td>LIVE</td>
+</tr>
+</tbody></table>
+<p><strong>Book Detail Page layout (LIVE):</strong></p>
+<ol>
+<li>Header: cover, title, author, ISBN, publisher, year, pages, action buttons, flag count</li>
+<li>Status &amp; Risk Overview: 4 color-coded cards (Ban Status, Challenge Risk, Parental Guidance, Reading Level)</li>
+<li>Content Ratings: 3 dimension cards (Violence, Sexual Content, Language)</li>
+<li>Grade Level Suitability: 3 color-coded cards</li>
+<li>Potential Concerns + Mature Themes: side-by-side tag lists</li>
+<li>Content Warnings: red-highlighted tag list</li>
+<li>Themes: tag list</li>
+<li>Educational Value: text paragraph</li>
+<li>Flags: tabbed by source type with per-flag detail table</li>
+</ol>
+<p><strong>Orders view key principle:</strong> Intelligence at the point of decision. The user doesn&#39;t leave the workflow to research a book.</p>
+<p><strong>Parent view boundary:</strong> Parents see title, author, cover, summary, themes, age range, content advisory, and restrict-access button. Parents do NOT see full flag detail, raw challenge data, risk classifications, or professional review notes.</p>
+<hr>
+<h2>Part 6: Network Intelligence (Layer 2)</h2>
+<p><strong>Status: PLANNED</strong> — Data is being collected as districts use V2. Intelligence surfaces not yet built.</p>
+<h3>Specification</h3>
+<p>Network Intelligence turns Book Intelligence from a per-district tool into a collective intelligence system. Every district contributes anonymized data that makes the system smarter for everyone. Network Intelligence is <strong>passive</strong> — it is collected automatically from district activity without explicit user action. This distinguishes it from Community Intelligence (Part 12), which requires deliberate user contributions.</p>
+<p><strong>Capabilities (all PLANNED):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>What It Shows</th>
+<th>Data Dependency</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Challenge Velocity</strong></td>
+<td>Real-time monitoring of which titles are being reviewed across districts. &quot;12 districts reviewed this book in the last 30 days.&quot;</td>
+<td>Book status changes (being collected)</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Placement Patterns</strong></td>
+<td>Where books are shelved across the network. &quot;89% of high school libraries in the network have this book.&quot;</td>
+<td>Collection composition (being collected)</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Decision Benchmarking</strong></td>
+<td>What peer districts decided about specific titles. &quot;73% of similar districts retained this title after review.&quot; Benchmarking is available at district level and state level.</td>
+<td>Order decisions + review outcomes (being collected)</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Collection Composition</strong></td>
+<td>Gap analysis, diversity metrics, dead inventory identification across the network.</td>
+<td>District ISBNs (being collected)</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Review Outcomes</strong></td>
+<td>Full outcome history: &quot;Challenged in 8 districts, retained in 6, removed in 2.&quot; This is the &quot;case law&quot; that doesn&#39;t exist anywhere today.</td>
+<td>Challenge workflow outcomes (partially collected)</td>
+<td>PLANNED</td>
+</tr>
+<tr>
+<td><strong>Ordering Patterns</strong></td>
+<td>What districts like yours are ordering. Discovery bridge from compliance to optimization.</td>
+<td>Order data (being collected)</td>
+<td>PLANNED</td>
+</tr>
+</tbody></table>
+<p><strong>Data already being collected (LIVE):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>How</th>
+<th>Ready to Aggregate?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Book status changes</td>
+<td>Every librarian status update</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Order decisions</td>
+<td>Every book approved/rejected</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Challenge/review outcomes</td>
+<td>Committee review workflow</td>
+<td>Partially — outcome tracking may need enhancement</td>
+</tr>
+<tr>
+<td>Collection composition</td>
+<td>Every district&#39;s uploaded ISBNs</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Classroom library contents</td>
+<td>Classroom management in OnShelf</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Parent restrictions</td>
+<td>Every parent restriction</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<p><strong>Privacy architecture:</strong> Individual district data stays private. Network sees aggregated patterns and anonymized benchmarks only. Districts never attributed by name. Minimum threshold prevents de-anonymization.</p>
+<h3>District-Level Ground Truth</h3>
+<p><strong>Status: PLANNED</strong> — This is Bookmarked&#39;s most defensible competitive advantage.</p>
+<p>Bookmarked connects to actual library systems. This means when an external source claims a book has been banned or challenged in a district, and that district is a Bookmarked customer, Bookmarked can verify the claim against ground truth.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>PEN America (or any external source) claims &quot;Book X is banned in District Y&quot;</li>
+<li>District Y is a Bookmarked customer</li>
+<li>Bookmarked connects to District Y&#39;s library system</li>
+<li>Book X is present on the shelf in 14 of 19 District Y libraries</li>
+<li>District Y&#39;s librarian has marked it &quot;Reviewed — Retained&quot;</li>
+<li><strong>Bookmarked can now report:</strong> &quot;Claimed banned by PEN America. Bookmarked Verified: Present in 14 District Y libraries. Reviewed and retained.&quot;</li>
+</ol>
+<p><strong>This works in both directions:</strong></p>
+<ul>
+<li>Book IS on shelves despite ban claims → contradicts the claim</li>
+<li>Book is NOT on shelves and district confirms removal → confirms the claim</li>
+</ul>
+<p><strong>At 150 districts, Bookmarked already has meaningful coverage.</strong> At 500, this becomes the definitive national authority on what&#39;s actually happening vs. what&#39;s being claimed. No other organization has this data because no other organization connects to actual library systems.</p>
+<p><strong>Bookmarked becomes the source of truth for actual bans and challenges.</strong> Every other organization reports claims. Bookmarked reports verifiable facts.</p>
+<hr>
+<h2>Part 7: Collection-Level Intelligence</h2>
+<h3>Specification</h3>
+<p>Aggregated per-book data into collection-wide metrics answering: &quot;How is our library system doing?&quot;</p>
+<p><strong>Current Dashboard Metrics (LIVE):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>BI Source</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Flagged Books (school + classroom)</td>
+<td>Flag count per book, summed</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Access Status Distribution (Approved/Pending/Limited/Don&#39;t Show)</td>
+<td>Status field per book</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Classroom drill-down (per-classroom book + flag count)</td>
+<td>Books assigned to classrooms</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Order Alerts (overdue)</td>
+<td>Order workflow status</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Weekly Overview (orders created/approved/rejected)</td>
+<td>Order workflow actions</td>
+<td>LIVE</td>
+</tr>
+<tr>
+<td>Parent Restricted Books</td>
+<td>Parent restriction actions</td>
+<td>LIVE</td>
+</tr>
+</tbody></table>
+<p><strong>Planned dashboard evolution is specified in Part 13 (Intelligence Surfaces &amp; Workflows).</strong></p>
+<hr>
+<h2>Part 8: Residual Future Ideas</h2>
+<p><strong>Status: PLANNED</strong> — Conceptualized but not covered in detail by Parts 10-14. These remain as product exploration items.</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Description</th>
+<th>Data Dependency</th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reading-Student Matching</strong></td>
+<td>&quot;Your 6th grade collection is 40% above reading level.&quot; Connect collection to actual student population.</td>
+<td>Student data integration + reading level data</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Collection Gap ID</strong></td>
+<td>&quot;No climate science titles. 78% of similar districts have 5+.&quot; Identifies what&#39;s missing.</td>
+<td>Network Intelligence + student data + curriculum</td>
+<td>High — requires Layer 2</td>
+</tr>
+<tr>
+<td><strong>Critical Thinking Guides</strong></td>
+<td>Parent-facing discussion questions for challenging content. Not prescriptive — supports informed family conversations.</td>
+<td>Theme data (LIVE) + age-appropriate framing</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Flag Synthesis / TLDR</strong></td>
+<td>AI summary of all flags: &quot;36 flags. Primary concerns: totalitarianism (18), dystopian (8). No bans in 12 months.&quot;</td>
+<td>Flag data (LIVE) + AI summarization</td>
+<td>Low — data exists</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 9: Known Issues &amp; Engineering Gaps</h2>
+<h3>Critical Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Jira</th>
+<th>Owner</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>98% Medium Risk</td>
+<td>Critical</td>
+<td>BOOK-859</td>
+<td>Anil</td>
+<td>Challenge Risk defaults to Medium for nearly all books. No differentiation. Field is useless.</td>
+<td>UNKNOWN — current logic undocumented</td>
+</tr>
+<tr>
+<td>Hardcoded BI Data</td>
+<td>High</td>
+<td>BOOK-894, 896, 893, 900</td>
+<td>Engineering</td>
+<td>Some UI components use hardcoded/mock data instead of pipeline data.</td>
+<td>LIVE — Sprint 2 in V2 DoD</td>
+</tr>
+<tr>
+<td>Ban/Challenge API</td>
+<td>High</td>
+<td>BOOK-893</td>
+<td>Engineering</td>
+<td>Backend needs to expose ban/challenge records via real API. Currently hardcoded.</td>
+<td>LIVE — needs implementation</td>
+</tr>
+<tr>
+<td>Status Card Colors</td>
+<td>Medium</td>
+<td>BOOK-900</td>
+<td>Engineering</td>
+<td>Hardcoded color values instead of dynamic based on data.</td>
+<td>LIVE — needs fix</td>
+</tr>
+</tbody></table>
+<h3>Engineering Documentation Gaps (all UNKNOWN)</h3>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>What We Need</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AI model and prompt details</td>
+<td>Which model, what prompts, single vs. multiple passes</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Flag scanning frequency</td>
+<td>Import-only or continuous? How often?</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Challenge Risk assignment logic</td>
+<td>Current formula/rules/prompts producing the rating</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Data deduplication behavior</td>
+<td>Same ISBN in multiple districts — reuse or regenerate?</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>&quot;Implied&quot; value origin</td>
+<td>How this non-standard value enters the system</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Order-time BI computation</td>
+<td>When is BI computed for books in orders — at import or on-demand?</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Community verification data model</td>
+<td>Schema for per-field, per-user verification/dispute records</td>
+<td>Engineering</td>
+</tr>
+<tr>
+<td>Re-enrichment mechanics</td>
+<td>How would batch re-assessment work when laws or curriculum change?</td>
+<td>Anil</td>
+</tr>
+<tr>
+<td>Source credibility data model</td>
+<td>Schema for credibility scores, user reports, evolutionary weighting</td>
+<td>Engineering</td>
+</tr>
+<tr>
+<td>Award data in existing sources</td>
+<td>Do ISBNDB or Open Library already carry award/recognition fields?</td>
+<td>Anil</td>
+</tr>
+</tbody></table>
+<h3>V2 DoD Dependencies</h3>
+<ul>
+<li><strong>Sprint 2 priority:</strong> Replace all hardcoded BI data with real API data</li>
+<li><strong>BOOK-894:</strong> Ban/challenge data currently hardcoded</li>
+<li><strong>BOOK-896:</strong> FlagsTable using hardcoded defaults</li>
+<li><strong>BOOK-893:</strong> Backend needs to expose ban/challenge records via API</li>
+<li><strong>BOOK-900:</strong> ContentAnalysis ban status card has hardcoded colors</li>
+<li><strong>BOOK-650/649:</strong> Age Appropriateness data population and UI — status unclear</li>
+</ul>
+<h3>Jira Epic: BOOK-859 (Extended Metadata)</h3>
+<p><strong>Status: DESIGNED — implementation TO DO</strong></p>
+<p>18 extended metadata fields planned. All sub-stories design-complete:</p>
+<p>Age Range, Grade Level, Reading Level, Ban Status, Challenge Risk, Violence, Sexual Content, Language, Mature Themes, Elementary OK, Middle OK, High OK, Potential Concerns, Parental Guidance, Content Warnings, Educational Value, Themes, Description</p>
+<p><strong>Note:</strong> Many fields already appear in the live UI via AI enrichment. The epic may formalize the data model and API contract rather than adding entirely new fields.</p>
+<hr>
+<h2>Part 10: Trust, Confidence &amp; Anti-Gaming</h2>
+<p><strong>Status: DESIGNED</strong></p>
+<h3>Specification</h3>
+<p>This section defines how BI manages the trustworthiness of its own data — the architectural constraints that ensure community participation improves accuracy without enabling manipulation.</p>
+<h3>Trust Tier Implementation</h3>
+<p>Every field on the Intelligence Card displays its current trust tier (see Trust Hierarchy section in front matter). The trust tier advances as community actions accumulate:</p>
+<table>
+<thead>
+<tr>
+<th>Transition</th>
+<th>Trigger</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AI-Generated → Community-Informed</td>
+<td>First verification, dispute, or accuracy vote on the field</td>
+<td>Badge appears: &quot;Community-Informed (1 action)&quot;</td>
+</tr>
+<tr>
+<td>Community-Informed → Bookmarked Verified</td>
+<td>District library system data confirms or contradicts the field</td>
+<td>Badge upgrades: &quot;Bookmarked Verified [date]&quot;</td>
+</tr>
+<tr>
+<td>Any tier → &quot;New intelligence available&quot;</td>
+<td>Significant new data arrives post-verification</td>
+<td>Freshness nudge appears without invalidating prior verification</td>
+</tr>
+</tbody></table>
+<h3>Confidence Model</h3>
+<p>BI assesses its own certainty per field and displays it to users. See Trust Hierarchy section for the three confidence levels (Strong signal, Moderate signal, Limited data).</p>
+<p><strong>How confidence is calculated:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Weight</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Number of public sources</td>
+<td>High</td>
+<td>A book with 50 reviews produces better AI ratings than one with 2</td>
+</tr>
+<tr>
+<td>Number of community actions</td>
+<td>High</td>
+<td>12 verifications &gt; 1 verification</td>
+</tr>
+<tr>
+<td>Source diversity</td>
+<td>Medium</td>
+<td>Flags from 8 organizations &gt; 8 flags from 1 organization</td>
+</tr>
+<tr>
+<td>Flag consistency</td>
+<td>Medium</td>
+<td>All sources agree &gt; sources contradict each other</td>
+</tr>
+<tr>
+<td>Data recency</td>
+<td>Medium</td>
+<td>Recent data weighted more than stale data</td>
+</tr>
+</tbody></table>
+<h3>Anti-Gaming Architecture</h3>
+<p><strong>The problem:</strong> Community features create an attack surface. A librarian who disagrees with a book&#39;s presence could:</p>
+<ul>
+<li>Verify an inaccurate &quot;None&quot; rating to keep a book she likes</li>
+<li>Dispute an accurate &quot;Explicit&quot; rating to prevent review</li>
+<li>Submit misleading accuracy feedback</li>
+<li>Report credible sources as &quot;unreliable&quot; to suppress flags</li>
+<li>Use collaborative notes to build a case for a predetermined outcome</li>
+</ul>
+<p><strong>The defense — system-wide principles (reference: Hard Constraint #6):</strong></p>
+<ol>
+<li><strong>Transparent:</strong> Every community action is tied to a named user at a named district. No anonymous influence.</li>
+<li><strong>Attributed:</strong> Actions are visible to the user&#39;s administrators. A librarian cannot suppress information from her superintendent.</li>
+<li><strong>Additive:</strong> Community input adds a layer — it never overwrites or removes the AI-generated baseline. Both the AI value and the community signal are always visible.</li>
+<li><strong>Cross-district exposure:</strong> If one librarian is disputing ratings that 12 other districts verified, that pattern is visible. Outlier behavior becomes detectable.</li>
+<li><strong>Threshold-based influence:</strong> A single action doesn&#39;t move the needle. Multiple independent actions from different districts carry weight. One vote doesn&#39;t change a confidence indicator.</li>
+</ol>
+<p><strong>Specifically for source reporting (see Part 12, Phase 2):</strong></p>
+<ul>
+<li>Reports don&#39;t remove sources — they add a credibility signal</li>
+<li>Structured reasons required (dropdown, not freeform)</li>
+<li>Multiple independent reports from different districts required for downweighting</li>
+</ul>
+<hr>
+<h2>Part 11: Enhanced Intelligence</h2>
+<p><strong>Status: PLANNED</strong></p>
+<h3>Specification</h3>
+<p>New intelligence dimensions and improvements to existing intelligence that make BI smarter and more useful without requiring community participation or network effects.</p>
+<h3>Source Intelligence System</h3>
+<p>A unified system for managing source credibility across three lifecycle stages. Defined once here; referenced by Part 12 (community reporting) and Part 14 (evolutionary scoring).</p>
+<p><strong>Stage 1: Source Credibility Scoring (PLANNED)</strong></p>
+<p>Every flag source gets a credibility score based on observable characteristics:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Signal</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Source type</strong></td>
+<td>Institutional sources &gt; advocacy orgs &gt; news &gt; blogs</td>
+<td>PEN America &gt; random blog post</td>
+</tr>
+<tr>
+<td><strong>Evidence citation</strong></td>
+<td>Sources that cite documentation (board minutes, FOI records) score higher than assertion-only sources</td>
+<td>&quot;According to board minutes from March 2026&quot; &gt; &quot;This book was banned&quot;</td>
+</tr>
+<tr>
+<td><strong>Track record</strong></td>
+<td>Sources verified as accurate by Bookmarked Verified ground truth score higher</td>
+<td>Source confirmed by 20 districts &gt; unverified source</td>
+</tr>
+<tr>
+<td><strong>Recency</strong></td>
+<td>Active, maintained sources score higher than dormant ones</td>
+<td>Updated this month &gt; last updated 2023</td>
+</tr>
+</tbody></table>
+<p><strong>Stage 2: User Reporting</strong> — See Part 12, Phase 2 (Source Contribution + Source Unreliable Reporting)</p>
+<p><strong>Stage 3: Evolutionary Quality Scoring</strong> — See Part 14 (The Learning System)</p>
+<h3>Flag Confidence Levels (PLANNED)</h3>
+<p>Each flag carries a confidence indicator based on evidence quality:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Criteria</th>
+<th>Display</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Evidence-cited</strong></td>
+<td>Source provides specific documentation: board minutes, FOI records, official proceedings</td>
+<td>Green confidence badge</td>
+</tr>
+<tr>
+<td><strong>Reported</strong></td>
+<td>Source asserts the claim. Media coverage with some sourcing but no primary documents.</td>
+<td>Yellow confidence badge</td>
+</tr>
+<tr>
+<td><strong>Assertion-only</strong></td>
+<td>Source claims without evidence. Blog posts, social media, unsourced listings.</td>
+<td>Gray confidence badge</td>
+</tr>
+</tbody></table>
+<h3>Temporal Intelligence (PLANNED)</h3>
+<p>Date data already exists on most flags. This feature applies recency weighting:</p>
+<ul>
+<li>Recent flags (last 6 months) carry full weight in risk assessment</li>
+<li>Older flags (6-24 months) remain visible but are weighted less in aggregate scores</li>
+<li>Historical flags (24+ months) are preserved as context but not used in risk calculations</li>
+<li>No flags are ever removed — recency affects weighting, not visibility</li>
+</ul>
+<h3>Contradiction Detection (PLANNED)</h3>
+<p>Surface when sources disagree about the same book:</p>
+<ul>
+<li>One source says &quot;banned&quot;; another says &quot;retained after review&quot;</li>
+<li>AI-generated rating says &quot;None&quot; for violence; flag source says &quot;graphic violence&quot;</li>
+<li>Two organizations give contradictory reasons for flagging</li>
+</ul>
+<p><strong>Display:</strong> &quot;Sources disagree about this book. [Show details]&quot; — surfaces the contradiction for the user to evaluate, does not resolve it.</p>
+<h3>Legislative Tracking (PLANNED)</h3>
+<p>Map books to relevant legislation so districts can see the regulatory context around specific titles.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scope</strong></td>
+<td>Multi-state from day one. Start with Texas (SB 13, SB 412, HB 900). Architecture supports any state. Include federal law (First Amendment protections).</td>
+</tr>
+<tr>
+<td><strong>Policy body (Texas)</strong></td>
+<td>TSLAC (Texas State Library and Archives Commission) is the policy body for SB 13.</td>
+</tr>
+<tr>
+<td><strong>What &quot;mapping&quot; means</strong></td>
+<td>Topical overlap: &quot;This book&#39;s themes intersect with subject matter covered by [legislation].&quot; Example: a book with Explicit sexual content rating intersects with SB 412&#39;s definition of sexually explicit material.</td>
+</tr>
+<tr>
+<td><strong>What mapping does NOT mean</strong></td>
+<td>Legal interpretation. BI NEVER states whether a book &quot;violates&quot; a law. It surfaces the topical connection. Librarians and legal counsel interpret.</td>
+</tr>
+<tr>
+<td><strong>No legal advice</strong></td>
+<td>The system maps; it does not advise. No statements like &quot;you should remove this book&quot; or &quot;this book may be illegal.&quot;</td>
+</tr>
+<tr>
+<td><strong>Data dependency</strong></td>
+<td>Legislation text (available as public record). Mapping logic (UNKNOWN — automated NLP matching or manual curation? See Q11).</td>
+</tr>
+</tbody></table>
+<h3>Professional Review Aggregation (DEFERRED)</h3>
+<p><strong>Status: DEFERRED</strong> — Licensing professional review databases (Kirkus, SLJ, Common Sense Media) is too expensive at current scale.</p>
+<p><strong>Interim approach:</strong> Extract citations of professional reviews that appear within existing flag sources as structured intelligence. If a flag source says &quot;Kirkus rated this book as...&quot; that citation can be surfaced without a Kirkus license.</p>
+<h3>Award &amp; Recognition Data (PLANNED)</h3>
+<p>Surface book awards and recognition as intelligence.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>First step</strong></td>
+<td>Check whether ISBNDB or Open Library already carry award data in existing metadata fields (Q15). If yes, surface without new pipeline work.</td>
+</tr>
+<tr>
+<td><strong>If not in existing sources</strong></td>
+<td>Scrape public award lists: Newbery, Caldecott, Coretta Scott King, National Book Award, Printz, etc.</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Awards provide positive context that balances flag data. A Newbery-winning book with a flag tells a different story than an unknown book with a flag.</td>
+</tr>
+</tbody></table>
+<h3>Curriculum Alignment (PLANNED)</h3>
+<p>Surface whether a book appears on known curriculum or reading lists.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MVP</strong></td>
+<td>&quot;Appears on known curriculum list: Yes / No&quot; — a binary indicator</td>
+</tr>
+<tr>
+<td><strong>First state</strong></td>
+<td>Texas TEKS (Texas Essential Knowledge and Skills). Architecture supports any state.</td>
+</tr>
+<tr>
+<td><strong>Data dependency</strong></td>
+<td>UNKNOWN — Is TEKS available as structured data that can be mapped to books? Who maintains the curriculum-to-book mapping? See Q11.</td>
+</tr>
+<tr>
+<td><strong>UX design needed</strong></td>
+<td>How curriculum alignment surfaces on the intelligence card — placement, visual treatment, interaction</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 12: Community Intelligence</h2>
+<p><strong>Status: PLANNED (phased)</strong></p>
+<h3>Specification</h3>
+<p>Community Intelligence is the system for incorporating deliberate user contributions into Book Intelligence. It is distinct from Network Intelligence (Part 6), which is collected passively from district activity.</p>
+<p><strong>The value:</strong> Every librarian in 150+ districts becomes a sensor for accuracy, source quality, and ground truth. The system gets smarter every time a practitioner interacts with it.</p>
+<p><strong>Anti-gaming mechanisms apply to all community features (reference: Part 10).</strong></p>
+<h3>Phase 1: Verification &amp; Accuracy Feedback (Ship First)</h3>
+<p><strong>Rationale:</strong> Simplest user actions. Establish the habit of community participation before adding more complex features.</p>
+<h4>Verification/Dispute Layer</h4>
+<p>Every AI-generated field gets two actions:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What It Does</th>
+<th>User Effort</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Verify</strong></td>
+<td>&quot;This rating is correct based on my professional knowledge&quot;</td>
+<td>One click + optional note</td>
+</tr>
+<tr>
+<td><strong>Dispute</strong></td>
+<td>&quot;This rating is incorrect — here&#39;s why&quot;</td>
+<td>One click + required correction value + optional note</td>
+</tr>
+</tbody></table>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Verifications and disputes are always visible alongside the AI value — they add context, they don&#39;t replace it</li>
+<li>Each action is attributed to a named user at a named district</li>
+<li>A dispute includes the user&#39;s suggested correct value (e.g., &quot;Violence should be Moderate, not Mild&quot;)</li>
+<li>Multiple verifications from different districts carry more weight than one</li>
+<li>The trust tier advances from AI-Generated to Community-Informed after the first community action</li>
+</ul>
+<p><strong>Display example:</strong> &quot;Violence: Moderate (AI-Generated) — Verified by 12 districts. 1 dispute: &#39;Should be Mild — conflict is verbal only.&#39;&quot;</p>
+<h4>Accuracy Feedback</h4>
+<p>Simpler than verification — just thumbs up/down per field.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>👍</td>
+<td>&quot;This looks right to me&quot;</td>
+</tr>
+<tr>
+<td>👎</td>
+<td>&quot;This looks wrong to me&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Value:</strong> Creates a measurable accuracy metric per field over time without requiring librarians to specify what&#39;s wrong. Aggregated across districts: &quot;This field has 94% positive accuracy feedback across 30 responses.&quot;</p>
+<h3>Phase 2: Source Contribution &amp; Source Reporting (After Adoption)</h3>
+<p><strong>Rationale:</strong> Requires more user effort and more pipeline work. Ship after Phase 1 establishes community participation patterns.</p>
+<h4>Source Contribution</h4>
+<p>Users submit sources the pipeline missed.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>User action</strong></td>
+<td>&quot;Submit a source&quot; button on the intelligence card. User pastes a URL.</td>
+</tr>
+<tr>
+<td><strong>Pipeline</strong></td>
+<td>Submitted URL is classified, validated, and ingested into the flag pipeline</td>
+</tr>
+<tr>
+<td><strong>Attribution</strong></td>
+<td>Contributor&#39;s district is recorded. Source appears with &quot;Submitted by community&quot; tag.</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Every librarian becomes a sensor for the flag detection pipeline</td>
+</tr>
+<tr>
+<td><strong>UX design needed</strong></td>
+<td>Submission flow, validation feedback, status tracking</td>
+</tr>
+</tbody></table>
+<h4>Source Unreliable Reporting</h4>
+<p>Users report flag sources they believe are unreliable.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>User action</strong></td>
+<td>&quot;Report source&quot; button on individual flags</td>
+</tr>
+<tr>
+<td><strong>Structured reasons (dropdown)</strong></td>
+<td>&quot;Source no longer active&quot; / &quot;Source is advocacy org, not factual&quot; / &quot;Source misattributed this book&quot; / &quot;Source data is outdated&quot; / &quot;Information doesn&#39;t match the book&quot; / &quot;Other (explain)&quot;</td>
+</tr>
+<tr>
+<td><strong>Effect</strong></td>
+<td>Reports add a credibility signal. They do NOT remove sources.</td>
+</tr>
+<tr>
+<td><strong>Threshold for downweighting</strong></td>
+<td>Multiple independent reports from different districts required. Single reports noted but don&#39;t affect source weight.</td>
+</tr>
+<tr>
+<td><strong>Feeds into</strong></td>
+<td>Source Intelligence System (Part 11, Stage 1)</td>
+</tr>
+<tr>
+<td><strong>Gaming mitigation</strong></td>
+<td>Structured reasons prevent drive-by reporting. Attribution ensures accountability. Cross-district consistency checks flag outlier behavior.</td>
+</tr>
+</tbody></table>
+<h3>Phase 3: District-Level Ground Truth (At Scale)</h3>
+<p><strong>Rationale:</strong> This is the killer feature but requires enough connected districts to be meaningful. At 150 districts you can start. At 500 it&#39;s definitive.</p>
+<h4>Bookmarked as Verification Authority</h4>
+<p>When a Bookmarked customer district is the subject of an external ban/challenge claim, Bookmarked can verify the claim against ground truth from the connected library system.</p>
+<p><strong>The example (from Steve):</strong></p>
+<ul>
+<li>PEN America says &quot;Book X is banned in Conroe ISD&quot;</li>
+<li>Conroe ISD is a Bookmarked customer</li>
+<li>Bookmarked connects to Conroe&#39;s library system</li>
+<li>Book X is on the shelf in 14 of 19 Conroe libraries</li>
+<li>Conroe&#39;s librarian has marked it &quot;Reviewed — Retained&quot;</li>
+<li><strong>Bookmarked reports:</strong> &quot;Claimed banned by PEN America. Bookmarked Verified: Present in 14 Conroe ISD libraries. Reviewed and retained.&quot;</li>
+</ul>
+<p><strong>This works both directions:</strong></p>
+<ul>
+<li>Book IS on shelves despite ban claims → contradicts the claim with verifiable fact</li>
+<li>Book is NOT on shelves and district confirms removal → confirms the claim with verifiable fact</li>
+</ul>
+<p><strong>Display:</strong> Bookmarked Verified badge with verification date, district count (anonymized), and status (Present/Removed/Mixed).</p>
+<p><strong>Competitive moat:</strong> No other organization can build this. They report claims. Bookmarked reports facts from connected systems.</p>
+<h3>Phase Transition Triggers</h3>
+<table>
+<thead>
+<tr>
+<th>Transition</th>
+<th>Trigger</th>
+<th>Open Question</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1 → Phase 2</td>
+<td>Phase 1 features show adoption (verification volume reaches threshold)</td>
+<td>What threshold? User count? Verification volume? Time? — needs Product decision</td>
+</tr>
+<tr>
+<td>Phase 2 → Phase 3</td>
+<td>Enough districts connected to make ground truth meaningful</td>
+<td>Minimum district count for meaningful coverage — needs analysis</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 13: Intelligence Surfaces &amp; Workflows</h2>
+<p><strong>Status: PLANNED</strong></p>
+<h3>Specification</h3>
+<p>How BI reaches users — through prioritized views, evolved dashboards, workflow integration, and proactive alerts. This section defines the surfaces and interaction patterns for the intelligence described in Parts 10-12.</p>
+<h3>Prioritization Engine</h3>
+<p>The system that answers &quot;what matters most right now&quot; instead of just showing data.</p>
+<p><strong>The problem it solves:</strong> A district with 200 flagged books doesn&#39;t need a list of 200 books. They need: &quot;Here are your top 5 priorities today. Start with these.&quot;</p>
+<p><strong>Ranking factors:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Weight</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Compliance exposure</strong></td>
+<td>Highest</td>
+<td>Explicit sexual content in an elementary library is a code-red. Mild violence in a high school is not.</td>
+</tr>
+<tr>
+<td><strong>Trust tier</strong></td>
+<td>High</td>
+<td>A Bookmarked Verified flag carries more weight than an AI-Generated one with limited data.</td>
+</tr>
+<tr>
+<td><strong>Recency</strong></td>
+<td>High</td>
+<td>A flag from yesterday matters more than one from 2023.</td>
+</tr>
+<tr>
+<td><strong>Peer signal</strong></td>
+<td>Medium</td>
+<td>If 8 other districts just reviewed this book, yours probably should too.</td>
+</tr>
+<tr>
+<td><strong>Unreviewed duration</strong></td>
+<td>Medium</td>
+<td>A flagged book sitting unreviewed for 60 days is more urgent than one flagged yesterday.</td>
+</tr>
+<tr>
+<td><strong>Confidence level</strong></td>
+<td>Medium</td>
+<td>Low-confidence, high-stakes ratings (Tier 1 fields with limited data) need human review.</td>
+</tr>
+</tbody></table>
+<p><strong>Output:</strong> A prioritized worklist, not a data display. The user sees ranked items with clear reasons why each is prioritized.</p>
+<p><strong>Onboarding application:</strong> District uploads 3,000 books. 200 have flags. The system says: &quot;We found 200 books that need attention. Here are the 10 highest-priority — 3 have Explicit ratings in elementary collections. Start with these.&quot; UX design needed for the bucketing and review flow.</p>
+<h3>Dashboard Evolution</h3>
+<p>Expanding the current dashboard (Part 7) with new intelligence-driven metrics.</p>
+<h4>Compliance Posture (PLANNED)</h4>
+<p>A readiness indicator answering: &quot;Have our flagged and at-risk books been reviewed and documented?&quot;</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What It Measures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>% of flagged books reviewed</td>
+<td>Books with flags that have been reviewed and given a status</td>
+</tr>
+<tr>
+<td>Unresolved flags older than 30 days</td>
+<td>Flags that haven&#39;t been addressed</td>
+</tr>
+<tr>
+<td>Board-ready documentation coverage</td>
+<td>Are review decisions documented for board presentation?</td>
+</tr>
+<tr>
+<td>Books reviewed by category</td>
+<td>Breakdown by content rating, grade level, school</td>
+</tr>
+</tbody></table>
+<p><strong>Note:</strong> Time-to-resolution on challenges is tracked as an indicator but is NOT a leading metric — most districts don&#39;t have many formal challenges.</p>
+<h4>Engagement Score (PLANNED)</h4>
+<p>A measure of who is actively using the system and who isn&#39;t.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What It Measures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Most active librarians</td>
+<td>Who is reviewing, verifying, contributing notes</td>
+</tr>
+<tr>
+<td>Most active teachers</td>
+<td>Who is confirming classroom libraries</td>
+</tr>
+<tr>
+<td>Teachers who haven&#39;t confirmed libraries</td>
+<td>Actionable gap — who needs a nudge</td>
+</tr>
+<tr>
+<td>Parent committee activity</td>
+<td>Comments, restrictions, engagement from parents</td>
+</tr>
+<tr>
+<td>Board member engagement</td>
+<td>Board-level visibility into the system</td>
+</tr>
+<tr>
+<td>Librarians exploring additional features</td>
+<td>Who knows what&#39;s possible beyond basic review</td>
+</tr>
+</tbody></table>
+<p><strong>Value:</strong> Helps administrators manage their people, not just their books. A dashboard for &quot;who&#39;s doing the work and who isn&#39;t.&quot;</p>
+<h4>Risk Heatmap (PLANNED)</h4>
+<p>Visual map of where risk concentrates: by school, by grade level, by classroom.</p>
+<p>&quot;Your 3rd grade classroom libraries have 12 unreviewed flagged books&quot; is actionable. &quot;Your district has flagged books&quot; is not.</p>
+<p><strong>Dependency:</strong> Meaningful only after the 98% Medium risk problem is fixed. Surface should be designed now; populated when Challenge Risk differentiation works.</p>
+<h4>Trend Intelligence (PLANNED)</h4>
+<p>Time-series data that turns snapshots into narratives:</p>
+<ul>
+<li>&quot;Flags are increasing 23% month-over-month across your district&quot;</li>
+<li>&quot;Challenge activity in your district spiked this week — 4 new challenges&quot;</li>
+<li>&quot;Your review velocity is keeping pace with new flags&quot;</li>
+</ul>
+<p>Units of analysis: districts and schools. NOT ESC regions.</p>
+<h4>Peer Benchmarking (PLANNED)</h4>
+<p>Anonymized comparison against peer districts.</p>
+<table>
+<thead>
+<tr>
+<th>Comparison Level</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>District level</strong></td>
+<td>&quot;Districts your size have reviewed 94% of flagged books. You&#39;ve reviewed 71%.&quot;</td>
+</tr>
+<tr>
+<td><strong>State level</strong></td>
+<td>&quot;Texas districts average 82% review completion. You&#39;re at 71%.&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Not available at ESC region level.</strong> ESCs are strategic sales partners, not product users or analytical units.</p>
+<p><strong>Data source:</strong> Network Intelligence (Part 6). Requires sufficient district participation for meaningful anonymized benchmarks.</p>
+<h4>Report Generator (PLANNED)</h4>
+<p>One-click export producing formatted reports for multiple audiences:</p>
+<table>
+<thead>
+<tr>
+<th>Audience</th>
+<th>Report Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Board presentation</strong></td>
+<td>Compliance posture, review outcomes, risk profile, actions taken</td>
+</tr>
+<tr>
+<td><strong>Superintendent meeting</strong></td>
+<td>Library health, engagement scores, trend data, priorities</td>
+</tr>
+<tr>
+<td><strong>Team review</strong></td>
+<td>Librarian activity, outstanding work, classroom library status</td>
+</tr>
+<tr>
+<td><strong>Library health check</strong></td>
+<td>Collection metrics, flag summary, peer benchmarking</td>
+</tr>
+</tbody></table>
+<p><strong>Not &quot;Board-Ready Report Generator&quot; — reports serve many audiences beyond the board.</strong></p>
+<h3>Workflow Intelligence</h3>
+<p>BI surfaced at the point of decision — when someone is making a choice, not when they go looking for data.</p>
+<h4>Review Workflow Intelligence (CONCEPT — needs UX design)</h4>
+<p>When a librarian opens the review workflow for a challenged book, BI pre-loads everything relevant: full intelligence card, peer district decisions, complete flag history, community verifications, trust tier for each data point. The librarian shouldn&#39;t have to research — the research is done.</p>
+<p><strong>Status: CONCEPT</strong> — The data exists but the UX needs design exploration. What does &quot;everything pre-loaded&quot; look like in practice?</p>
+<h4>Order-Time Intelligence (PLANNED)</h4>
+<p>When a teacher or librarian is building a book order, every title gets a real-time BI check before submission.</p>
+<p>&quot;3 of the 12 books in this order have active flags. 1 has Explicit sexual content rating. Do you want to proceed or review?&quot;</p>
+<p><strong>Engineering question (Q9):</strong> When is BI computed — at import or on-demand? This determines whether all books are pre-scanned or checked when a book order is built. If new books are being added to orders that aren&#39;t yet in the Bookmarked database, the pipeline needs to handle on-demand enrichment.</p>
+<h4>New Flag Alert on Existing Collection (PLANNED)</h4>
+<p>A book that was fine when added gets flagged six months later. The system surfaces this immediately to the responsible librarian: &quot;Book X in your library was flagged by [source] on [date]. No action required yet — here&#39;s the intelligence.&quot;</p>
+<p>Not an alarm — an awareness notification. Applied specifically to books already in the collection.</p>
+<h4>Onboarding Intelligence (PLANNED)</h4>
+<p>When a new district uploads their ISBNs for the first time, the system runs the full BI pipeline and produces a <strong>Collection Health Report</strong> — here&#39;s what we found across your collection before you start using the product.</p>
+<p>&quot;Your collection has 47 flagged titles, 3 with Explicit ratings, and 12 that peer districts have reviewed and retained.&quot;</p>
+<p><strong>Critical UX requirement:</strong> If hundreds of books need review, the system must make it easy to review efficiently. The Prioritization Engine (above) provides the ranking. UX design is needed for how users batch-review, filter, and work through prioritized lists.</p>
+<h4>Parent Access Intelligence (PLANNED)</h4>
+<p>Behind the scenes, BI tracks what parents are looking at and what they&#39;re restricting. Aggregated parent behavior becomes intelligence for the librarian:</p>
+<p>&quot;Parents are restricting this title at 3x the rate of similar books. You may want to review it proactively.&quot;</p>
+<p>Parent behavior as a signal, not a directive.</p>
+<h3>Proactive Alert System (PLANNED)</h3>
+<p>Push intelligence to users instead of waiting for them to come find it.</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>When</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Email</strong></td>
+<td>Primary channel — no native app exists</td>
+<td>PLANNED — first implementation</td>
+</tr>
+<tr>
+<td><strong>Dashboard notifications</strong></td>
+<td>When users log in to OnShelf</td>
+<td>PLANNED — secondary</td>
+</tr>
+<tr>
+<td><strong>In-app alerts</strong></td>
+<td>Native app (if/when built)</td>
+<td>FUTURE</td>
+</tr>
+</tbody></table>
+<p><strong>Alert types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Alert</th>
+<th>Trigger</th>
+<th>Urgency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Book X in your collection was flagged&quot;</td>
+<td>New flag on a book in the district&#39;s collection</td>
+<td>High</td>
+</tr>
+<tr>
+<td>&quot;3 books in elementary need review&quot;</td>
+<td>Unreviewed flagged books with compliance exposure</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>&quot;Your district had 4 new challenges this week&quot;</td>
+<td>Challenge activity spike in the district</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>&quot;Peer districts are reviewing Book Y&quot;</td>
+<td>Network signal — peer activity on a book in your collection</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>&quot;Book X verification expired — new intelligence available&quot;</td>
+<td>Trust freshness nudge</td>
+<td>Low</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Part 14: The Learning System</h2>
+<p><strong>Status: VISION</strong> — Strategic concepts for how BI compounds over time. Not yet scoped for implementation. Included for directional planning.</p>
+<h3>Specification</h3>
+<p>Everything in Parts 10-13 produces data. This section describes how that data makes the system better tomorrow than it is today. The Learning System is what turns BI from a static tool into a compounding asset.</p>
+<h3>AI Model Feedback Loop (VISION)</h3>
+<p>Every community verification, dispute, and accuracy vote is a signal about whether the AI got it right. Today, the AI enrichment runs once at import and never improves.</p>
+<p><strong>The vision:</strong> Accumulate thousands of human judgments over time. When the AI is wrong in predictable patterns (consistently over-rates violence in historical fiction, consistently under-rates sexual content in YA), adjust the prompts, add rules, or eventually fine-tune.</p>
+<p><strong>Not fine-tuning on day one.</strong> Start with: (1) identify systematic patterns in community feedback, (2) manually adjust enrichment prompts to address patterns, (3) measure whether adjustments improve accuracy, (4) iterate.</p>
+<h3>Source Quality Evolution (VISION)</h3>
+<p><strong>Connects to:</strong> Source Intelligence System (Part 11).</p>
+<p>Today, all flag sources are treated equally. With source unreliable reporting (Part 12) plus District-Level Ground Truth (Part 6), the system learns which sources are accurate over time.</p>
+<p><strong>The vision:</strong> If Source X has been contradicted by Bookmarked Verified data 40% of the time, that source gets downweighted automatically. If Source Y has been confirmed 95% of the time, it gets elevated. No human has to maintain a source quality list — the system learns it from usage.</p>
+<h3>Predictive Intelligence (VISION)</h3>
+<p>Once BI has enough data, it can start predicting: &quot;Books with these characteristics (subject matter, author history, publisher, themes) have a 73% chance of being flagged within 12 months.&quot;</p>
+<p><strong>Not speculative — pattern recognition</strong> across the dataset. A librarian adding a book sees: &quot;No current flags. Similar books in the Bookmarked network were flagged within 6 months 60% of the time.&quot;</p>
+<p><strong>Open question (Q12):</strong> At 150 districts, is there enough signal for meaningful predictions? What&#39;s the minimum dataset? This needs analysis before scoping.</p>
+<h3>Network Effect Compounding (VISION)</h3>
+<p>Each new district makes the system measurably better for all existing districts:</p>
+<table>
+<thead>
+<tr>
+<th>More districts =</th>
+<th>Better ...</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>More verifications</td>
+<td>Higher confidence scores across the network</td>
+</tr>
+<tr>
+<td>More collection data</td>
+<td>Better peer benchmarking granularity</td>
+</tr>
+<tr>
+<td>More flag reports</td>
+<td>Faster source quality learning</td>
+</tr>
+<tr>
+<td>More review outcomes</td>
+<td>Richer &quot;case law&quot; for decision benchmarking</td>
+</tr>
+<tr>
+<td>More ground truth data</td>
+<td>Stronger verification authority</td>
+</tr>
+</tbody></table>
+<p><strong>At 150 districts:</strong> Useful dataset. Meaningful signals.
+<strong>At 500 districts:</strong> Patterns emerge that no individual district could see.
+<strong>At 2,000 districts:</strong> Real-time visibility into every significant trend in K-12 libraries.</p>
+<h3>Accuracy Metrics Dashboard — Internal (VISION)</h3>
+<p>A dashboard for Bookmarked (not customers) showing BI system health:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accuracy rate per field</td>
+<td>Which fields are most/least accurate?</td>
+</tr>
+<tr>
+<td>Accuracy by trust tier</td>
+<td>Is Community-Informed data actually better than AI-Generated?</td>
+</tr>
+<tr>
+<td>Most-disputed AI assessments</td>
+<td>Where is the AI systematically wrong?</td>
+</tr>
+<tr>
+<td>Source reliability rankings</td>
+<td>Which sources are most/least accurate?</td>
+</tr>
+<tr>
+<td>Prediction accuracy over time</td>
+<td>Are predictions improving?</td>
+</tr>
+</tbody></table>
+<p><strong>Value:</strong> Without this, the product team is flying blind on quality. With it, engineering effort can be directed to the highest-impact improvements.</p>
+<h3>Curriculum and Legislative Sync (VISION)</h3>
+<p>Laws change. Curriculum standards update. The books that matter shift.</p>
+<p><strong>The vision:</strong> When a new state passes a book regulation law, every book in the system gets re-assessed against the new regulatory context — not manually, but as an automated re-enrichment pass. Same for curriculum: when Texas updates TEKS, books tagged as curriculum-aligned get re-validated.</p>
+<p><strong>Engineering question (Q11):</strong> How would batch re-enrichment work? Cost? Performance? Timeline?</p>
+<hr>
+<h2>Inter-Document References</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Location</th>
+<th>Consult When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bookmarked Vision Cascade</td>
+<td>Confluence page 94044162</td>
+<td>Understanding product vision and the Compliance-to-Discovery arc</td>
+</tr>
+<tr>
+<td>Bookmarked Product Vision</td>
+<td>Confluence page 94044183</td>
+<td>Understanding module definitions and product scope</td>
+</tr>
+<tr>
+<td>Bookmarked Intelligence Core</td>
+<td>Confluence page 43188225</td>
+<td>Engineering details on the BI pipeline</td>
+</tr>
+<tr>
+<td>V2.0 Definition of Done</td>
+<td>Confluence page 91521028</td>
+<td>Sprint planning and V2 completion requirements</td>
+</tr>
+<tr>
+<td>Original PRD (Sept 2025, v2.0)</td>
+<td>Confluence page 13664259</td>
+<td>Historical product requirements context</td>
+</tr>
+<tr>
+<td>Brand Design System</td>
+<td><code>team-shared/design/brand-design-system.md</code></td>
+<td>Visual design for any BI-related UI</td>
+</tr>
+<tr>
+<td>Messaging Standards</td>
+<td><code>team-shared/design/messaging-consolidated.md</code></td>
+<td>Customer-facing language about Book Intelligence</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Changelog</h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Change</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2026-03-19</td>
+<td>Initial draft — Parts 1-9 specification</td>
+<td>Steve Wandler / Claude</td>
+</tr>
+<tr>
+<td>2026-03-19</td>
+<td>Restructured for agent consumption: added Hard Constraints, Glossary, Document Index, status tags, standardized table schemas, removed ChatGPT comparison, scrubbed data boundary language</td>
+<td>Steve Wandler / Claude</td>
+</tr>
+<tr>
+<td>2026-03-19</td>
+<td>Major expansion: Added Trust Hierarchy, Hard Constraint #6 (Anti-Gaming), Parts 10-14 (Trust/Confidence, Enhanced Intelligence, Community Intelligence, Intelligence Surfaces &amp; Workflows, The Learning System). Added Field Group I (Author Intelligence). Consolidated overlapping content from Part 8 into proper sections. Added VISION and CONCEPT status tags. Scrubbed ESC region references from product features. Added Q9-Q15 engineering questions. Split Compliance Posture and Engagement Score. Added District-Level Ground Truth to Part 6.</td>
+<td>Steve Wandler / Claude</td>
+</tr>
+<tr>
+<td>2026-03-19</td>
+<td>QA pass (65 checks, 8 categories): Fixed 6 failures — added 9 glossary terms (AI Enrichment, ISBNDB, Open Library, Accuracy Tier, Confidence Indicator, SB 13, SB 412, PEN America), defined DEFERRED/FUTURE status tags, added &quot;Implied&quot; row to Grade Level derivation table, fixed Part 2 title in Document Index, corrected Violence from Tier 1 to Tier 2, added prohibited-phrase lists to HC #3 and #4, tightened language boundary in Part 1. Transformed Q1-Q15 from &quot;ask Anil&quot; to agent-directed investigation briefs with tool-specific investigation paths.</td>
+<td>Steve Wandler / Claude</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>This document is the canonical Book Intelligence specification for the Bookmarked Operating System. All agents, skills, and team members reference this for Book Intelligence context. Updates flow from the Founder through this document into the operating system.</em></p>
 
-<div class="spec-container">
-
-<div class="toc">
-  <h3>Document Index</h3>
-  <ul>
-    <li><a href="#hard-constraints">Hard Constraints</a> · <a href="#glossary">Glossary</a> · <a href="#trust-hierarchy">Trust Hierarchy & Confidence</a></li>
-    <li class="toc-part"><a href="#part1">Part 1:</a> <a href="#part1">What Book Intelligence Is</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part2">Part 2:</a> <a href="#part2">Field-by-Field Specification</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part3">Part 3:</a> <a href="#part3">Data Sources & Pipeline</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part4">Part 4:</a> <a href="#part4">Accuracy Audit Framework</a> <span class="status-badge status-designed">DESIGNED</span></li>
-    <li class="toc-part"><a href="#part5">Part 5:</a> <a href="#part5">BI Surfaces in the Product</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part6">Part 6:</a> <a href="#part6">Network Intelligence</a> <span class="status-badge status-planned">PLANNED</span></li>
-    <li class="toc-part"><a href="#part7">Part 7:</a> <a href="#part7">Collection-Level Intelligence</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part8">Part 8:</a> <a href="#part8">Residual Future Ideas</a> <span class="status-badge status-planned">PLANNED</span></li>
-    <li class="toc-part"><a href="#part9">Part 9:</a> <a href="#part9">Known Issues & Engineering Gaps</a> <span class="status-badge status-live">LIVE</span></li>
-    <li class="toc-part"><a href="#part10">Part 10:</a> <a href="#part10">Trust, Confidence & Anti-Gaming</a> <span class="status-badge status-designed">DESIGNED</span></li>
-    <li class="toc-part"><a href="#part11">Part 11:</a> <a href="#part11">Enhanced Intelligence</a> <span class="status-badge status-planned">PLANNED</span></li>
-    <li class="toc-part"><a href="#part12">Part 12:</a> <a href="#part12">Community Intelligence</a> <span class="status-badge status-planned">PLANNED</span></li>
-    <li class="toc-part"><a href="#part13">Part 13:</a> <a href="#part13">Intelligence Surfaces & Workflows</a> <span class="status-badge status-planned">PLANNED</span></li>
-    <li class="toc-part"><a href="#part14">Part 14:</a> <a href="#part14">The Learning System</a> <span class="status-badge status-vision">VISION</span></li>
-  </ul>
+<div class="footer">
+  Bookmarked &middot; Book Intelligence Spec v2 &middot; March 19, 2026 &middot; Confidential
 </div>
-
-<div class="spec-section" id="hard-constraints">
-  <h2>Hard Constraints</h2>
-  <p>These rules are absolute. Every agent referencing this document must treat these as inviolable.</p>
-  <div class="constraint-card"><p><strong>1. DATA BOUNDARY:</strong> All book intelligence is derived from EXTERNAL PUBLIC SOURCES. Bookmarked does NOT read, scan, or process actual book text. The Content Scanner (Layer 3) is OUT OF SCOPE.</p></div>
-  <div class="constraint-card"><p><strong>2. LANGUAGE BOUNDARY:</strong> Never imply Bookmarked has read the book. Use "external sources report" — never "the book contains" or "what's in this book."</p></div>
-  <div class="constraint-card"><p><strong>3. NOT A RATING SYSTEM:</strong> We surface intelligence so humans can decide. Framing as "ratings" risks being perceived as censorship.</p></div>
-  <div class="constraint-card"><p><strong>4. NOT A REPLACEMENT FOR LIBRARIANS:</strong> Librarians make judgment calls. BI provides the data infrastructure they never had.</p></div>
-  <div class="constraint-card"><p><strong>5. NOT A CENSOR:</strong> We provide data for districts to make defensible decisions within their regulatory framework.</p></div>
-  <div class="constraint-card critical"><p><strong>6. ANTI-GAMING:</strong> Community actions are transparent, attributed, and additive — never subtractive. Community input adds a layer alongside AI-generated data; it never overwrites or removes the baseline. Administrators always see the same data as librarians. Cross-district patterns expose outliers.</p></div>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="glossary">
-  <h2>Glossary</h2>
-  <table class="spec-table">
-    <thead><tr><th>Term</th><th>Definition</th></tr></thead>
-    <tbody>
-      <tr><td>Book Intelligence (BI)</td><td>Bookmarked's system for aggregating publicly available information about books. The intelligence engine underneath every surface in OnShelf.</td></tr>
-      <tr><td>OnShelf</td><td>Bookmarked's product — the platform districts log into.</td></tr>
-      <tr><td>Flag</td><td>Any external signal about a book from a third-party source. Informational, not a verified fact.</td></tr>
-      <tr><td>Ban</td><td>A claim by an external source that a book has been removed. Only Bookmarked customers can verify via connected library systems.</td></tr>
-      <tr><td>Challenge</td><td>A claim that a book's inclusion has been formally questioned. Reported claims, not confirmed facts.</td></tr>
-      <tr><td>Network Intelligence</td><td>Passive — aggregated automatically from district activity. Layer 2.</td></tr>
-      <tr><td>Community Intelligence</td><td>Active — deliberate user contributions: verifications, disputes, source reports, accuracy feedback.</td></tr>
-      <tr><td>Trust Tier</td><td>Three credibility levels: AI-Generated → Community-Informed → Bookmarked Verified.</td></tr>
-      <tr><td>Ground Truth</td><td>Verifiable facts from connected library systems, as opposed to claims from external sources.</td></tr>
-      <tr><td>Prioritization Engine</td><td>Ranks books by urgency: compliance exposure, recency, trust tier, peer signal, unreviewed duration.</td></tr>
-      <tr><td>Source Intelligence System</td><td>Unified credibility tracking: initial scoring → user reporting → evolutionary quality scoring.</td></tr>
-      <tr><td>Compliance Posture</td><td>Have flagged/at-risk books been reviewed, documented, and resolved?</td></tr>
-      <tr><td>Engagement Score</td><td>Who is actively using the system — librarians, teachers, parents, board members.</td></tr>
-      <tr><td>Network Effect</td><td>More districts = better confidence, benchmarking, source learning, predictions for all.</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="trust-hierarchy">
-  <h2>Trust Hierarchy & Confidence</h2>
-  <p>Every field in BI carries a trust tier and a confidence indicator. Referenced throughout Parts 10-14.</p>
-  <h3>Trust Tiers</h3>
-  <div class="trust-tier-visual">
-    <div class="trust-card tier-1"><h4>Tier 1: AI-Generated</h4><p>Pipeline output from public sources. Default. No special badge.</p></div>
-    <div class="trust-card tier-2"><h4>Tier 2: Community-Informed</h4><p>At least 1 practitioner action. "Community-Informed" badge with count.</p></div>
-    <div class="trust-card tier-3"><h4>Tier 3: Bookmarked Verified</h4><p>Ground truth from connected library systems. "Bookmarked Verified" badge with date.</p></div>
-  </div>
-  <h3>Freshness</h3>
-  <p>When significant new intelligence arrives post-verification: <strong>"Verified — new intelligence available since [date]."</strong></p>
-  <h3>Confidence Indicators</h3>
-  <table class="spec-table">
-    <thead><tr><th>Indicator</th><th>Meaning</th><th>Criteria</th></tr></thead>
-    <tbody>
-      <tr><td>Strong signal</td><td>Multiple sources and/or community verification</td><td>3+ sources OR 3+ verifications</td></tr>
-      <tr><td>Moderate signal</td><td>Some evidence</td><td>1-2 sources, no community feedback</td></tr>
-      <tr><td>Limited data</td><td>Apply professional judgment</td><td>0-1 sources, thin AI inference</td></tr>
-    </tbody>
-  </table>
-  <h3>Status Tags</h3>
-  <p>
-    <span class="status-badge status-live">LIVE</span> In production &nbsp;
-    <span class="status-badge status-designed">DESIGNED</span> Specified, not built &nbsp;
-    <span class="status-badge status-planned">PLANNED</span> Needs engineering input &nbsp;
-    <span class="status-badge status-vision">VISION</span> Strategic concept &nbsp;
-    <span class="status-badge status-concept">CONCEPT</span> Needs design exploration &nbsp;
-    <span class="status-badge status-unknown">UNKNOWN</span> Blocked
-  </p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part1">
-  <h2>Part 1: What Book Intelligence Is <span class="status-badge status-live">LIVE</span></h2>
-  <p>Book Intelligence is Bookmarked's system for aggregating publicly available information about books. <strong>It is not a module or a tab.</strong> It is the intelligence engine underneath every surface in OnShelf.</p>
-  <h3>The Three Intelligence Layers</h3>
-  <table class="spec-table">
-    <thead><tr><th>Layer</th><th>Name</th><th>Description</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Layer 1</td><td>External Signals</td><td>Publicly available: challenge/ban lists, news, reviews, metadata, legislation</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Layer 2</td><td>Network Intelligence</td><td>Decisions, patterns, outcomes across districts</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Layer 3</td><td>Content Scanner</td><td>Reading actual book content with publisher permission</td><td><span class="status-badge status-vision">FUTURE</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part2">
-  <h2>Part 2: Field-by-Field Specification <span class="status-badge status-live">LIVE</span></h2>
-  <p>9 Field Groups (A-I) covering identity, risk, content, flags, collaboration, and author intelligence.</p>
-  <table class="spec-table">
-    <thead><tr><th>Group</th><th>Name</th><th>Key Fields</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>A</td><td>Identity & Metadata</td><td>Title, Author, Publisher, ISBN, Cover, Pages, Year, Synopsis, Subjects, Characters</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>B</td><td>Status & Risk Overview</td><td>Ban Status, Challenge Risk, Parental Guidance, Reading Level</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>C</td><td>Content Ratings</td><td>Violence, Sexual Content, Language</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>D</td><td>Grade Level Suitability</td><td>Elementary, Middle School, High School</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>E</td><td>Content Analysis Tags</td><td>Potential Concerns, Mature Themes, Content Warnings, Themes</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>F</td><td>Advisory & Educational</td><td>Educational Value, AI Content Summary</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>G</td><td>Flags (External Signals)</td><td>Flag Count, Source Types, Per-Flag Details</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>H</td><td>Collaborative Notes</td><td>Notes, Author, Date, Count</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>I</td><td>Author Intelligence</td><td>Challenge History, Catalog Size, Publishers, Statements, Demographics, Patterns, Awards</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-    </tbody>
-  </table>
-  <p><strong>Field Group I hard boundary:</strong> Author Intelligence surfaces facts. It NEVER produces "author risk scores" or editorial judgments.</p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part3">
-  <h2>Part 3: Data Sources & Pipeline <span class="status-badge status-live">LIVE</span></h2>
-  <pre>District uploads ISBNs → ISBN Validation → External Data Lookup (ISBNDB, Open Library)
-  → AI Enrichment (from PUBLIC METADATA — not from reading the book)
-  → Flag Detection & Classification (from PUBLIC WEB SOURCES)
-  → Database → Intelligence surfaces in UI</pre>
-  <p>15 engineering questions (Q1-Q15) block full specification. See <a href="#part9">Part 9</a>.</p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part4">
-  <h2>Part 4: Accuracy Audit Framework <span class="status-badge status-designed">DESIGNED</span></h2>
-  <table class="spec-table">
-    <thead><tr><th>Tier</th><th>Fields</th><th>Standard</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td>1: Compliance-Critical</td><td>Sexual Content, Ban Status, Challenge Risk, Elementary</td><td>Must be accurate</td><td>SB 412 criminal liability</td></tr>
-      <tr><td>2: Decision-Informing</td><td>Violence, Language, Parental Guidance, Warnings</td><td>Should be accurate</td><td>Informs professional decisions</td></tr>
-      <tr><td>3: Contextual</td><td>Themes, Educational Value, AI Summary, Characters</td><td>Reasonable accuracy</td><td>Context, not compliance</td></tr>
-      <tr><td>4: Informational</td><td>Subjects, Page Count, Year, Synopsis, Cover</td><td>Best-effort</td><td>Database data, low-impact</td></tr>
-    </tbody>
-  </table>
-  <p>Community verification (<a href="#part12">Part 12</a>) creates continuous accuracy improvement alongside formal audits.</p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part5">
-  <h2>Part 5: BI Surfaces <span class="status-badge status-live">LIVE</span></h2>
-  <table class="spec-table">
-    <thead><tr><th>Surface</th><th>Users</th><th>BI Density</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Book Detail Page</td><td>Librarians, Admins</td><td>Full — all Field Groups A-I</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Orders/Book Lists</td><td>Librarians, Teachers, SLAC, Supts</td><td>Compact — decision in workflow</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Dashboard</td><td>Librarians, Admins, Supts</td><td>Aggregated</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Classroom Library</td><td>Teachers, Librarians, Admins</td><td>Full</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Reports</td><td>Librarians, Supts</td><td>Aggregated, formatted</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Parent/Guardian View</td><td>Parents</td><td>Simplified</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-    </tbody>
-  </table>
-  <p>Planned surfaces → <a href="#part13">Part 13</a></p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part6">
-  <h2>Part 6: Network Intelligence <span class="status-badge status-planned">PLANNED</span></h2>
-  <p><strong>Passive</strong> — collected automatically from district activity. Distinct from Community Intelligence (<a href="#part12">Part 12</a>), which requires deliberate user action.</p>
-  <table class="spec-table">
-    <thead><tr><th>Capability</th><th>What It Shows</th></tr></thead>
-    <tbody>
-      <tr><td>Challenge Velocity</td><td>"12 districts reviewed this book in the last 30 days"</td></tr>
-      <tr><td>Placement Patterns</td><td>"89% of high school libraries in the network have this book"</td></tr>
-      <tr><td>Decision Benchmarking</td><td>"73% of similar districts retained this title" (district + state level)</td></tr>
-      <tr><td>Collection Composition</td><td>Gap analysis, diversity metrics, dead inventory</td></tr>
-      <tr><td>Review Outcomes</td><td>"Challenged in 8, retained in 6, removed in 2" — the "case law"</td></tr>
-      <tr><td>Ordering Patterns</td><td>What districts like yours are ordering</td></tr>
-    </tbody>
-  </table>
-
-  <div class="ground-truth-callout">
-    <h4>District-Level Ground Truth — Bookmarked's Competitive Moat</h4>
-    <p>Bookmarked connects to actual library systems. When an external source claims a ban and that district is a customer, we verify against ground truth:</p>
-    <ol>
-      <li>External source claims "Book X is banned in District Y"</li>
-      <li>Bookmarked connects to District Y's library system</li>
-      <li>Book X is present on the shelf in 14 of 19 libraries</li>
-      <li>Librarian has marked it "Reviewed — Retained"</li>
-      <li><strong>Bookmarked reports:</strong> "Claimed banned. Bookmarked Verified: Present in 14 libraries. Reviewed and retained."</li>
-    </ol>
-    <p><strong>At 150 districts:</strong> meaningful coverage. <strong>At 500:</strong> definitive national authority.</p>
-    <p><strong>Bookmarked becomes the source of truth for actual bans and challenges.</strong> Everyone else reports claims. Bookmarked reports verifiable facts.</p>
-  </div>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part7">
-  <h2>Part 7: Collection-Level Intelligence <span class="status-badge status-live">LIVE</span></h2>
-  <table class="spec-table">
-    <thead><tr><th>Metric</th><th>Source</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Flagged Books</td><td>Flag count per book, summed</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Access Status Distribution</td><td>Status field per book</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Classroom drill-down</td><td>Books assigned to classrooms</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Order Alerts</td><td>Order workflow status</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Weekly Overview</td><td>Order workflow actions</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-      <tr><td>Parent Restricted Books</td><td>Parent restriction actions</td><td><span class="status-badge status-live">LIVE</span></td></tr>
-    </tbody>
-  </table>
-  <p>Dashboard evolution → <a href="#part13">Part 13</a></p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part8">
-  <h2>Part 8: Residual Future Ideas <span class="status-badge status-planned">PLANNED</span></h2>
-  <table class="spec-table">
-    <thead><tr><th>Capability</th><th>Description</th><th>Complexity</th></tr></thead>
-    <tbody>
-      <tr><td>Reading-Student Matching</td><td>Connect collection to actual student reading levels</td><td>Medium</td></tr>
-      <tr><td>Collection Gap ID</td><td>Identify missing titles vs. peer districts</td><td>High</td></tr>
-      <tr><td>Critical Thinking Guides</td><td>Parent-facing discussion questions</td><td>Low</td></tr>
-      <tr><td>Flag Synthesis / TLDR</td><td>AI summary of all flags for a book</td><td>Low</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part9">
-  <h2>Part 9: Known Issues & Engineering Gaps <span class="status-badge status-live">LIVE</span></h2>
-  <h3>Critical Issues</h3>
-  <table class="spec-table">
-    <thead><tr><th>Issue</th><th>Severity</th><th>Jira</th><th>Owner</th></tr></thead>
-    <tbody>
-      <tr><td>98% Medium Risk Classification</td><td style="color:var(--bm-pumpkin);font-weight:700">Critical</td><td>BOOK-859</td><td>Anil</td></tr>
-      <tr><td>Hardcoded BI Data</td><td style="color:var(--bm-pumpkin)">High</td><td>BOOK-894, 896, 893, 900</td><td>Engineering</td></tr>
-      <tr><td>Ban/Challenge API</td><td style="color:var(--bm-pumpkin)">High</td><td>BOOK-893</td><td>Engineering</td></tr>
-      <tr><td>Status Card Colors</td><td>Medium</td><td>BOOK-900</td><td>Engineering</td></tr>
-    </tbody>
-  </table>
-  <h3>Engineering Questions (Q1-Q15)</h3>
-  <table class="spec-table">
-    <thead><tr><th>#</th><th>Question</th><th>Owner</th></tr></thead>
-    <tbody>
-      <tr><td>Q1</td><td>What AI model powers enrichment?</td><td>Anil</td></tr>
-      <tr><td>Q2</td><td>Single or multiple specialized prompts?</td><td>Anil</td></tr>
-      <tr><td>Q3</td><td>What prompt(s) are used?</td><td>Anil</td></tr>
-      <tr><td>Q4</td><td>How is Challenge Risk calculated?</td><td>Anil</td></tr>
-      <tr><td>Q5</td><td>Flag scanning — continuous or import-only?</td><td>Anil</td></tr>
-      <tr><td>Q6</td><td>Same ISBN in multiple districts?</td><td>Anil</td></tr>
-      <tr><td>Q7</td><td>"Implied" Sexual Content origin?</td><td>Anil</td></tr>
-      <tr><td>Q8</td><td>Flag source type categorization logic?</td><td>Anil</td></tr>
-      <tr><td>Q9</td><td>When is BI computed for book orders?</td><td>Anil</td></tr>
-      <tr><td>Q10</td><td>Community verification data model?</td><td>Engineering</td></tr>
-      <tr><td>Q11</td><td>Re-enrichment for law/curriculum changes?</td><td>Anil</td></tr>
-      <tr><td>Q12</td><td>Minimum dataset for predictions?</td><td>Data/Product</td></tr>
-      <tr><td>Q13</td><td>Community actions + existing data model?</td><td>Engineering</td></tr>
-      <tr><td>Q14</td><td>Source credibility data model?</td><td>Engineering</td></tr>
-      <tr><td>Q15</td><td>Award data in ISBNDB/Open Library?</td><td>Anil</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part10">
-  <h2>Part 10: Trust, Confidence & Anti-Gaming <span class="status-badge status-designed">DESIGNED</span></h2>
-  <h3>Trust Tier Transitions</h3>
-  <table class="spec-table">
-    <thead><tr><th>Transition</th><th>Trigger</th><th>Effect</th></tr></thead>
-    <tbody>
-      <tr><td>AI-Generated → Community-Informed</td><td>First verification, dispute, or vote</td><td>"Community-Informed (1 action)" badge</td></tr>
-      <tr><td>Community-Informed → Bookmarked Verified</td><td>Library system confirms/contradicts</td><td>"Bookmarked Verified [date]" badge</td></tr>
-      <tr><td>Any → Freshness nudge</td><td>New data post-verification</td><td>"New intelligence available since [date]"</td></tr>
-    </tbody>
-  </table>
-  <h3>Anti-Gaming — Five Principles</h3>
-  <ol>
-    <li><strong>Transparent:</strong> Every action tied to a named user at a named district</li>
-    <li><strong>Attributed:</strong> Visible to administrators — cannot suppress info from superintendents</li>
-    <li><strong>Additive:</strong> Adds a layer, never overwrites AI baseline</li>
-    <li><strong>Cross-district exposure:</strong> Outlier behavior detectable across the network</li>
-    <li><strong>Threshold-based:</strong> Single actions don't move the needle — multiple independent districts required</li>
-  </ol>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part11">
-  <h2>Part 11: Enhanced Intelligence <span class="status-badge status-planned">PLANNED</span></h2>
-  <h3>Source Intelligence System</h3>
-  <table class="spec-table">
-    <thead><tr><th>Stage</th><th>Name</th><th>Mechanism</th><th>Reference</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>Source Credibility Scoring</td><td>Source type, evidence citation, track record, recency</td><td>This section</td></tr>
-      <tr><td>2</td><td>User Reporting</td><td>Source contribution + unreliable reporting</td><td>Part 12, Phase 2</td></tr>
-      <tr><td>3</td><td>Evolutionary Quality Scoring</td><td>Auto up/downweighting from verified accuracy</td><td>Part 14</td></tr>
-    </tbody>
-  </table>
-  <h3>New Intelligence Dimensions</h3>
-  <table class="spec-table">
-    <thead><tr><th>Enhancement</th><th>Description</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Flag Confidence Levels</td><td>Evidence-cited vs. reported vs. assertion-only per flag</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Temporal Intelligence</td><td>Recency weighting — recent flags carry more weight</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Contradiction Detection</td><td>Surface when sources disagree about the same book</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Legislative Tracking</td><td>Map book themes to legislation. Multi-state. Map, don't interpret. No legal advice.</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Professional Reviews</td><td>Extract citations from existing sources (full aggregation DEFERRED)</td><td><span class="status-badge status-vision">DEFERRED</span></td></tr>
-      <tr><td>Award & Recognition</td><td>Surface book awards — check ISBNDB/Open Library first</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Curriculum Alignment</td><td>"On known curriculum list: Yes/No" — Texas TEKS first</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Author Intelligence</td><td>Challenge history, catalog patterns, demographics, awards (Field Group I)</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part12">
-  <h2>Part 12: Community Intelligence <span class="status-badge status-planned">PLANNED</span></h2>
-  <p>Every librarian in 150+ districts becomes a sensor for accuracy, source quality, and ground truth.</p>
-
-  <div class="phase-card">
-    <span class="phase-label phase-1">Phase 1 — Ship First</span>
-    <h4>Verification/Dispute Layer + Accuracy Feedback</h4>
-    <p><strong>Verification:</strong> Every AI-generated field gets Verify (one click) and Dispute (click + correction). Always additive.</p>
-    <p><strong>Accuracy Feedback:</strong> Thumbs up/down per field. Measurable accuracy metrics without requiring correction details.</p>
-    <p><em>"Violence: Moderate (AI-Generated) — Verified by 12 districts. 1 dispute: 'Should be Mild.'"</em></p>
-  </div>
-
-  <div class="phase-card">
-    <span class="phase-label phase-2">Phase 2 — After Adoption</span>
-    <h4>Source Contribution + Source Unreliable Reporting</h4>
-    <p><strong>Source Contribution:</strong> "Submit a source" button — URL classified, validated, ingested.</p>
-    <p><strong>Source Unreliable:</strong> Structured dropdown reasons. Reports add credibility signals, never remove sources. Multiple districts required for downweighting.</p>
-  </div>
-
-  <div class="phase-card">
-    <span class="phase-label phase-3">Phase 3 — At Scale</span>
-    <h4>District-Level Ground Truth</h4>
-    <p>Bookmarked as verification authority. Connected library systems confirm or contradict external claims.</p>
-    <p>At 150: start. At 500: definitive. See <a href="#part6">Part 6</a>.</p>
-  </div>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part13">
-  <h2>Part 13: Intelligence Surfaces & Workflows <span class="status-badge status-planned">PLANNED</span></h2>
-
-  <h3>Prioritization Engine</h3>
-  <p>"What matters most right now." Ranks by: compliance exposure, trust tier, recency, peer signal, unreviewed duration, confidence.</p>
-  <p><strong>Output:</strong> Prioritized worklist. "Here are your top 5 priorities today. Start with these."</p>
-
-  <h3>Dashboard Evolution</h3>
-  <table class="spec-table">
-    <thead><tr><th>New Metric</th><th>What It Measures</th></tr></thead>
-    <tbody>
-      <tr><td>Compliance Posture</td><td>% flagged books reviewed, unresolved flags &gt;30d, board-ready docs</td></tr>
-      <tr><td>Engagement Score</td><td>Active librarians, teacher confirmations, parent activity, board engagement</td></tr>
-      <tr><td>Risk Heatmap</td><td>Risk by school/grade/classroom (requires 98% Medium fix)</td></tr>
-      <tr><td>Trend Intelligence</td><td>Month-over-month flags, review velocity (district + school level)</td></tr>
-      <tr><td>Peer Benchmarking</td><td>Anonymized comparison at district and state level</td></tr>
-      <tr><td>Report Generator</td><td>One-click reports for board, superintendent, team, or library health</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Workflow Intelligence</h3>
-  <table class="spec-table">
-    <thead><tr><th>Feature</th><th>Description</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>Review Workflow Intelligence</td><td>Pre-load all BI when review workflow opens</td><td><span class="status-badge status-concept">CONCEPT</span></td></tr>
-      <tr><td>Order-Time Intelligence</td><td>BI check on orders before submission</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>New Flag Alert</td><td>Notify when collection book gets newly flagged</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Onboarding Intelligence</td><td>Collection Health Report on first upload</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-      <tr><td>Parent Access Intelligence</td><td>Aggregated parent behavior as signal</td><td><span class="status-badge status-planned">PLANNED</span></td></tr>
-    </tbody>
-  </table>
-
-  <h3>Proactive Alerts</h3>
-  <p><strong>Email-first</strong> (no native app). Dashboard notifications on login. Push intelligence to users.</p>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-section" id="part14">
-  <h2>Part 14: The Learning System <span class="status-badge status-vision">VISION</span></h2>
-  <p>How BI compounds over time. Strategic concepts — not yet scoped.</p>
-  <table class="spec-table">
-    <thead><tr><th>Capability</th><th>Vision</th></tr></thead>
-    <tbody>
-      <tr><td>AI Model Feedback Loop</td><td>Community judgments identify AI errors → prompt adjustments → accuracy improvements</td></tr>
-      <tr><td>Source Quality Evolution</td><td>Auto up/downweight sources based on verified accuracy</td></tr>
-      <tr><td>Predictive Intelligence</td><td>Flag likelihood from book characteristics. Min dataset TBD.</td></tr>
-      <tr><td>Network Effect Compounding</td><td>Each new district = better data for all</td></tr>
-      <tr><td>Accuracy Dashboard (Internal)</td><td>Quality control: accuracy per field, per tier, most-disputed, source rankings</td></tr>
-      <tr><td>Curriculum & Legislative Sync</td><td>Auto re-enrichment when laws or curriculum change</td></tr>
-    </tbody>
-  </table>
-  <table class="spec-table">
-    <thead><tr><th>Scale</th><th>What It Enables</th></tr></thead>
-    <tbody>
-      <tr><td>150 districts (today)</td><td>Useful dataset. Meaningful signals. Ground truth begins.</td></tr>
-      <tr><td>500 districts</td><td>Patterns emerge. Source quality self-calibrates.</td></tr>
-      <tr><td>2,000 districts</td><td>Real-time visibility into every K-12 library trend nationally.</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<hr class="spec-divider">
-
-<div class="spec-footer">
-  <p><strong>Book Intelligence Product Specification</strong> · Bookmarked Operating System</p>
-  <p>All agents, skills, and team members reference this for Book Intelligence context.<br>
-  Updates flow from the Founder through this document into the operating system.</p>
-  <p style="margin-top:16px">Last updated: March 19, 2026 · Version 2.0 · 14 Parts</p>
-</div>
-
 </div>
 </body>
 </html>

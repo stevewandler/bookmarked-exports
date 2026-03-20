@@ -18,11 +18,31 @@
   .hero .audience-tag { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-family: 'Urbanist', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
   .hero h1 { font-family: 'Urbanist', sans-serif; font-weight: 800; font-size: 23px; line-height: 1.2; margin-bottom: 8px; }
   .hero .subhead { font-size: 12.5px; line-height: 1.5; opacity: 0.92; max-width: 95%; }
-  .screenshot-section { padding: 14px 40px 10px 40px; display: flex; gap: 20px; align-items: stretch; }
-  .screenshot-placeholder { flex: 1.3; background: #F1F4F9; border: 2px dashed #e5e7eb; border-radius: 10px; min-height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #475467; font-size: 11px; font-family: 'Urbanist', sans-serif; text-align: center; padding: 16px; }
-  .screenshot-placeholder .placeholder-label { font-weight: 700; font-size: 14px; color: #374151; margin-bottom: 8px; }
-  .screenshot-placeholder .placeholder-desc { line-height: 1.5; max-width: 260px; }
-  .screenshot-context { flex: 0.9; padding: 4px 0; display: flex; flex-direction: column; justify-content: center; }
+    .screenshot-section {
+    padding: 6px 40px 4px 40px;
+  }
+  .screenshot-img-wrapper {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 4px;
+    max-height: 160px;
+    overflow: hidden;
+  }
+  .screenshot-img-wrapper img {
+    width: 100%;
+    height: 152px;
+    object-fit: cover;
+    object-position: top left;
+    border-radius: 6px;
+    display: block;
+  }
+  .screenshot-context {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
   .screenshot-context h3 { font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 14px; color: #107569; margin-bottom: 6px; }
   .screenshot-context p { font-size: 11.5px; line-height: 1.5; color: #374151; }
   .screenshot-context .tx-callout { margin-top: 10px; background: #fff0eb; border-left: 3px solid #FF692E; padding: 8px 10px; font-size: 11px; line-height: 1.4; color: #0d5a52; border-radius: 0 6px 6px 0; }
@@ -73,8 +93,8 @@
   </div>
   <div class="screenshot-context">
     <div style="flex: 1;">
-      <h3 style="font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 13px; color: #107569; margin-bottom: 4px;">Every Campus. Every Library. One View.</h3>
-      <p style="font-size: 11px; line-height: 1.45; color: #374151;">See your entire district's book ecosystem in a single dashboard — which titles have been flagged, which reviews are pending, and where your exposure is. No more chasing campus librarians for updates.</p>
+      <h3 style="font-family: 'Urbanist', sans-serif; font-weight: 700; font-size: 12px; color: #107569; margin-bottom: 4px;">Every Campus. Every Library. One View.</h3>
+      <p style="font-size: 10.5px; line-height: 1.35; color: #374151;">See your entire district's book ecosystem in a single dashboard — which titles have been flagged, which reviews are pending, and where your exposure is. No more chasing campus librarians for updates.</p>
     </div>
     <div class="tx-callout" style="flex: 0.6; margin-top: 0; background: #fff0eb; border-left: 3px solid #ff692e; padding: 8px 10px; font-size: 11px; line-height: 1.4; color: #0d5a52; border-radius: 0 6px 6px 0;">
       <strong>Built for Texas:</strong> Aligned to SB 13 and SB 412 requirements. Intelligence updates continuously as the landscape evolves.

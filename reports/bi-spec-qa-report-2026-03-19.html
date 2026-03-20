@@ -77,7 +77,7 @@
   </div>
   <div class="score-card">
     <div class="number fail">6</div>
-    <div class="label">Fail</div>
+    <div class="label">Fail (5 unique)</div>
   </div>
 </div>
 
@@ -107,71 +107,135 @@
     <h2>Action Required: 6 Failures</h2>
     <div class="category-badge"><span class="cat-stat fail-bg">6 FAIL</span></div>
   </div>
+  <p style="font-size: 13px; color: var(--bm-muted-gray); margin-bottom: 16px;">All 6 failures have been fixed in the updated spec (v2, QA pass). Details below show what was wrong and what was changed.</p>
 
+  <!-- FAIL 1: IC-12 -->
   <div class="finding fail-f">
     <div class="finding-header">
       <span class="finding-id">IC-12 &middot; Internal Consistency</span>
-      <span class="finding-status fail-s">FAIL</span>
+      <span class="finding-status fail-s">FAIL &rarr; FIXED</span>
     </div>
     <div class="finding-body">
-      <strong>"Implied" value creates unresolved inconsistency.</strong> The spec defines a 4-point scale (None/Mild/Moderate/Explicit) but Sexual Content uses a 5-point scale with "Implied." The Grade Level Suitability derivation table (line 248) has no row for "Implied" — an agent cannot determine grade suitability for a book rated "Implied."
+      <strong>"Implied" value creates a gap in the Grade Level Suitability derivation table.</strong>
+      <br><br>
+      <strong>Location:</strong> Part 2, Field Group D — Grade Level Suitability derivation logic (original line 258)
+      <br><br>
+      <strong>The problem:</strong> The spec defines a 4-point content rating scale at lines 228-232:
+      <br><code>None / Mild / Moderate / Explicit</code>
+      <br>But Sexual Content (line 224) uses a 5-point scale:
+      <br><code>None / Mild / <span style="color:#DC2626;font-weight:700">Implied</span> / Moderate / Explicit</code>
+      <br><br>
+      The Grade Level Suitability derivation table maps content ratings to grade suitability. It had rows for None/Mild, Moderate, Explicit (non-sexual), and Sexual Content: Explicit — but <strong>no row for "Implied."</strong> An agent building grade suitability logic from this spec would not know how to handle a book rated Sexual Content: Implied.
+      <br><br>
+      <strong>Exact text (before):</strong>
+      <br>
+      <table style="font-size:12px;margin:8px 0;background:#FEF2F2;border:1px solid #FECACA;">
+        <tr><th>Content Rating Level</th><th>Elementary</th><th>Middle School</th><th>High School</th></tr>
+        <tr><td>All None/Mild</td><td>Appropriate</td><td>Appropriate</td><td>Appropriate</td></tr>
+        <tr><td>Any Moderate</td><td>Not Recommended</td><td>Appropriate</td><td>Appropriate</td></tr>
+        <tr><td>Any Explicit (non-sexual)</td><td>Not Recommended</td><td>Not Recommended</td><td>Appropriate</td></tr>
+        <tr><td>Sexual Content: Explicit</td><td>Not Recommended</td><td>Not Recommended</td><td>Not Recommended</td></tr>
+      </table>
+      <strong style="color:#DC2626;">Gap: No row for Sexual Content: Implied.</strong>
     </div>
-    <div class="fix-box">Add an "Implied" row to the derivation table. Proposed: Sexual Content "Implied" maps to Elementary: Not Recommended, Middle/High: Appropriate. Or standardize to 4-point by merging Implied into Mild.</div>
+    <div class="fix-box">Added "Sexual Content: Implied" row mapping to Elementary: Not Recommended, Middle/High: Appropriate. Added explanatory note: "The Sexual Content scale uses a non-standard 5th value ('Implied') between Mild and Moderate. See Q7 for whether this is intentional or a bug. Until resolved, the derivation table treats 'Implied' as equivalent to Moderate for Elementary and equivalent to Mild for Middle/High."</div>
   </div>
 
+  <!-- FAIL 2: GC-04 / CG-05 -->
   <div class="finding fail-f">
     <div class="finding-header">
-      <span class="finding-id">GC-04 &middot; Glossary Coverage</span>
-      <span class="finding-status fail-s">FAIL</span>
+      <span class="finding-id">GC-04 + CG-05 &middot; Glossary / Completeness</span>
+      <span class="finding-status fail-s">FAIL &rarr; FIXED</span>
     </div>
     <div class="finding-body">
-      <strong>"DEFERRED" and "FUTURE" used as status tags but not defined.</strong> The status tag list (lines 105-111) defines 6 tags: LIVE, DESIGNED, PLANNED, VISION, CONCEPT, UNKNOWN. "DEFERRED" appears at line 748 (Professional Review Aggregation). "FUTURE" appears at lines 150 and 1037.
+      <strong>Two status tags used in the spec but never defined.</strong>
+      <br><br>
+      <strong>Location:</strong> Document Index, Status Tags section (original lines 105-111)
+      <br><br>
+      <strong>The problem:</strong> The spec defines 6 status tags:
+      <br><code>LIVE, DESIGNED, PLANNED, VISION, CONCEPT, UNKNOWN</code>
+      <br><br>But two additional tags appear in the document without definitions:
+      <br>
+      <table style="font-size:12px;margin:8px 0;background:#FEF2F2;border:1px solid #FECACA;">
+        <tr><th>Undefined Tag</th><th>Where Used</th><th>Exact Text</th></tr>
+        <tr><td><code>DEFERRED</code></td><td>Part 11 (original line 748)</td><td><code>### Professional Review Aggregation (DEFERRED)</code></td></tr>
+        <tr><td><code>FUTURE</code></td><td>Part 1 (original line 150), Part 13 (original line 1037)</td><td><code>FUTURE — separate spec, separate timeline, OUT OF SCOPE</code></td></tr>
+      </table>
+      <strong style="color:#DC2626;">An agent encountering DEFERRED or FUTURE cannot determine what the tag means — it's not in the defined set.</strong>
     </div>
-    <div class="fix-box">Add to status tag definitions: DEFERRED — Considered and intentionally postponed; will revisit when conditions change. FUTURE — Out of scope for this specification; separate timeline and spec.</div>
+    <div class="fix-box">Added two definitions to the Status Tags section:<br>
+    <code>DEFERRED</code> — Considered and intentionally postponed. Will revisit when conditions change (e.g., budget, scale, partnerships).<br>
+    <code>FUTURE</code> — Out of scope for this specification. Separate timeline and separate spec.</div>
   </div>
 
+  <!-- FAIL 3: GC-06 -->
   <div class="finding fail-f">
     <div class="finding-header">
       <span class="finding-id">GC-06 &middot; Glossary Coverage</span>
-      <span class="finding-status fail-s">FAIL</span>
+      <span class="finding-status fail-s">FAIL &rarr; FIXED</span>
     </div>
     <div class="finding-body">
-      <strong>7 domain terms used 3+ times without glossary definitions:</strong> AI Enrichment (15 uses), ISBNDB (20 uses), Open Library (13 uses), SB 412 (5 uses), SB 13 (3 uses), PEN America (6 uses), Confidence Indicator (4 uses, defined in Trust Hierarchy section but missing from Glossary table).
+      <strong>7 domain-specific terms used 3+ times without glossary definitions.</strong>
+      <br><br>
+      <strong>Location:</strong> Glossary table (original lines 31-49)
+      <br><br>
+      <strong>The problem:</strong> The Glossary defines 17 terms. But 7 additional terms are used heavily throughout the spec with no definition anywhere in the Glossary. An agent or team member looking up terminology in the Glossary would not find these:
+      <br>
+      <table style="font-size:12px;margin:8px 0;background:#FEF2F2;border:1px solid #FECACA;">
+        <tr><th>Missing Term</th><th>Usage Count</th><th>Example Location</th><th>Why It Matters</th></tr>
+        <tr><td><strong>AI Enrichment</strong></td><td>15 uses</td><td>Part 3 pipeline, Part 14 feedback loop</td><td>Core pipeline concept — agents building on the pipeline need this defined</td></tr>
+        <tr><td><strong>ISBNDB</strong></td><td>20 uses</td><td>Part 2 every Field Group, Part 3 data sources</td><td>Primary external data source — appears in most field tables</td></tr>
+        <tr><td><strong>Open Library</strong></td><td>13 uses</td><td>Part 2 Field Groups A, Part 3 data sources</td><td>Secondary data source — referenced alongside ISBNDB</td></tr>
+        <tr><td><strong>SB 412</strong></td><td>5 uses</td><td>Part 2 Field Group C regulatory context, Part 11</td><td>Texas law creating criminal liability — drives Tier 1 accuracy requirements</td></tr>
+        <tr><td><strong>SB 13</strong></td><td>3 uses</td><td>Part 2 Field Group C, Part 11 legislative tracking</td><td>Texas library review law — core regulatory context</td></tr>
+        <tr><td><strong>PEN America</strong></td><td>6 uses</td><td>Part 4 audit process, Part 6 ground truth example, Part 12 verification</td><td>Major flag source used in key examples throughout</td></tr>
+        <tr><td><strong>Confidence Indicator</strong></td><td>4 uses</td><td>Trust Hierarchy section, Part 10, Part 13</td><td>Defined in Trust Hierarchy section but not cross-referenced in Glossary — discoverability gap</td></tr>
+      </table>
     </div>
-    <div class="fix-box">Add glossary rows for each. AI Enrichment, ISBNDB, Open Library, SB 412, SB 13, PEN America need definitions. Confidence Indicator needs a glossary cross-reference to Trust Hierarchy section.</div>
+    <div class="fix-box">Added all 7 terms to the Glossary table with precise definitions. Example: <code>ISBNDB</code> — "A commercial ISBN database providing book identity and metadata (title, author, publisher, synopsis, subjects, page count, cover image) via API. Primary external data source." <code>SB 412</code> — "Texas Senate Bill 412, establishing criminal liability for school personnel providing 'sexually explicit' material in K-12 settings. Highest regulatory weight for Sexual Content ratings."</div>
   </div>
 
+  <!-- FAIL 4: CR-01 -->
   <div class="finding fail-f">
     <div class="finding-header">
       <span class="finding-id">CR-01 &middot; Cross-Reference Integrity</span>
-      <span class="finding-status fail-s">FAIL</span>
+      <span class="finding-status fail-s">FAIL &rarr; FIXED</span>
     </div>
     <div class="finding-body">
-      <strong>Document Index title mismatch for Part 2.</strong> Index says "Part 2: Field-by-Field Specification" but the actual heading is "Part 2: The Intelligence Card — Field-by-Field Specification."
+      <strong>Document Index title for Part 2 doesn't match the actual section heading.</strong>
+      <br><br>
+      <strong>Location:</strong> Document Index table (original line 91) vs. Part 2 heading (original line 156)
+      <br><br>
+      <strong>The problem:</strong>
+      <br>
+      <table style="font-size:12px;margin:8px 0;background:#FEF2F2;border:1px solid #FECACA;">
+        <tr><th>Source</th><th>Text</th></tr>
+        <tr><td>Document Index (line 91)</td><td><code>Part 2: Field-by-Field Specification</code></td></tr>
+        <tr><td>Actual heading (line 156)</td><td><code>Part 2: The Intelligence Card — Field-by-Field Specification</code></td></tr>
+      </table>
+      <strong style="color:#DC2626;">The Index omits "The Intelligence Card —" prefix. An agent searching for the section by its Index name would find a mismatch.</strong>
     </div>
-    <div class="fix-box">Update Document Index line 91 to match actual heading: "Part 2: The Intelligence Card — Field-by-Field Specification"</div>
+    <div class="fix-box">Updated Document Index line 91 to: <code>Part 2: The Intelligence Card — Field-by-Field Specification</code></div>
   </div>
 
+  <!-- FAIL 5: Accuracy Tier -->
   <div class="finding fail-f">
     <div class="finding-header">
-      <span class="finding-id">CG-05 &middot; Completeness Gaps</span>
-      <span class="finding-status fail-s">FAIL</span>
+      <span class="finding-id">GC-06b &middot; Glossary Coverage</span>
+      <span class="finding-status fail-s">FAIL &rarr; FIXED</span>
     </div>
     <div class="finding-body">
-      <strong>Same as GC-04.</strong> DEFERRED and FUTURE status tags used but not defined. Duplicate finding — single fix covers both.
+      <strong>"Accuracy Tier" used as a structural concept throughout Parts 2 and 4 without a glossary definition.</strong>
+      <br><br>
+      <strong>Location:</strong> Part 2 field tables (Tier column in every Field Group A-I), Part 4 Accuracy Priority Tiers (original line 415)
+      <br><br>
+      <strong>The problem:</strong> Every field table in Part 2 has a "Tier" column with values 1-4. Part 4 defines what these tiers mean (Tier 1 = Compliance-Critical through Tier 4 = Informational). But a reader starting at the Glossary — the first place an agent looks for term definitions — would find no entry for "Accuracy Tier" or "Tier." The concept is defined structurally in Part 4 but not discoverable via the Glossary.
+      <br><br>
+      <strong>Exact text from Part 2 field tables:</strong>
+      <br><code>| **Ban Status** | Enum: Clear / Banned (count) | ... | <span style="color:#DC2626;font-weight:700">1</span> | LIVE | ...</code>
+      <br>A reader seeing "1" in the Tier column has no glossary pointer to understand what it means.
     </div>
-    <div class="fix-box">See GC-04 fix above.</div>
-  </div>
-
-  <div class="finding fail-f">
-    <div class="finding-header">
-      <span class="finding-id">GC-02 + GC-06 overlap &middot; Glossary</span>
-      <span class="finding-status fail-s">FAIL</span>
-    </div>
-    <div class="finding-body">
-      <strong>"Accuracy Tier" used throughout Parts 2 and 4 without glossary definition.</strong> Referenced in every Part 2 field table's Tier column and defined structurally in Part 4, but a reader looking at the Glossary would not find it.
-    </div>
-    <div class="fix-box">Add glossary row: "Accuracy Tier — Priority level (1-4) assigned to each BI field based on compliance impact. Tier 1 = Compliance-Critical, Tier 4 = Informational. See Part 4."</div>
+    <div class="fix-box">Added glossary row: <code>Accuracy Tier</code> — "Priority level (1-4) assigned to each BI field based on compliance impact. Tier 1 = Compliance-Critical, Tier 2 = Decision-Informing, Tier 3 = Contextual, Tier 4 = Informational. See Part 4."</div>
   </div>
 </div>
 

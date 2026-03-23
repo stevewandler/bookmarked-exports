@@ -263,10 +263,11 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
         <li><span class="chk chk-pend">&#x25CB;</span> Steve: Draft Content Scanner Vision Overview</li>
         <li><span class="chk chk-pend">&#x25CB;</span> Sarah: Create session capture template</li>
         <li><span class="chk chk-pend">&#x25CB;</span> Set up Slack Connect channel</li>
-        <li><span class="chk chk-pend">&#x25CB;</span> Wire Google Sheets backend for portal feedback form</li>
+        <li><span class="chk chk-done">&#x2713;</span> Wire Google Sheets backend for portal feedback form</li>
         <li><span class="chk chk-done">&#x2713;</span> Council portal v2 built (external-facing)</li>
         <li><span class="chk chk-done">&#x2713;</span> Operations dashboard v2 built (this page)</li>
         <li><span class="chk chk-done">&#x2713;</span> Confluence hub + 4 sub-pages created</li>
+        <li><span class="chk chk-done">&#x2713;</span> Google Sheet backend created + seeded</li>
       </ul>
     </div>
     <div class="card">
@@ -282,6 +283,7 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
       <h3 style="margin-top:16px;">External</h3>
       <ul class="link-list">
         <li><a href="https://stevewandler.github.io/bookmarked-exports/exports/bookmarked-council-portal.html" target="_blank">&#x1F310; Council Portal (what partners see)</a></li>
+        <li><a href="https://docs.google.com/spreadsheets/d/1eJsznIc9hMxbI7aWBx4vWh1fW5sUPNdjTwIhU9ZqtBk/edit" target="_blank">&#x1F4CA; Google Sheet Backend (feedback + votes)</a></li>
         <li><a href="#">&#x1F4AC; #bookmarked-council Slack</a></li>
       </ul>
       <h3 style="margin-top:16px;">Key Dates</h3>
@@ -560,6 +562,12 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
 </div>
 
 <script>
+// ============================================================
+// BACKEND CONFIGURATION — same Apps Script URL as the portal
+// After deploying, paste the URL here for live data.
+// ============================================================
+const APPS_SCRIPT_URL = ''; // <-- Paste your Apps Script web app URL here
+
 // ===== Navigation =====
 function show(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -649,10 +657,41 @@ function filterPartners() {
   });
 }
 
+// ===== Backend Data Loading =====
+async function loadBackendData() {
+  if (!APPS_SCRIPT_URL) return;
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=all');
+    const json = await res.json();
+    if (!json.ok) return;
+
+    const { feedback, votes, partners } = json.data;
+
+    // Update KPIs
+    const feedbackCount = feedback.length;
+    const voteCount = votes.length;
+    const kpis = document.querySelectorAll('.kpi .val');
+    // Feedback Items KPI (index 3)
+    if (kpis[3]) kpis[3].textContent = feedbackCount;
+    // Roadmap Votes KPI (index 4)
+    if (kpis[4]) kpis[4].textContent = voteCount;
+
+    // Update progress bars
+    const kpiProgress = document.querySelectorAll('.kpi .kpi-progress-fill');
+    if (kpiProgress[3]) kpiProgress[3].style.width = Math.min(feedbackCount * 10, 100) + '%';
+    if (kpiProgress[4]) kpiProgress[4].style.width = Math.min(voteCount * 5, 100) + '%';
+
+    console.log('Backend data loaded:', feedbackCount, 'feedback items,', voteCount, 'votes');
+  } catch (err) {
+    console.warn('Backend unavailable:', err);
+  }
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', function() {
   updateCountdown();
-  setInterval(updateCountdown, 60000); // Update every minute
+  setInterval(updateCountdown, 60000);
+  loadBackendData();
 });
 </script>
 </body>

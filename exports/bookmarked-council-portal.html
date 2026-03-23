@@ -525,23 +525,23 @@ a:hover{color:var(--bm-deep-green);text-decoration:underline;}
       <div class="member-group">
         <h3><span class="group-icon">&#x1F3EB;</span> District Partners</h3>
         <div class="member-item">
-          <div class="member-avatar avatar-orange">R</div>
-          <div class="member-info"><h4>Ridgeview ISD</h4><p>Library Services Director</p></div>
+          <div class="member-avatar avatar-orange">A</div>
+          <div class="member-info"><h4>Acme ISD</h4><p>Library Services Director</p></div>
+          <span class="member-status status-invited">Invited</span>
+        </div>
+        <div class="member-item">
+          <div class="member-avatar avatar-orange">W</div>
+          <div class="member-info"><h4>Widget Creek ISD</h4><p>Head Librarian</p></div>
           <span class="member-status status-invited">Invited</span>
         </div>
         <div class="member-item">
           <div class="member-avatar avatar-orange">P</div>
-          <div class="member-info"><h4>Pecan Creek ISD</h4><p>Head Librarian</p></div>
+          <div class="member-info"><h4>Placeholder Valley ISD</h4><p>Curriculum Director</p></div>
           <span class="member-status status-invited">Invited</span>
         </div>
         <div class="member-item">
-          <div class="member-avatar avatar-orange">L</div>
-          <div class="member-info"><h4>Lakeshore ISD</h4><p>Curriculum Director</p></div>
-          <span class="member-status status-invited">Invited</span>
-        </div>
-        <div class="member-item">
-          <div class="member-avatar avatar-orange">B</div>
-          <div class="member-info"><h4>Briarwood ISD</h4><p>Library Coordinator</p></div>
+          <div class="member-avatar avatar-orange">S</div>
+          <div class="member-info"><h4>Sandbox Hills ISD</h4><p>Library Coordinator</p></div>
           <span class="member-status status-invited">Invited</span>
         </div>
         <div class="member-item">
@@ -981,10 +981,16 @@ a:hover{color:var(--bm-deep-green);text-decoration:underline;}
 // ============================================================
 // COUNCIL PORTAL — DATA LAYER
 // ============================================================
-// Seed data for the roadmap board. In production, this reads from
-// a published Google Sheet or Apps Script API. For now, we use
-// localStorage + seed data so the portal is fully functional
-// standalone.
+// BACKEND CONFIGURATION
+// After deploying the Apps Script web app, paste the URL here.
+// The portal will use the Google Sheet backend when configured,
+// and falls back to localStorage when it's not.
+// ============================================================
+const APPS_SCRIPT_URL = ''; // <-- Paste your Apps Script web app URL here
+
+// ============================================================
+// Seed data for the roadmap board (used as fallback when backend
+// is not configured).
 // ============================================================
 
 const SEED_ITEMS = [
@@ -1005,10 +1011,10 @@ const SEED_ITEMS = [
     description: 'Automatically map book content assessments to specific state legislation requirements (SB 13, HB 900) so districts can see compliance status at a glance.',
     category: 'Feature Request',
     status: 'Building',
-    submitter: 'Ridgeview ISD',
-    org: 'Ridgeview ISD',
+    submitter: 'Acme ISD',
+    org: 'Acme ISD',
     date: '2026-04-01',
-    votes: ['Ridgeview ISD|Ridgeview ISD', 'Lakeshore ISD|Lakeshore ISD', 'Pecan Creek ISD|Pecan Creek ISD', 'Briarwood ISD|Briarwood ISD']
+    votes: ['Acme ISD|Acme ISD', 'Placeholder Valley ISD|Placeholder Valley ISD', 'Widget Creek ISD|Widget Creek ISD', 'Sandbox Hills ISD|Sandbox Hills ISD']
   },
   {
     id: 'seed-3',
@@ -1016,10 +1022,10 @@ const SEED_ITEMS = [
     description: 'Allow districts to upload a spreadsheet of ISBNs and receive intelligence reports for the entire batch, rather than one book at a time.',
     category: 'Workflow Improvement',
     status: 'Shipped',
-    submitter: 'Lakeshore ISD',
-    org: 'Lakeshore ISD',
+    submitter: 'Placeholder Valley ISD',
+    org: 'Placeholder Valley ISD',
     date: '2026-03-15',
-    votes: ['Lakeshore ISD|Lakeshore ISD', 'Ridgeview ISD|Ridgeview ISD', 'Pecan Creek ISD|Pecan Creek ISD']
+    votes: ['Placeholder Valley ISD|Placeholder Valley ISD', 'Acme ISD|Acme ISD', 'Widget Creek ISD|Widget Creek ISD']
   },
   {
     id: 'seed-4',
@@ -1038,19 +1044,69 @@ const SEED_ITEMS = [
     description: 'Connect Bookmarked intelligence directly to Destiny, Follett, or Alexandria so librarians see assessments inside their existing tools.',
     category: 'Integration',
     status: 'Under Review',
-    submitter: 'Pecan Creek ISD',
-    org: 'Pecan Creek ISD',
+    submitter: 'Widget Creek ISD',
+    org: 'Widget Creek ISD',
     date: '2026-04-03',
-    votes: ['Pecan Creek ISD|Pecan Creek ISD', 'Briarwood ISD|Briarwood ISD', 'Lakeshore ISD|Lakeshore ISD']
+    votes: ['Widget Creek ISD|Widget Creek ISD', 'Sandbox Hills ISD|Sandbox Hills ISD', 'Placeholder Valley ISD|Placeholder Valley ISD']
   }
 ];
 
-// Load items from localStorage or seed
-function loadItems() {
+// ============================================================
+// BACKEND: dual-mode (Apps Script API or localStorage fallback)
+// ============================================================
+
+const useBackend = !!APPS_SCRIPT_URL;
+let backendLoading = false;
+
+// Load items from backend or localStorage
+async function loadItemsFromBackend() {
+  if (!useBackend) return loadItemsLocal();
+  try {
+    backendLoading = true;
+    const res = await fetch(APPS_SCRIPT_URL + '?action=all');
+    const json = await res.json();
+    if (json.ok) {
+      // Transform Sheet data into portal format
+      const items = json.data.feedback.map(fb => {
+        const itemVotes = json.data.votes
+          .filter(v => v.feedback_id === fb.id)
+          .map(v => v.voter_name + '|' + v.voter_org);
+        return {
+          id: fb.id,
+          title: fb.title,
+          description: fb.description,
+          category: fb.category,
+          status: statusSheetToDisplay(fb.status),
+          submitter: fb.submitter_name,
+          org: fb.submitter_org,
+          date: fb.submitted_date,
+          votes: itemVotes
+        };
+      });
+      backendLoading = false;
+      return items;
+    }
+  } catch (err) {
+    console.warn('Backend unavailable, using localStorage fallback:', err);
+  }
+  backendLoading = false;
+  return loadItemsLocal();
+}
+
+function statusSheetToDisplay(s) {
+  const map = { 'received': 'Received', 'under-review': 'Under Review', 'building': 'Building', 'shipped': 'Shipped' };
+  return map[s] || s;
+}
+
+function statusDisplayToSheet(s) {
+  const map = { 'Received': 'received', 'Under Review': 'under-review', 'Building': 'building', 'Shipped': 'shipped' };
+  return map[s] || s;
+}
+
+function loadItemsLocal() {
   const stored = localStorage.getItem('council-roadmap-items');
   if (stored) {
     const items = JSON.parse(stored);
-    // Merge seed items that don't exist yet
     const ids = new Set(items.map(i => i.id));
     SEED_ITEMS.forEach(s => {
       if (!ids.has(s.id)) items.push(s);
@@ -1064,7 +1120,7 @@ function saveItems(items) {
   localStorage.setItem('council-roadmap-items', JSON.stringify(items));
 }
 
-let roadmapItems = loadItems();
+let roadmapItems = loadItemsLocal();
 let currentFilter = 'all';
 
 // ============================================================
@@ -1151,6 +1207,13 @@ function toggleVote(itemId) {
     item.votes.splice(voteIndex, 1);
   } else {
     item.votes.push(userKey);
+    // Send vote to backend
+    if (useBackend) {
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'vote', feedback_id: itemId, voter_name: userName, voter_org: userOrg })
+      }).catch(err => console.warn('Backend vote failed:', err));
+    }
   }
 
   saveItems(roadmapItems);
@@ -1190,6 +1253,21 @@ function submitFeedback(e) {
   roadmapItems.push(newItem);
   saveItems(roadmapItems);
 
+  // Send to backend if configured
+  if (useBackend) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'submit_feedback',
+        title: title,
+        description: detail || title,
+        category: category,
+        submitter_name: name,
+        submitter_org: org
+      })
+    }).catch(err => console.warn('Backend submit failed:', err));
+  }
+
   // Show success
   document.getElementById('feedbackForm').style.display = 'none';
   document.getElementById('feedbackSuccess').classList.add('show');
@@ -1228,8 +1306,15 @@ document.addEventListener('DOMContentLoaded', function() {
     form.insertBefore(welcome, form.firstChild);
   }
 
-  // Render roadmap
-  renderRoadmap();
+  // Load from backend if configured, then render
+  if (useBackend) {
+    loadItemsFromBackend().then(items => {
+      roadmapItems = items;
+      renderRoadmap();
+    });
+  } else {
+    renderRoadmap();
+  }
 });
 </script>
 

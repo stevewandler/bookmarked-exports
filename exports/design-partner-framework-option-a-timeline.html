@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Scanner Design Partner Program — Option A: Timeline View</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-teal-dark: #0D5A52;
+  --bm-teal-mid: #107569;
+  --bm-teal-light: #12A38C;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-white: #FFFFFF;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-warm: #F8F5F0;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, sans-serif;
+  --bm-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --bm-shadow-md: 0 2px 12px rgba(0,0,0,0.06);
+  --bm-shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+  --bm-radius-md: 8px;
+  --bm-radius-lg: 12px;
+  --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--bm-font-family); color: var(--bm-eigengrau); background: var(--bm-bg-white); -webkit-font-smoothing: antialiased; }
+
+/* Header */
+.header { background: var(--bm-gradient-hero); padding: 64px 0 48px; color: white; }
+.header-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+.draft-badge { display: inline-block; background: rgba(255,105,46,0.9); color: white; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 100px; margin-bottom: 20px; }
+.header h1 { font-size: 42px; font-weight: 800; line-height: 1.15; max-width: 700px; letter-spacing: -0.02em; }
+.header p { font-size: 18px; color: rgba(255,255,255,0.85); max-width: 600px; margin-top: 16px; line-height: 1.6; }
+.header-stats { display: flex; gap: 48px; margin-top: 32px; }
+.header-stat { text-align: center; }
+.header-stat .num { font-size: 36px; font-weight: 800; }
+.header-stat .label { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+/* Nav */
+.phase-nav { background: var(--bm-bg-white); border-bottom: 1px solid var(--bm-border-light); position: sticky; top: 0; z-index: 100; }
+.phase-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; display: flex; gap: 0; }
+.phase-tab { padding: 16px 24px; font-size: 14px; font-weight: 600; color: var(--bm-secondary-text); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; text-decoration: none; }
+.phase-tab:hover, .phase-tab.active { color: var(--bm-deep-green); border-bottom-color: var(--bm-teal-accent); }
+
+/* Content */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+/* Phase Section */
+.phase-section { padding: 64px 0; }
+.phase-section:nth-child(even) { background: var(--bm-bg-cool); }
+.phase-header { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 48px; }
+.phase-number { width: 56px; height: 56px; background: var(--bm-gradient-hero); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: 800; flex-shrink: 0; }
+.phase-meta h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+.phase-meta .dates { font-size: 14px; color: var(--bm-teal-accent); font-weight: 600; margin-top: 4px; }
+.phase-meta p { font-size: 16px; color: var(--bm-secondary-text); margin-top: 8px; max-width: 600px; line-height: 1.5; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: var(--bm-border-light); }
+.timeline-week { position: relative; margin-bottom: 32px; }
+.timeline-week::before { content: ''; position: absolute; left: -29px; top: 8px; width: 12px; height: 12px; background: var(--bm-teal-accent); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px var(--bm-teal-accent); }
+.timeline-week.prep::before { background: var(--bm-bg-white); border-color: var(--bm-teal-accent); box-shadow: 0 0 0 2px var(--bm-border-light); }
+.timeline-week.milestone::before { background: var(--bm-pumpkin); border-color: white; box-shadow: 0 0 0 2px var(--bm-pumpkin); width: 14px; height: 14px; left: -30px; top: 7px; }
+.week-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--bm-muted-gray); margin-bottom: 8px; }
+.week-card { background: white; border-radius: var(--bm-radius-lg); padding: 20px 24px; box-shadow: var(--bm-shadow-sm); border: 1px solid var(--bm-border-light); }
+.week-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.week-card .type-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-right: 8px; margin-bottom: 8px; }
+.badge-publisher { background: rgba(18,163,140,0.12); color: var(--bm-deep-green); }
+.badge-district { background: rgba(255,105,46,0.12); color: #D4500A; }
+.badge-joint { background: rgba(16,24,40,0.08); color: var(--bm-eigengrau); }
+.badge-internal { background: rgba(156,163,175,0.15); color: var(--bm-muted-gray); }
+.badge-milestone { background: rgba(255,105,46,0.15); color: var(--bm-pumpkin); }
+.badge-engineering { background: rgba(18,163,140,0.08); color: var(--bm-teal-accent); }
+.week-card p { font-size: 14px; color: var(--bm-secondary-text); line-height: 1.5; }
+.week-card .attendees { font-size: 13px; color: var(--bm-muted-gray); margin-top: 8px; }
+.week-card .attendees strong { color: var(--bm-secondary-text); }
+
+/* Cards Grid */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.info-card { background: white; border-radius: var(--bm-radius-lg); padding: 24px; box-shadow: var(--bm-shadow-sm); border: 1px solid var(--bm-border-light); border-top: 3px solid var(--bm-teal-accent); }
+.info-card.warning { border-top-color: var(--bm-pumpkin); }
+.info-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.info-card ul { list-style: none; padding: 0; }
+.info-card li { font-size: 14px; color: var(--bm-secondary-text); padding: 6px 0; padding-left: 20px; position: relative; line-height: 1.5; }
+.info-card li::before { content: '→'; position: absolute; left: 0; color: var(--bm-teal-accent); font-weight: 700; }
+.info-card.warning li::before { color: var(--bm-pumpkin); }
+
+/* Feedback Section */
+.feedback-flow { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin: 32px 0; }
+.flow-step { background: white; border: 1px solid var(--bm-border-light); border-radius: var(--bm-radius-md); padding: 16px 20px; font-size: 14px; font-weight: 600; color: var(--bm-secondary-text); box-shadow: var(--bm-shadow-sm); text-align: center; min-width: 140px; }
+.flow-step .icon { font-size: 24px; display: block; margin-bottom: 6px; }
+.flow-arrow { color: var(--bm-teal-accent); font-size: 24px; font-weight: 800; }
+
+/* Footer */
+.footer { background: var(--bm-deep-green); color: white; padding: 48px 0; text-align: center; }
+.footer p { font-size: 14px; color: rgba(255,255,255,0.7); }
+.footer .brand { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white; }
+
+/* Team Table */
+.team-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+.team-table th { text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--bm-muted-gray); padding: 10px 16px; border-bottom: 2px solid var(--bm-border-light); }
+.team-table td { padding: 12px 16px; border-bottom: 1px solid var(--bm-border-light); font-size: 14px; color: var(--bm-secondary-text); }
+.team-table td:first-child { font-weight: 600; color: var(--bm-eigengrau); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header h1 { font-size: 28px; }
+  .header-stats { flex-direction: column; gap: 16px; }
+  .phase-nav-inner { overflow-x: auto; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .feedback-flow { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="draft-badge">DRAFT — Requires Team Review</div>
+    <h1>Content Scanner Design Partner Program</h1>
+    <p>Co-designing the next generation of book intelligence with the publishers and districts who will use it. April–July 2026.</p>
+    <div class="header-stats">
+      <div class="header-stat"><div class="num">6</div><div class="label">Co-Design Sessions</div></div>
+      <div class="header-stat"><div class="num">3–5</div><div class="label">Publisher Partners</div></div>
+      <div class="header-stat"><div class="num">3–5</div><div class="label">District Partners</div></div>
+      <div class="header-stat"><div class="num">17</div><div class="label">Weeks Total</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase Navigation -->
+<div class="phase-nav">
+  <div class="phase-nav-inner">
+    <a href="#phase1" class="phase-tab active">April: Co-Design</a>
+    <a href="#phase2" class="phase-tab">May: Synthesis</a>
+    <a href="#phase3" class="phase-tab">Jun–Jul: Build</a>
+    <a href="#team" class="phase-tab">Team</a>
+    <a href="#feedback" class="phase-tab">Feedback Loops</a>
+    <a href="#quality" class="phase-tab">Quality Gates</a>
+  </div>
+</div>
+
+<!-- Phase 1: April -->
+<div class="phase-section" id="phase1">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number">1</div>
+      <div class="phase-meta">
+        <h2>Co-Design Sessions</h2>
+        <div class="dates">April 1–30, 2026 (Weeks 1–4)</div>
+        <p>Six sessions — two publisher, two district, two joint — to shape the Content Scanner with the people who will use it.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <!-- Week 1 -->
+      <div class="timeline-week prep">
+        <div class="week-label">Apr 3–4 — Internal Prep</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Prep</span>
+          <h4>Publisher Session 1 Preparation</h4>
+          <p>Finalize publisher participant list, prepare context documents, align on facilitation approach.</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve, Natasha, Sarah</div>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">Apr 6–7 — Week 1</div>
+        <div class="week-card">
+          <span class="type-badge badge-publisher">Publisher</span>
+          <h4>Publisher Co-Design Session 1</h4>
+          <p>What intelligence do publishers need back? What makes participation worth their time? How should the publisher context mechanism work?</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve (facilitator), Natasha (co-facilitator), Sarah (product observer) + 3–5 publishers</div>
+        </div>
+      </div>
+
+      <div class="timeline-week prep">
+        <div class="week-label">Apr 8</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Debrief</span>
+          <h4>Internal Debrief 1</h4>
+          <p>Synthesize publisher session output. Capture product implications. Adjust district session approach based on learnings.</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve, Natasha, Sarah, Patrick</div>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="timeline-week prep">
+        <div class="week-label">Apr 10–11 — Internal Prep</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Prep</span>
+          <h4>District Session 1 Preparation</h4>
+          <p>Finalize district participant list, prepare context documents, align on questions informed by Publisher Session 1.</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve, Sarah, Patrick</div>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">Apr 14–15 — Week 2</div>
+        <div class="week-card">
+          <span class="type-badge badge-district">District</span>
+          <h4>District Co-Design Session 1</h4>
+          <p>What does a Content Scanner report need to contain? What replaces the current review-cobbling process? What confidence signals matter most?</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve (facilitator), Sarah (product observer), Patrick (CS/technical) + 3–5 district reps</div>
+        </div>
+      </div>
+
+      <div class="timeline-week prep">
+        <div class="week-label">Apr 16</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Debrief</span>
+          <h4>Internal Debrief 2</h4>
+          <p>Synthesize district session. Map district needs against publisher session input — where do they align? Where do they diverge?</p>
+        </div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="timeline-week">
+        <div class="week-label">Apr 21–22 — Week 3</div>
+        <div class="week-card">
+          <span class="type-badge badge-publisher">Publisher</span>
+          <h4>Publisher Co-Design Session 2</h4>
+          <p>React to district needs. Refine publisher portal concept. Walk through data submission workflow. Publisher context mechanism deep-dive.</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve, Natasha, Sarah + 3–5 publishers</div>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="timeline-week">
+        <div class="week-label">Apr 28 — Week 4</div>
+        <div class="week-card">
+          <span class="type-badge badge-district">District</span>
+          <h4>District Co-Design Session 2</h4>
+          <p>React to publisher realities. Refine Intelligence Card with Content Scanner data layer. Compliance mapping walkthrough with real examples.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week milestone">
+        <div class="week-label">Apr 29</div>
+        <div class="week-card">
+          <span class="type-badge badge-joint">Joint</span><span class="type-badge badge-milestone">Milestone</span>
+          <h4>Joint Session 1 — Publishers + Districts Together</h4>
+          <p>First time both sides are in the room. Shared understanding of what gets built. Prioritization exercise: what's essential vs. nice-to-have vs. future.</p>
+          <div class="attendees"><strong>Attendees:</strong> Steve, Natasha, Sarah, Patrick + all design partners</div>
+        </div>
+      </div>
+
+      <div class="timeline-week prep">
+        <div class="week-label">Apr 30</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Synthesis Kickoff</span>
+          <h4>Internal Debrief 4 + Synthesis Begins</h4>
+          <p>Capture joint session output. Begin organizing all session data into MVP spec framework: Absolute / Next Phase / Nice-to-Have.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 2: May -->
+<div class="phase-section" id="phase2">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number">2</div>
+      <div class="phase-meta">
+        <h2>Synthesis + Prototype Start</h2>
+        <div class="dates">May 5–30, 2026 (Weeks 5–8)</div>
+        <p>Transform co-design output into an engineering-ready MVP spec. Begin building.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-week">
+        <div class="week-label">May 5–9 — Week 5</div>
+        <div class="week-card">
+          <span class="type-badge badge-joint">Joint</span>
+          <h4>Joint Session 2 (Virtual Follow-up)</h4>
+          <p>Share synthesis with all design partners. Confirm priorities. Final input before engineering begins.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week milestone">
+        <div class="week-label">May 12–16 — Week 6</div>
+        <div class="week-card">
+          <span class="type-badge badge-milestone">Milestone</span>
+          <h4>MVP Spec Complete</h4>
+          <p>Absolute / Next Phase / Nice-to-Have categories finalized. All design partners have reviewed and provided input. Engineering feasibility confirmed by Raju.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">May 19–23 — Week 7</div>
+        <div class="week-card">
+          <span class="type-badge badge-engineering">Engineering</span>
+          <h4>Prototype Sprint Start</h4>
+          <p>Engineering begins building. AI agents handle implementation. Design partners notified that build phase has begun.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week prep">
+        <div class="week-label">May 26–30 — Week 8</div>
+        <div class="week-card">
+          <span class="type-badge badge-internal">Checkpoint</span>
+          <h4>First Internal Prototype Review</h4>
+          <p>Steve, Sarah, Patrick review first prototype checkpoint. Ready for design partner feedback?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3: June-July -->
+<div class="phase-section" id="phase3">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number">3</div>
+      <div class="phase-meta">
+        <h2>Build + Feedback Loops</h2>
+        <div class="dates">June 2 – July 31, 2026 (Weeks 9–17)</div>
+        <p>Product built predominantly by AI agents. Design partners provide continuous feedback that routes directly to product decisions.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-week">
+        <div class="week-label">Jun 2–6 — Week 9</div>
+        <div class="week-card">
+          <span class="type-badge badge-joint">Check-in</span>
+          <h4>Design Partner Check-in 1</h4>
+          <p>Show first prototype to design partners. Gather reactions. 30 min per group (publishers / districts).</p>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">Jun 16–20 — Week 11</div>
+        <div class="week-card">
+          <span class="type-badge badge-milestone">Survey</span>
+          <h4>Design Partner Survey 1</h4>
+          <p>Structured feedback on prototype direction. Specific questions about priority features, usability, completeness.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">Jun 30–Jul 4 — Week 13</div>
+        <div class="week-card">
+          <span class="type-badge badge-joint">Check-in</span>
+          <h4>Design Partner Check-in 2</h4>
+          <p>Updated prototype incorporating round 1 feedback. Show how their input shaped the build.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week">
+        <div class="week-label">Jul 14–18 — Week 15</div>
+        <div class="week-card">
+          <span class="type-badge badge-milestone">Survey</span>
+          <h4>Design Partner Survey 2 — Pre-Launch Readiness</h4>
+          <p>Is this ready? What's missing? Would you use this? Final structured input before launch.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week milestone">
+        <div class="week-label">Jul 21–25 — Week 16</div>
+        <div class="week-card">
+          <span class="type-badge badge-milestone">Quality Gate</span>
+          <h4>Final Quality Review</h4>
+          <p>Steve + Sarah review product against original MVP spec and cumulative design partner feedback. Go/no-go decision.</p>
+        </div>
+      </div>
+
+      <div class="timeline-week milestone">
+        <div class="week-label">Jul 28–31 — Week 17</div>
+        <div class="week-card">
+          <span class="type-badge badge-joint">Joint</span><span class="type-badge badge-milestone">Launch</span>
+          <h4>Design Partner Preview Event</h4>
+          <p>All partners see the final product before any external launch. Celebration of co-creation. First access granted.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Team Section -->
+<div class="phase-section" id="team">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number" style="background: var(--bm-eigengrau);">T</div>
+      <div class="phase-meta">
+        <h2>Team & Roles</h2>
+        <p>Clear ownership. Every session has defined roles. Every decision has an owner.</p>
+      </div>
+    </div>
+
+    <table class="team-table">
+      <thead>
+        <tr><th>Person</th><th>Role</th><th>In Sessions</th><th>Between Sessions</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Steve Wandler</td><td>Founder / Facilitator</td><td>Opens with vision, facilitates discussion, makes real-time decisions</td><td>Reviews all materials, approves external comms, strategic direction</td></tr>
+        <tr><td>Natasha Flanders</td><td>Publisher BD</td><td>Co-facilitates publisher sessions, manages publisher relationships</td><td>Recruitment, logistics, publisher follow-ups, relationship health</td></tr>
+        <tr><td>Sarah El Massry</td><td>Product Owner</td><td>Captures product implications in real time, translates to spec</td><td>MVP spec ownership, prototype direction, mockup/concept prep</td></tr>
+        <tr><td>Patrick Reid</td><td>CS + Technical</td><td>Answers data/technical questions, provides CS workflow context</td><td>Pilot logistics, data submission support, district coordination</td></tr>
+        <tr><td>Jan Gilboy</td><td>Legal (not in sessions)</td><td>—</td><td>Reviews all materials for IP/legal, manages NDA/MOU pipeline</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Feedback Section -->
+<div class="phase-section" id="feedback" style="background: var(--bm-bg-warm);">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number" style="background: var(--bm-pumpkin);">F</div>
+      <div class="phase-meta">
+        <h2>Feedback Loop Architecture</h2>
+        <p>Agentic first. Recorded feedback processed by AI, not manually compiled. Feedback routes to product decisions in under 48 hours.</p>
+      </div>
+    </div>
+
+    <div class="feedback-flow">
+      <div class="flow-step"><span class="icon">🎙️</span>Recording / Input</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="icon">📝</span>Transcription</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="icon">🤖</span>AI Extraction</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="icon">🔀</span>Routing</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="icon">🎯</span>Product Decision</div>
+    </div>
+
+    <div class="cards-grid" style="margin-top: 32px;">
+      <div class="info-card">
+        <h3>Collection Channels</h3>
+        <ul>
+          <li>Bi-weekly video check-ins (recorded, transcribed)</li>
+          <li>Monthly structured surveys (Google Forms)</li>
+          <li>Shared Slack channel for ad hoc feedback</li>
+          <li>Direct conversations (Natasha/Patrick capture)</li>
+          <li>Prototype usage analytics (PostHog)</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>AI Extraction Targets</h3>
+        <ul>
+          <li>Feature requests → Jira tickets</li>
+          <li>Pain points → Product priority input</li>
+          <li>Validation signals → Confidence markers</li>
+          <li>Concerns → Risk register</li>
+          <li>Workflow insights → Spec refinement</li>
+          <li>Quotable moments → Messaging (with permission)</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Routing Rules</h3>
+        <ul>
+          <li>Critical blocker → Steve + Sarah same day</li>
+          <li>Feature request → Sarah → Jira within 48 hrs</li>
+          <li>Usability concern → Next sprint planning</li>
+          <li>Strategic insight → Steve weekly review</li>
+          <li>Legal/compliance flag → Jan + Steve same day</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quality Section -->
+<div class="phase-section" id="quality">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number" style="background: var(--bm-pumpkin);">Q</div>
+      <div class="phase-meta">
+        <h2>Quality Control Checkpoints</h2>
+        <p>Built-in quality gates at every phase. Red flags trigger immediate escalation.</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="info-card">
+        <h3>Pre-Program (Before Apr 1)</h3>
+        <ul>
+          <li>3–5 publishers confirmed</li>
+          <li>3–5 districts confirmed</li>
+          <li>All materials PROD-002/PROD-004 compliant</li>
+          <li>Legal clearance on vision docs</li>
+          <li>Recording consent from all participants</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>During Co-Design (April)</h3>
+        <ul>
+          <li>Capture template complete within 48 hrs per session</li>
+          <li>No silent participant dropouts</li>
+          <li>Cross-session synthesis after each pair</li>
+          <li>Emerging patterns documented</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Synthesis (May)</h3>
+        <ul>
+          <li>MVP spec with Absolute / Next / Nice categories</li>
+          <li>All design partners reviewed + commented</li>
+          <li>Engineering feasibility confirmed</li>
+          <li>Timeline realistic per Raju</li>
+        </ul>
+      </div>
+      <div class="info-card warning">
+        <h3>Red Flags — Stop & Escalate</h3>
+        <ul>
+          <li>Design partner drops out without explanation</li>
+          <li>Feedback consistently contradicts direction</li>
+          <li>Engineering slips more than 2 weeks</li>
+          <li>Legal concern about content/IP</li>
+          <li>Any external leak of Content Scanner details</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Collateral Section -->
+<div class="phase-section" style="background: var(--bm-bg-cool);">
+  <div class="container">
+    <div class="phase-header">
+      <div class="phase-number" style="background: var(--bm-deep-green);">C</div>
+      <div class="phase-meta">
+        <h2>Collateral Plan</h2>
+        <p>What materials need to exist, when, and who owns them.</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="info-card">
+        <h3>Publisher-Facing</h3>
+        <ul>
+          <li>Design Partner Invitation Brief (1-pager)</li>
+          <li>Content Scanner Vision Overview (NDA-only, 2-3 pages)</li>
+          <li>Publisher Context Mechanism Concept (mockup)</li>
+          <li>Publisher Portal Concept (wireframes)</li>
+          <li>Data Submission Guide (technical)</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>District-Facing</h3>
+        <ul>
+          <li>Design Partner Invitation Brief (1-pager)</li>
+          <li>Intelligence Card Enhancement Mockup</li>
+          <li>Compliance Mapping Concept (SB 13, HB 900)</li>
+          <li>Book Review Replacement Concept</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Internal</h3>
+        <ul>
+          <li>Facilitation Guides (per session)</li>
+          <li>Session Capture Template</li>
+          <li>Synthesis Framework (session → spec)</li>
+          <li>Feedback Loop Playbook (for build phase)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    <div class="brand">Bookmarked</div>
+    <p>Content Scanner Design Partner Program — DRAFT Framework v1.0 — March 22, 2026</p>
+    <p style="margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.5);">All dates, participants, and plans require Steve's review before external communication.</p>
+  </div>
+</div>
+
+</body>
+</html>

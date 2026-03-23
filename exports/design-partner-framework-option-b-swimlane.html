@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Scanner Design Partner Program — Option B: Swimlane View</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-teal-dark: #0D5A52;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-white: #FFFFFF;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-warm: #F8F5F0;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, sans-serif;
+  --bm-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --bm-shadow-md: 0 2px 12px rgba(0,0,0,0.06);
+  --bm-shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+  --bm-radius-md: 8px;
+  --bm-radius-lg: 12px;
+  --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--bm-font-family); color: var(--bm-eigengrau); background: var(--bm-bg-white); -webkit-font-smoothing: antialiased; }
+
+/* Header */
+.header { background: var(--bm-gradient-hero); padding: 56px 0 40px; color: white; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.draft-badge { display: inline-block; background: rgba(255,105,46,0.9); color: white; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 16px; }
+.header h1 { font-size: 38px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+.header p { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 600px; margin-top: 12px; line-height: 1.5; }
+.subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px; font-style: italic; }
+
+/* Swimlane Grid */
+.swimlane-section { padding: 48px 0; }
+.swimlane-section h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+.swimlane-section .section-sub { font-size: 15px; color: var(--bm-secondary-text); margin-bottom: 32px; }
+
+.swimlane-grid {
+  display: grid;
+  grid-template-columns: 160px repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--bm-border-light);
+  border-radius: var(--bm-radius-lg);
+  overflow: hidden;
+  background: white;
+  box-shadow: var(--bm-shadow-md);
+}
+
+/* Month headers */
+.month-header {
+  background: var(--bm-deep-green);
+  color: white;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+.month-header:last-child { border-right: none; }
+.lane-corner {
+  background: var(--bm-eigengrau);
+  color: white;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+}
+
+/* Lane labels */
+.lane-label {
+  background: var(--bm-bg-cool);
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bm-eigengrau);
+  border-right: 1px solid var(--bm-border-light);
+  border-bottom: 1px solid var(--bm-border-light);
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+.lane-label .lane-icon { font-size: 20px; }
+.lane-label .lane-owner { font-size: 11px; font-weight: 500; color: var(--bm-muted-gray); }
+
+/* Lane cells */
+.lane-cell {
+  padding: 12px;
+  border-right: 1px solid var(--bm-border-light);
+  border-bottom: 1px solid var(--bm-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lane-cell:last-child { border-right: none; }
+
+/* Activity chips */
+.chip {
+  padding: 8px 12px;
+  border-radius: var(--bm-radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.chip-publisher { background: rgba(18,163,140,0.1); color: var(--bm-deep-green); border-left: 3px solid var(--bm-teal-accent); }
+.chip-district { background: rgba(255,105,46,0.08); color: #C44A0A; border-left: 3px solid var(--bm-pumpkin); }
+.chip-joint { background: rgba(16,24,40,0.06); color: var(--bm-eigengrau); border-left: 3px solid var(--bm-eigengrau); }
+.chip-internal { background: rgba(156,163,175,0.1); color: var(--bm-muted-gray); border-left: 3px solid var(--bm-muted-gray); }
+.chip-milestone { background: rgba(255,105,46,0.12); color: var(--bm-pumpkin); border-left: 3px solid var(--bm-pumpkin); font-weight: 700; }
+.chip-engineering { background: rgba(18,163,140,0.06); color: var(--bm-teal-accent); border-left: 3px solid var(--bm-teal-accent); }
+.chip-comms { background: rgba(16,117,105,0.08); color: var(--bm-deep-green); border-left: 3px solid var(--bm-deep-green); }
+.chip-empty { background: transparent; border: 1px dashed var(--bm-border-light); color: var(--bm-muted-gray); font-style: italic; font-weight: 400; }
+.chip small { display: block; font-size: 11px; font-weight: 400; color: var(--bm-muted-gray); margin-top: 2px; }
+
+/* Workstream Details */
+.workstream-section { padding: 48px 0; background: var(--bm-bg-cool); }
+.ws-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
+.ws-card { background: white; border-radius: var(--bm-radius-lg); padding: 28px; box-shadow: var(--bm-shadow-sm); border: 1px solid var(--bm-border-light); }
+.ws-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.ws-card .ws-owner { font-size: 12px; color: var(--bm-teal-accent); font-weight: 600; margin-bottom: 16px; }
+.ws-card ul { list-style: none; }
+.ws-card li { font-size: 14px; color: var(--bm-secondary-text); padding: 5px 0; padding-left: 18px; position: relative; line-height: 1.4; }
+.ws-card li::before { content: '•'; position: absolute; left: 0; color: var(--bm-teal-accent); font-weight: 700; }
+.ws-card.accent-top { border-top: 3px solid var(--bm-teal-accent); }
+.ws-card.warning-top { border-top: 3px solid var(--bm-pumpkin); }
+
+/* Feedback Architecture */
+.feedback-section { padding: 48px 0; }
+.pipeline-visual {
+  display: flex;
+  gap: 2px;
+  margin: 32px 0;
+  border-radius: var(--bm-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--bm-shadow-md);
+}
+.pipeline-stage {
+  flex: 1;
+  padding: 24px 16px;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+.pipeline-stage:nth-child(1) { background: var(--bm-eigengrau); }
+.pipeline-stage:nth-child(2) { background: #1D2939; }
+.pipeline-stage:nth-child(3) { background: var(--bm-deep-green); }
+.pipeline-stage:nth-child(4) { background: var(--bm-teal-accent); }
+.pipeline-stage:nth-child(5) { background: #0D5A52; }
+.pipeline-stage .stage-icon { font-size: 28px; display: block; margin-bottom: 8px; }
+.pipeline-stage .stage-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.pipeline-stage .stage-desc { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; line-height: 1.4; }
+
+/* Channels grid */
+.channels-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 32px; }
+.channel-card { background: white; border: 1px solid var(--bm-border-light); border-radius: var(--bm-radius-md); padding: 20px 16px; text-align: center; box-shadow: var(--bm-shadow-sm); }
+.channel-card .ch-icon { font-size: 28px; margin-bottom: 8px; }
+.channel-card .ch-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.channel-card .ch-cadence { font-size: 12px; color: var(--bm-teal-accent); font-weight: 600; }
+.channel-card .ch-desc { font-size: 11px; color: var(--bm-muted-gray); margin-top: 6px; line-height: 1.4; }
+
+/* Quality Section */
+.quality-section { padding: 48px 0; background: var(--bm-bg-warm); }
+.quality-timeline { display: flex; gap: 0; margin-top: 24px; position: relative; }
+.quality-timeline::before { content: ''; position: absolute; top: 28px; left: 0; right: 0; height: 3px; background: var(--bm-border-light); z-index: 0; }
+.qt-phase { flex: 1; text-align: center; position: relative; z-index: 1; }
+.qt-dot { width: 20px; height: 20px; border-radius: 50%; margin: 18px auto 12px; border: 3px solid white; box-shadow: 0 0 0 2px var(--bm-teal-accent); }
+.qt-dot.green { background: var(--bm-teal-accent); }
+.qt-dot.orange { background: var(--bm-pumpkin); box-shadow: 0 0 0 2px var(--bm-pumpkin); }
+.qt-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--bm-eigengrau); margin-bottom: 4px; }
+.qt-date { font-size: 11px; color: var(--bm-muted-gray); margin-bottom: 8px; }
+.qt-items { font-size: 12px; color: var(--bm-secondary-text); line-height: 1.5; text-align: left; padding: 0 8px; }
+
+/* Red flags */
+.red-flags { margin-top: 32px; background: white; border-radius: var(--bm-radius-lg); padding: 24px; border-left: 4px solid var(--bm-pumpkin); }
+.red-flags h3 { font-size: 16px; font-weight: 700; color: var(--bm-pumpkin); margin-bottom: 12px; }
+.red-flags ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.red-flags li { font-size: 13px; color: var(--bm-secondary-text); padding-left: 18px; position: relative; }
+.red-flags li::before { content: '⚠'; position: absolute; left: 0; }
+
+/* Footer */
+.footer { background: var(--bm-deep-green); color: white; padding: 40px 0; text-align: center; }
+.footer .brand { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.footer p { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+@media (max-width: 1024px) {
+  .swimlane-grid { grid-template-columns: 120px repeat(4, 1fr); font-size: 11px; }
+  .ws-grid, .channels-grid { grid-template-columns: 1fr; }
+  .quality-timeline { flex-direction: column; gap: 16px; }
+  .quality-timeline::before { display: none; }
+  .red-flags ul { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .swimlane-grid { display: none; }
+  .header h1 { font-size: 28px; }
+  .pipeline-visual { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="container">
+    <div class="draft-badge">DRAFT — Requires Team Review</div>
+    <h1>Content Scanner Design Partner Program</h1>
+    <p>Five parallel workstreams running April through July 2026. Swimlane view showing who does what, when.</p>
+    <div class="subtitle">Option B: Workstream / Swimlane Architecture</div>
+  </div>
+</div>
+
+<!-- Swimlane Grid -->
+<div class="swimlane-section">
+  <div class="container">
+    <h2>Program Swimlanes — April through July</h2>
+    <p class="section-sub">Five parallel tracks of work. Each row is a workstream with a clear owner. Columns show monthly focus.</p>
+
+    <div class="swimlane-grid">
+      <!-- Header Row -->
+      <div class="lane-corner">Workstream</div>
+      <div class="month-header">April<br><small style="font-weight:400;font-size:11px;opacity:0.7">Co-Design</small></div>
+      <div class="month-header">May<br><small style="font-weight:400;font-size:11px;opacity:0.7">Synthesis</small></div>
+      <div class="month-header">June<br><small style="font-weight:400;font-size:11px;opacity:0.7">Build + Feedback</small></div>
+      <div class="month-header">July<br><small style="font-weight:400;font-size:11px;opacity:0.7">Build + Launch</small></div>
+
+      <!-- Row 1: Sessions -->
+      <div class="lane-label">
+        <span class="lane-icon">🎯</span>
+        Design Sessions
+        <span class="lane-owner">Steve + Natasha</span>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-publisher">Publisher Session 1<small>Apr 6–7 · 3-5 publishers</small></div>
+        <div class="chip chip-district">District Session 1<small>Apr 14–15 · 3-5 districts</small></div>
+        <div class="chip chip-publisher">Publisher Session 2<small>Apr 21–22</small></div>
+        <div class="chip chip-district">District Session 2<small>Apr 28</small></div>
+        <div class="chip chip-joint">Joint Session 1<small>Apr 29 · All partners</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-joint">Joint Session 2<small>May 5–9 · Virtual follow-up</small></div>
+        <div class="chip chip-empty">Sessions complete</div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-joint">Check-in 1<small>Week 9 · 30 min/group</small></div>
+        <div class="chip chip-joint">Survey 1<small>Week 11 · Async</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-joint">Check-in 2<small>Week 13 · 30 min/group</small></div>
+        <div class="chip chip-joint">Survey 2<small>Week 15 · Pre-launch</small></div>
+        <div class="chip chip-milestone">Preview Event<small>Jul 28–31</small></div>
+      </div>
+
+      <!-- Row 2: Product -->
+      <div class="lane-label">
+        <span class="lane-icon">🔧</span>
+        Product & Engineering
+        <span class="lane-owner">Sarah + Raju</span>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Session capture<small>Real-time product implications</small></div>
+        <div class="chip chip-internal">Mockup prep<small>Concepts for sessions 2+</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-milestone">MVP Spec Draft<small>Absolute / Next / Nice</small></div>
+        <div class="chip chip-engineering">Sprint Start<small>May 19 · AI-agent build</small></div>
+        <div class="chip chip-internal">Internal Prototype Review<small>May 26–30</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-engineering">Sprint continues<small>Incorporating feedback R1</small></div>
+        <div class="chip chip-engineering">Sprint continues<small>Incorporating survey data</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-engineering">Final integration<small>Feedback R2 incorporated</small></div>
+        <div class="chip chip-milestone">Quality Gate<small>Jul 21–25 · Go/no-go</small></div>
+      </div>
+
+      <!-- Row 3: Collateral -->
+      <div class="lane-label">
+        <span class="lane-icon">📄</span>
+        Collateral & Comms
+        <span class="lane-owner">Steve + Natasha</span>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-comms">Invitation briefs<small>Publisher + District versions</small></div>
+        <div class="chip chip-comms">Pre-session context docs<small>5 days before each session</small></div>
+        <div class="chip chip-comms">Post-session summaries<small>24-hr turnaround</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-comms">"What we heard" synthesis<small>Shared with all partners</small></div>
+        <div class="chip chip-comms">MVP spec for review<small>Partner comment period</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-comms">"What you said → built"<small>Monthly impact update</small></div>
+        <div class="chip chip-comms">Survey distribution<small>Structured questions</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-comms">"What you said → built" #2<small>Monthly impact update</small></div>
+        <div class="chip chip-comms">Preview event invite<small>All design partners</small></div>
+      </div>
+
+      <!-- Row 4: Legal -->
+      <div class="lane-label">
+        <span class="lane-icon">⚖️</span>
+        Legal & Compliance
+        <span class="lane-owner">Jan</span>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Material review<small>All docs checked for PROD-002/004</small></div>
+        <div class="chip chip-internal">NDA status<small>Confirm all publishers cleared</small></div>
+        <div class="chip chip-internal">Recording consent<small>All participants</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Spec review<small>IP implications check</small></div>
+        <div class="chip chip-empty">Standby</div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Monitor for IP flags<small>From feedback channels</small></div>
+        <div class="chip chip-empty">Standby</div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Pre-launch legal review<small>Before partner preview</small></div>
+      </div>
+
+      <!-- Row 5: Internal Ops -->
+      <div class="lane-label">
+        <span class="lane-icon">⚙️</span>
+        Internal Operations
+        <span class="lane-owner">Steve + Patrick</span>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Prep sessions<small>Before each co-design</small></div>
+        <div class="chip chip-internal">Debriefs<small>After each co-design</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Synthesis work sessions<small>Session data → spec</small></div>
+        <div class="chip chip-internal">Feedback loop setup<small>Slack, surveys, analytics</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Feedback processing<small>AI agent pipeline active</small></div>
+        <div class="chip chip-internal">Weekly digests<small>Steve review</small></div>
+      </div>
+      <div class="lane-cell">
+        <div class="chip chip-internal">Pre-launch checklist<small>All quality gates passed</small></div>
+        <div class="chip chip-internal">Preview event logistics<small>Virtual event setup</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Workstream Details -->
+<div class="workstream-section">
+  <div class="container">
+    <h2>Workstream Deep Dives</h2>
+    <p class="section-sub" style="color:var(--bm-secondary-text);margin-bottom:24px;">Key deliverables and success criteria for each track.</p>
+
+    <div class="ws-grid">
+      <div class="ws-card accent-top">
+        <h3>Design Sessions</h3>
+        <div class="ws-owner">Steve (facilitator) + Natasha (publisher co-facilitator)</div>
+        <ul>
+          <li>6 co-design sessions in April (2 publisher, 2 district, 2 joint)</li>
+          <li>3–5 publishers representing different segments</li>
+          <li>3–5 districts with strong librarian relationships</li>
+          <li>Each session: 60–90 min, recorded with consent</li>
+          <li>Internal prep 3 days before, debrief same day after</li>
+          <li>Success: 80%+ attendance, 3+ surprise insights</li>
+        </ul>
+      </div>
+      <div class="ws-card accent-top">
+        <h3>Product & Engineering</h3>
+        <div class="ws-owner">Sarah (PO) + Raju (VP Eng)</div>
+        <ul>
+          <li>Real-time capture of product implications during sessions</li>
+          <li>Mockup/concept prep between sessions</li>
+          <li>MVP spec: Absolute / Next Phase / Nice-to-Have</li>
+          <li>Prototype sprint start May 19</li>
+          <li>AI agent-driven build (June–July)</li>
+          <li>Success: spec grounded in partner input, not assumptions</li>
+        </ul>
+      </div>
+      <div class="ws-card accent-top">
+        <h3>Collateral & Communications</h3>
+        <div class="ws-owner">Steve + Natasha</div>
+        <ul>
+          <li>Publisher + district invitation briefs (1-pagers)</li>
+          <li>Content Scanner Vision Overview (NDA-only)</li>
+          <li>Pre-session context docs (T-5 days)</li>
+          <li>24-hour post-session summaries</li>
+          <li>Monthly "What you said → What we built" updates</li>
+          <li>All materials PROD-002/PROD-004 compliant</li>
+        </ul>
+      </div>
+      <div class="ws-card warning-top">
+        <h3>Legal & Compliance</h3>
+        <div class="ws-owner">Jan Gilboy</div>
+        <ul>
+          <li>All materials reviewed for IP implications</li>
+          <li>NDA status confirmed for all publisher participants</li>
+          <li>Recording consent from all participants</li>
+          <li>Monitor feedback channels for legal flags</li>
+          <li>Pre-launch legal review before preview event</li>
+          <li>Red flag: any external leak triggers containment</li>
+        </ul>
+      </div>
+      <div class="ws-card accent-top">
+        <h3>Internal Operations</h3>
+        <div class="ws-owner">Steve + Patrick</div>
+        <ul>
+          <li>Prep sessions before each co-design (60 min)</li>
+          <li>Same-day debriefs after each session (45 min)</li>
+          <li>Synthesis work sessions (May)</li>
+          <li>Feedback loop infrastructure setup</li>
+          <li>AI agent processing pipeline activation</li>
+          <li>Weekly feedback digests for Steve</li>
+        </ul>
+      </div>
+      <div class="ws-card warning-top">
+        <h3>Recruitment (Pre-Program)</h3>
+        <div class="ws-owner">Natasha (publishers) + Patrick (districts)</div>
+        <ul>
+          <li>Publisher targets: Saddleback (confirmed), Cajun Kids, Lerner/Rosen, 1–2 TLA connections</li>
+          <li>District targets: engaged customers, active compliance challenges, post-testing availability</li>
+          <li>Personalized invitations (not templates)</li>
+          <li>15-min scoping calls before formal commitment</li>
+          <li>All confirmations by April 1</li>
+          <li>Steve approves all external communications</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback Architecture -->
+<div class="feedback-section">
+  <div class="container">
+    <h2>Feedback Loop Architecture</h2>
+    <p class="section-sub" style="color:var(--bm-secondary-text);margin-bottom:8px;">Agentic first — recorded feedback processed by AI agents, not manually compiled by humans.</p>
+
+    <div class="pipeline-visual">
+      <div class="pipeline-stage">
+        <span class="stage-icon">🎙️</span>
+        <div class="stage-title">Capture</div>
+        <div class="stage-desc">Recordings, surveys, Slack, conversations</div>
+      </div>
+      <div class="pipeline-stage">
+        <span class="stage-icon">📝</span>
+        <div class="stage-title">Transcribe</div>
+        <div class="stage-desc">Plaud / Whisper auto-transcription</div>
+      </div>
+      <div class="pipeline-stage">
+        <span class="stage-icon">🤖</span>
+        <div class="stage-title">Extract</div>
+        <div class="stage-desc">AI identifies features, pain points, validation, concerns</div>
+      </div>
+      <div class="pipeline-stage">
+        <span class="stage-icon">🔀</span>
+        <div class="stage-title">Route</div>
+        <div class="stage-desc">Jira, risk register, sprint planning, Steve digest</div>
+      </div>
+      <div class="pipeline-stage">
+        <span class="stage-icon">🎯</span>
+        <div class="stage-title">Act</div>
+        <div class="stage-desc">Product decision within 48 hours</div>
+      </div>
+    </div>
+
+    <div class="channels-grid">
+      <div class="channel-card">
+        <div class="ch-icon">📹</div>
+        <div class="ch-name">Video Check-ins</div>
+        <div class="ch-cadence">Bi-weekly</div>
+        <div class="ch-desc">30 min per group. Recorded and transcribed. Show prototype, gather reactions.</div>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">📊</div>
+        <div class="ch-name">Structured Surveys</div>
+        <div class="ch-cadence">Monthly</div>
+        <div class="ch-desc">Google Forms. Specific questions about prototype direction and priorities.</div>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">💬</div>
+        <div class="ch-name">Slack Channel</div>
+        <div class="ch-cadence">Always-on</div>
+        <div class="ch-desc">#content-scanner-partners. AI monitors for themes and urgent issues.</div>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">🗣️</div>
+        <div class="ch-name">Direct Conversations</div>
+        <div class="ch-cadence">Ad hoc</div>
+        <div class="ch-desc">Natasha/Patrick capture and route to Slack channel or capture template.</div>
+      </div>
+      <div class="channel-card">
+        <div class="ch-icon">📈</div>
+        <div class="ch-name">Usage Analytics</div>
+        <div class="ch-cadence">Continuous</div>
+        <div class="ch-desc">PostHog events when partners test prototype. Engagement patterns auto-analyzed.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quality Section -->
+<div class="quality-section">
+  <div class="container">
+    <h2>Quality Control Timeline</h2>
+    <p class="section-sub" style="color:var(--bm-secondary-text);margin-bottom:8px;">Five quality gates from pre-program through launch.</p>
+
+    <div class="quality-timeline">
+      <div class="qt-phase">
+        <div class="qt-dot green"></div>
+        <div class="qt-label">Pre-Program</div>
+        <div class="qt-date">Before Apr 1</div>
+        <div class="qt-items">Participants confirmed. Materials compliant. Legal cleared. Consent obtained.</div>
+      </div>
+      <div class="qt-phase">
+        <div class="qt-dot green"></div>
+        <div class="qt-label">Post-Sessions</div>
+        <div class="qt-date">Apr 30</div>
+        <div class="qt-items">All captures complete. Cross-session synthesis done. Patterns documented.</div>
+      </div>
+      <div class="qt-phase">
+        <div class="qt-dot green"></div>
+        <div class="qt-label">Spec Lock</div>
+        <div class="qt-date">May 16</div>
+        <div class="qt-items">MVP spec finalized. Partners reviewed. Engineering signed off.</div>
+      </div>
+      <div class="qt-phase">
+        <div class="qt-dot orange"></div>
+        <div class="qt-label">Go / No-Go</div>
+        <div class="qt-date">Jul 21–25</div>
+        <div class="qt-items">Product vs. spec. Partner satisfaction. Technical readiness. Legal clearance.</div>
+      </div>
+      <div class="qt-phase">
+        <div class="qt-dot green"></div>
+        <div class="qt-label">Launch Ready</div>
+        <div class="qt-date">Jul 28</div>
+        <div class="qt-items">Preview event complete. Partners have first access. Launch comms approved.</div>
+      </div>
+    </div>
+
+    <div class="red-flags">
+      <h3>Red Flags — Stop and Escalate to Steve</h3>
+      <ul>
+        <li>Design partner drops out without explanation</li>
+        <li>Feedback consistently contradicts program direction</li>
+        <li>Engineering timeline slips more than 2 weeks</li>
+        <li>Legal concern raised about content or IP</li>
+        <li>Any external leak of Content Scanner details</li>
+        <li>Partner satisfaction trending negative</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="container">
+    <div class="brand">Bookmarked</div>
+    <p>Content Scanner Design Partner Program — DRAFT Framework v1.0 — March 22, 2026</p>
+    <p style="margin-top: 8px; font-size: 11px; color: rgba(255,255,255,0.4);">All dates, participants, and plans require Steve's review before external communication.</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Scanner Design Partner Program — Option C: Portal View</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-white: #FFFFFF;
+  --bm-pumpkin: #FF692E;
+  --bm-teal-dark: #0D5A52;
+  --bm-secondary-text: #475467;
+  --bm-muted-gray: #9CA3AF;
+  --bm-border-light: #E5E7EB;
+  --bm-bg-white: #FFFFFF;
+  --bm-bg-cool: #F8FAFC;
+  --bm-bg-warm: #F8F5F0;
+  --bm-bg-light: #F9FAFB;
+  --bm-font-family: 'Urbanist', Arial, sans-serif;
+  --bm-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --bm-shadow-md: 0 2px 12px rgba(0,0,0,0.06);
+  --bm-shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+  --bm-shadow-glow: 0 8px 24px rgba(18,163,140,0.2);
+  --bm-radius-md: 8px;
+  --bm-radius-lg: 12px;
+  --bm-radius-xl: 16px;
+  --bm-gradient-hero: linear-gradient(135deg, #0D5A52 0%, #107569 40%, #12A38C 100%);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--bm-font-family); color: var(--bm-eigengrau); background: var(--bm-bg-cool); -webkit-font-smoothing: antialiased; }
+
+/* Portal Layout */
+.portal-layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  background: var(--bm-eigengrau);
+  color: white;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sidebar-logo { font-size: 18px; font-weight: 800; color: white; letter-spacing: -0.02em; }
+.sidebar-sub { font-size: 11px; color: var(--bm-muted-gray); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.sidebar-draft { display: inline-block; background: rgba(255,105,46,0.8); color: white; font-size: 9px; font-weight: 700; letter-spacing: 1px; padding: 3px 8px; border-radius: 100px; margin-top: 8px; text-transform: uppercase; }
+
+.sidebar-nav { padding: 16px 0; }
+.nav-section-label { font-size: 10px; font-weight: 700; color: var(--bm-muted-gray); text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 20px 8px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; font-size: 14px; color: rgba(255,255,255,0.6);
+  cursor: pointer; transition: all 0.15s; text-decoration: none; border: none; background: none; width: 100%;
+}
+.nav-item:hover, .nav-item.active { color: white; background: rgba(255,255,255,0.06); }
+.nav-item.active { border-left: 3px solid var(--bm-teal-accent); padding-left: 17px; }
+.nav-icon { width: 18px; text-align: center; font-size: 14px; }
+.nav-badge { margin-left: auto; font-size: 11px; font-weight: 700; background: var(--bm-teal-accent); color: white; padding: 2px 8px; border-radius: 100px; }
+
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; position: absolute; bottom: 0; width: 100%; }
+.sidebar-footer p { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+/* Main Content */
+.main-content { padding: 32px; overflow-y: auto; }
+
+/* Page sections (toggled by JS) */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* Dashboard Cards */
+.dash-header { margin-bottom: 32px; }
+.dash-header h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; }
+.dash-header p { font-size: 16px; color: var(--bm-secondary-text); margin-top: 8px; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.kpi-card {
+  background: white; border-radius: var(--bm-radius-lg); padding: 24px;
+  box-shadow: var(--bm-shadow-sm); border: 1px solid var(--bm-border-light);
+  text-align: center;
+}
+.kpi-card .kpi-value { font-size: 36px; font-weight: 800; color: var(--bm-deep-green); line-height: 1.1; }
+.kpi-card .kpi-label { font-size: 13px; color: var(--bm-secondary-text); margin-top: 4px; font-weight: 500; }
+.kpi-card .kpi-sub { font-size: 11px; color: var(--bm-muted-gray); margin-top: 4px; }
+.kpi-card.highlight { border-top: 3px solid var(--bm-teal-accent); }
+.kpi-card.warning { border-top: 3px solid var(--bm-pumpkin); }
+.kpi-card.warning .kpi-value { color: var(--bm-pumpkin); }
+
+/* Progress Bar */
+.progress-section { margin-bottom: 32px; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.progress-header h3 { font-size: 16px; font-weight: 700; }
+.progress-header .progress-pct { font-size: 14px; font-weight: 700; color: var(--bm-teal-accent); }
+.progress-track { height: 10px; background: var(--bm-border-light); border-radius: 100px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--bm-deep-green), var(--bm-teal-accent)); border-radius: 100px; transition: width 0.6s ease; }
+.progress-phases { display: flex; margin-top: 8px; }
+.progress-phase { flex: 1; font-size: 11px; color: var(--bm-muted-gray); text-align: center; }
+.progress-phase.current { color: var(--bm-teal-accent); font-weight: 700; }
+
+/* Two Column Layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+
+/* Content Cards */
+.content-card {
+  background: white; border-radius: var(--bm-radius-lg); padding: 24px;
+  box-shadow: var(--bm-shadow-sm); border: 1px solid var(--bm-border-light);
+}
+.content-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+.content-card .card-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--bm-teal-accent); margin-bottom: 8px; }
+
+/* Event List */
+.event-list { list-style: none; }
+.event-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--bm-border-light); }
+.event-item:last-child { border-bottom: none; }
+.event-date { min-width: 48px; text-align: center; }
+.event-date .day { font-size: 20px; font-weight: 800; color: var(--bm-deep-green); line-height: 1; }
+.event-date .month { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--bm-muted-gray); letter-spacing: 0.5px; }
+.event-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.event-info p { font-size: 12px; color: var(--bm-muted-gray); }
+.event-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
+.tag-publisher { background: rgba(18,163,140,0.1); color: var(--bm-deep-green); }
+.tag-district { background: rgba(255,105,46,0.1); color: #C44A0A; }
+.tag-joint { background: rgba(16,24,40,0.08); color: var(--bm-eigengrau); }
+.tag-internal { background: rgba(156,163,175,0.12); color: var(--bm-muted-gray); }
+.tag-milestone { background: rgba(255,105,46,0.12); color: var(--bm-pumpkin); }
+
+/* Partner Cards */
+.partner-card { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--bm-border-light); align-items: center; }
+.partner-card:last-child { border-bottom: none; }
+.partner-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; flex-shrink: 0; }
+.avatar-pub { background: var(--bm-deep-green); }
+.avatar-dist { background: var(--bm-pumpkin); }
+.partner-info h4 { font-size: 14px; font-weight: 600; }
+.partner-info p { font-size: 12px; color: var(--bm-muted-gray); }
+.partner-status { margin-left: auto; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+.status-confirmed { background: rgba(18,163,140,0.12); color: var(--bm-teal-accent); }
+.status-pending { background: rgba(255,105,46,0.12); color: var(--bm-pumpkin); }
+.status-prospect { background: rgba(156,163,175,0.12); color: var(--bm-muted-gray); }
+
+/* Collateral Checklist */
+.checklist { list-style: none; }
+.checklist li { display: flex; gap: 10px; padding: 8px 0; font-size: 14px; color: var(--bm-secondary-text); align-items: flex-start; }
+.check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.check-done { background: var(--bm-teal-accent); color: white; }
+.check-pending { background: var(--bm-border-light); color: var(--bm-muted-gray); }
+.check-urgent { background: var(--bm-pumpkin); color: white; }
+
+/* Pipeline visual */
+.pipeline-horizontal { display: flex; gap: 2px; border-radius: var(--bm-radius-lg); overflow: hidden; margin: 24px 0; box-shadow: var(--bm-shadow-md); }
+.pipe-stage { flex: 1; padding: 20px 12px; text-align: center; }
+.pipe-stage .pipe-icon { font-size: 24px; margin-bottom: 6px; }
+.pipe-stage .pipe-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.pipe-stage .pipe-desc { font-size: 11px; margin-top: 4px; line-height: 1.4; }
+.pipe-1 { background: var(--bm-eigengrau); color: white; }
+.pipe-1 .pipe-desc { color: rgba(255,255,255,0.6); }
+.pipe-2 { background: #1D2939; color: white; }
+.pipe-2 .pipe-desc { color: rgba(255,255,255,0.6); }
+.pipe-3 { background: var(--bm-deep-green); color: white; }
+.pipe-3 .pipe-desc { color: rgba(255,255,255,0.7); }
+.pipe-4 { background: var(--bm-teal-accent); color: white; }
+.pipe-4 .pipe-desc { color: rgba(255,255,255,0.7); }
+.pipe-5 { background: var(--bm-teal-dark); color: white; }
+.pipe-5 .pipe-desc { color: rgba(255,255,255,0.6); }
+
+/* Channel cards */
+.channel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.ch-card { background: var(--bm-bg-cool); border-radius: var(--bm-radius-md); padding: 16px; border: 1px solid var(--bm-border-light); }
+.ch-card .ch-icon { font-size: 20px; margin-bottom: 6px; }
+.ch-card h4 { font-size: 13px; font-weight: 700; }
+.ch-card .ch-cadence { font-size: 11px; color: var(--bm-teal-accent); font-weight: 600; }
+.ch-card p { font-size: 12px; color: var(--bm-muted-gray); margin-top: 4px; line-height: 1.4; }
+
+/* Quality gates */
+.gate-list { list-style: none; }
+.gate-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--bm-border-light); align-items: flex-start; }
+.gate-item:last-child { border-bottom: none; }
+.gate-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.gate-green { background: var(--bm-teal-accent); }
+.gate-orange { background: var(--bm-pumpkin); }
+.gate-info h4 { font-size: 14px; font-weight: 600; }
+.gate-info .gate-date { font-size: 12px; color: var(--bm-teal-accent); font-weight: 600; }
+.gate-info p { font-size: 13px; color: var(--bm-secondary-text); margin-top: 2px; }
+
+/* Red flag banner */
+.red-flag-banner {
+  background: white; border-radius: var(--bm-radius-lg); padding: 20px 24px;
+  border-left: 4px solid var(--bm-pumpkin); margin-top: 24px;
+}
+.red-flag-banner h3 { font-size: 15px; font-weight: 700; color: var(--bm-pumpkin); margin-bottom: 8px; }
+.red-flag-banner .flags { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.red-flag-banner .flags span { font-size: 13px; color: var(--bm-secondary-text); }
+
+/* Team section */
+.team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.team-member { text-align: center; background: var(--bm-bg-cool); border-radius: var(--bm-radius-md); padding: 20px 12px; }
+.team-member .tm-avatar { width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: white; }
+.team-member h4 { font-size: 13px; font-weight: 700; }
+.team-member .tm-role { font-size: 11px; color: var(--bm-teal-accent); font-weight: 600; }
+.team-member p { font-size: 11px; color: var(--bm-muted-gray); margin-top: 6px; line-height: 1.4; }
+
+@media (max-width: 1024px) {
+  .portal-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(3, 1fr); }
+  .channel-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .kpi-row { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .pipeline-horizontal { flex-direction: column; }
+  .red-flag-banner .flags { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="portal-layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">Bookmarked</div>
+      <div class="sidebar-sub">Design Partner Portal</div>
+      <div class="sidebar-draft">DRAFT</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Program</div>
+      <button class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon">📊</span> Dashboard <span class="nav-badge">Live</span></button>
+      <button class="nav-item" onclick="showSection('schedule')"><span class="nav-icon">📅</span> Schedule</button>
+      <button class="nav-item" onclick="showSection('partners')"><span class="nav-icon">🤝</span> Partners</button>
+      <button class="nav-item" onclick="showSection('collateral')"><span class="nav-icon">📄</span> Collateral</button>
+
+      <div class="nav-section-label">Feedback</div>
+      <button class="nav-item" onclick="showSection('feedback')"><span class="nav-icon">🔄</span> Feedback Loops</button>
+      <button class="nav-item" onclick="showSection('quality')"><span class="nav-icon">✅</span> Quality Gates</button>
+
+      <div class="nav-section-label">Team</div>
+      <button class="nav-item" onclick="showSection('team')"><span class="nav-icon">👥</span> Team & Roles</button>
+    </div>
+    <div class="sidebar-footer">
+      <p>DRAFT — March 22, 2026</p>
+      <p>v1.0 · Steve reviews in AM</p>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Dashboard -->
+    <div class="page-section active" id="dashboard">
+      <div class="dash-header">
+        <h1>Program Dashboard</h1>
+        <p>Content Scanner Design Partner Program — April through July 2026</p>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card highlight">
+          <div class="kpi-value">6</div>
+          <div class="kpi-label">Co-Design Sessions</div>
+          <div class="kpi-sub">2 publisher · 2 district · 2 joint</div>
+        </div>
+        <div class="kpi-card highlight">
+          <div class="kpi-value">3–5</div>
+          <div class="kpi-label">Publisher Partners</div>
+          <div class="kpi-sub">Saddleback confirmed + recruiting</div>
+        </div>
+        <div class="kpi-card highlight">
+          <div class="kpi-value">3–5</div>
+          <div class="kpi-label">District Partners</div>
+          <div class="kpi-sub">Recruiting from active customers</div>
+        </div>
+        <div class="kpi-card warning">
+          <div class="kpi-value">10</div>
+          <div class="kpi-label">Days to Kickoff</div>
+          <div class="kpi-sub">Recruitment must close by Apr 1</div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-header">
+          <h3>Program Progress</h3>
+          <div class="progress-pct">Pre-Program</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 5%;"></div>
+        </div>
+        <div class="progress-phases">
+          <div class="progress-phase current">Recruitment</div>
+          <div class="progress-phase">Co-Design (Apr)</div>
+          <div class="progress-phase">Synthesis (May)</div>
+          <div class="progress-phase">Build (Jun–Jul)</div>
+          <div class="progress-phase">Launch</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="content-card">
+          <div class="card-eyebrow">Next Up</div>
+          <h3>Upcoming Events</h3>
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-date"><div class="day">1</div><div class="month">Apr</div></div>
+              <div class="event-info">
+                <span class="event-tag tag-milestone">Deadline</span>
+                <h4>Recruitment Close</h4>
+                <p>All publisher and district participants confirmed</p>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date"><div class="day">3</div><div class="month">Apr</div></div>
+              <div class="event-info">
+                <span class="event-tag tag-internal">Internal</span>
+                <h4>Publisher Session 1 Prep</h4>
+                <p>Steve, Natasha, Sarah — finalize facilitation plan</p>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date"><div class="day">6</div><div class="month">Apr</div></div>
+              <div class="event-info">
+                <span class="event-tag tag-publisher">Publisher</span>
+                <h4>Publisher Co-Design Session 1</h4>
+                <p>What intelligence do publishers need back?</p>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date"><div class="day">14</div><div class="month">Apr</div></div>
+              <div class="event-info">
+                <span class="event-tag tag-district">District</span>
+                <h4>District Co-Design Session 1</h4>
+                <p>What does a Content Scanner report need to contain?</p>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date"><div class="day">29</div><div class="month">Apr</div></div>
+              <div class="event-info">
+                <span class="event-tag tag-joint">Joint</span>
+                <h4>Joint Session 1</h4>
+                <p>Publishers + districts together — prioritization exercise</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <div class="card-eyebrow">Action Items</div>
+          <h3>Pre-Program Checklist</h3>
+          <ul class="checklist">
+            <li><span class="check-icon check-done">✓</span> Saddleback MOU signed</li>
+            <li><span class="check-icon check-urgent">!</span> Finalize publisher participant list (3–5 total)</li>
+            <li><span class="check-icon check-urgent">!</span> Identify district participants (3–5 total)</li>
+            <li><span class="check-icon check-pending">○</span> Draft publisher invitation brief</li>
+            <li><span class="check-icon check-pending">○</span> Draft district invitation brief</li>
+            <li><span class="check-icon check-pending">○</span> Content Scanner Vision Overview (NDA-only)</li>
+            <li><span class="check-icon check-pending">○</span> Session facilitation guides</li>
+            <li><span class="check-icon check-pending">○</span> Session capture template</li>
+            <li><span class="check-icon check-pending">○</span> Legal review of all materials (PROD-002/004)</li>
+            <li><span class="check-icon check-pending">○</span> Recording consent process defined</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule -->
+    <div class="page-section" id="schedule">
+      <div class="dash-header">
+        <h1>Program Schedule</h1>
+        <p>All dates are DRAFT and require Steve's approval before external communication.</p>
+      </div>
+
+      <div class="content-card" style="margin-bottom: 24px;">
+        <div class="card-eyebrow">April — Co-Design Phase</div>
+        <h3>Six Sessions in Four Weeks</h3>
+        <ul class="event-list">
+          <li class="event-item"><div class="event-date"><div class="day">3–4</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Prep</span><h4>Publisher Session 1 Prep</h4><p>Steve, Natasha, Sarah — finalize participants, prep context docs, align facilitation</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">6–7</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-publisher">Publisher</span><h4>Publisher Co-Design Session 1</h4><p>Publisher intelligence needs, participation value prop, context mechanism</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">8</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Debrief</span><h4>Internal Debrief 1</h4><p>Synthesize publisher input → product implications</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">10–11</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Prep</span><h4>District Session 1 Prep</h4><p>Steve, Sarah, Patrick — prep informed by Publisher Session 1</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">14–15</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-district">District</span><h4>District Co-Design Session 1</h4><p>Content Scanner report format, review process replacement, confidence signals</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">16</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Debrief</span><h4>Internal Debrief 2</h4><p>District vs publisher input — alignment and divergence</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">17–18</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Prep</span><h4>Publisher Session 2 Prep</h4><p>Review Session 1 output, refine Session 2 agenda</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">21–22</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-publisher">Publisher</span><h4>Publisher Co-Design Session 2</h4><p>React to district needs, publisher portal concept, data submission workflow</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">24–26</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-internal">Prep</span><h4>District 2 + Joint Session Prep</h4><p>Combined prep for final district and joint sessions</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">28</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-district">District</span><h4>District Co-Design Session 2</h4><p>Publisher reality reactions, Intelligence Card refinement, compliance mapping</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">29</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-joint">Joint</span><h4>Joint Session 1 — Publishers + Districts</h4><p>Shared understanding. Prioritization exercise. What's essential vs. nice-to-have.</p></div></li>
+          <li class="event-item"><div class="event-date"><div class="day">30</div><div class="month">Apr</div></div><div class="event-info"><span class="event-tag tag-milestone">Milestone</span><h4>Synthesis Kickoff</h4><p>Begin organizing all session data into MVP spec framework</p></div></li>
+        </ul>
+      </div>
+
+      <div class="two-col">
+        <div class="content-card">
+          <div class="card-eyebrow">May — Synthesis</div>
+          <h3>Spec + Sprint Start</h3>
+          <ul class="event-list">
+            <li class="event-item"><div class="event-date"><div class="day">5–9</div><div class="month">May</div></div><div class="event-info"><span class="event-tag tag-joint">Joint</span><h4>Joint Session 2 (Virtual)</h4><p>Share synthesis, confirm priorities</p></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">12–16</div><div class="month">May</div></div><div class="event-info"><span class="event-tag tag-milestone">Milestone</span><h4>MVP Spec Complete</h4><p>Absolute / Next / Nice categories locked</p></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">19</div><div class="month">May</div></div><div class="event-info"><span class="event-tag tag-milestone">Milestone</span><h4>Prototype Sprint Start</h4><p>Engineering begins building</p></div></li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <div class="card-eyebrow">June–July — Build</div>
+          <h3>Build + Feedback + Launch</h3>
+          <ul class="event-list">
+            <li class="event-item"><div class="event-date"><div class="day">2–6</div><div class="month">Jun</div></div><div class="event-info"><span class="event-tag tag-joint">Check-in</span><h4>Design Partner Check-in 1</h4></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">16–20</div><div class="month">Jun</div></div><div class="event-info"><span class="event-tag tag-milestone">Survey</span><h4>Survey 1</h4></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">30</div><div class="month">Jun</div></div><div class="event-info"><span class="event-tag tag-joint">Check-in</span><h4>Design Partner Check-in 2</h4></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">14–18</div><div class="month">Jul</div></div><div class="event-info"><span class="event-tag tag-milestone">Survey</span><h4>Survey 2 — Pre-Launch</h4></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">21–25</div><div class="month">Jul</div></div><div class="event-info"><span class="event-tag tag-milestone">Gate</span><h4>Go / No-Go Quality Gate</h4></div></li>
+            <li class="event-item"><div class="event-date"><div class="day">28–31</div><div class="month">Jul</div></div><div class="event-info"><span class="event-tag tag-joint">Launch</span><h4>Design Partner Preview Event</h4></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Partners -->
+    <div class="page-section" id="partners">
+      <div class="dash-header">
+        <h1>Design Partners</h1>
+        <p>Current pipeline and recruitment status. Target: 3–5 publishers + 3–5 districts.</p>
+      </div>
+
+      <div class="two-col">
+        <div class="content-card">
+          <div class="card-eyebrow">Publishers</div>
+          <h3>Publisher Partners</h3>
+          <div class="partner-card"><div class="partner-avatar avatar-pub">S</div><div class="partner-info"><h4>Saddleback Educational</h4><p>Tim McHugh · MOU Signed · Sending 18 PDFs</p></div><span class="partner-status status-confirmed">Confirmed</span></div>
+          <div class="partner-card"><div class="partner-avatar avatar-pub">C</div><div class="partner-info"><h4>Cajun Kids / Excalibur</h4><p>Jade Landry · NDA Sent</p></div><span class="partner-status status-pending">High Priority</span></div>
+          <div class="partner-card"><div class="partner-avatar avatar-pub">L</div><div class="partner-info"><h4>Lerner / Rosen</h4><p>Tom Rathbun · TLA timing aligns</p></div><span class="partner-status status-prospect">Prospect</span></div>
+          <div class="partner-card"><div class="partner-avatar avatar-pub">B</div><div class="partner-info"><h4>Brave Books</h4><p>Cooper Bell · Different market position</p></div><span class="partner-status status-prospect">Prospect</span></div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-eyebrow">Districts</div>
+          <h3>District Partners</h3>
+          <p style="font-size:14px;color:var(--bm-secondary-text);margin-bottom:16px;">Recruiting from current customer base. Criteria: strong librarian relationships, active compliance challenges, post-testing availability.</p>
+          <div class="partner-card"><div class="partner-avatar avatar-dist">?</div><div class="partner-info"><h4>District 1 — TBD</h4><p>Engaged customer with active compliance need</p></div><span class="partner-status status-prospect">Recruiting</span></div>
+          <div class="partner-card"><div class="partner-avatar avatar-dist">?</div><div class="partner-info"><h4>District 2 — TBD</h4><p>Strong librarian relationship</p></div><span class="partner-status status-prospect">Recruiting</span></div>
+          <div class="partner-card"><div class="partner-avatar avatar-dist">?</div><div class="partner-info"><h4>District 3 — TBD</h4><p>Different district size/type for perspective diversity</p></div><span class="partner-status status-prospect">Recruiting</span></div>
+          <p style="font-size:12px;color:var(--bm-muted-gray);margin-top:16px;font-style:italic;">Patrick to provide CS context on most-engaged districts. Avoid districts in end-of-year testing crunch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collateral -->
+    <div class="page-section" id="collateral">
+      <div class="dash-header">
+        <h1>Collateral Plan</h1>
+        <p>Materials needed for each audience. All must be PROD-002/PROD-004 compliant.</p>
+      </div>
+
+      <div class="three-col">
+        <div class="content-card">
+          <div class="card-eyebrow">Publisher-Facing</div>
+          <h3>Publisher Materials</h3>
+          <ul class="checklist">
+            <li><span class="check-icon check-pending">○</span> Design Partner Invitation Brief (1-pager)</li>
+            <li><span class="check-icon check-pending">○</span> Content Scanner Vision Overview (NDA-only, 2–3 pages)</li>
+            <li><span class="check-icon check-pending">○</span> Publisher Context Mechanism Concept (mockup)</li>
+            <li><span class="check-icon check-pending">○</span> Publisher Portal Concept (wireframes)</li>
+            <li><span class="check-icon check-pending">○</span> Data Submission Guide (technical)</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <div class="card-eyebrow">District-Facing</div>
+          <h3>District Materials</h3>
+          <ul class="checklist">
+            <li><span class="check-icon check-pending">○</span> Design Partner Invitation Brief (1-pager)</li>
+            <li><span class="check-icon check-pending">○</span> Intelligence Card Enhancement Mockup</li>
+            <li><span class="check-icon check-pending">○</span> Compliance Mapping Concept</li>
+            <li><span class="check-icon check-pending">○</span> Book Review Replacement Concept</li>
+          </ul>
+        </div>
+        <div class="content-card">
+          <div class="card-eyebrow">Internal</div>
+          <h3>Team Materials</h3>
+          <ul class="checklist">
+            <li><span class="check-icon check-pending">○</span> Facilitation Guides (per session)</li>
+            <li><span class="check-icon check-pending">○</span> Session Capture Template</li>
+            <li><span class="check-icon check-pending">○</span> Synthesis Framework</li>
+            <li><span class="check-icon check-pending">○</span> Feedback Loop Playbook</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="page-section" id="feedback">
+      <div class="dash-header">
+        <h1>Feedback Loop Architecture</h1>
+        <p>Agentic first — AI agents process recorded feedback and route to product decisions in under 48 hours.</p>
+      </div>
+
+      <div class="content-card" style="margin-bottom: 24px;">
+        <h3>Processing Pipeline</h3>
+        <div class="pipeline-horizontal">
+          <div class="pipe-stage pipe-1"><div class="pipe-icon">🎙️</div><div class="pipe-title">Capture</div><div class="pipe-desc">Recordings, surveys, Slack, calls</div></div>
+          <div class="pipe-stage pipe-2"><div class="pipe-icon">📝</div><div class="pipe-title">Transcribe</div><div class="pipe-desc">Plaud / Whisper auto-transcription</div></div>
+          <div class="pipe-stage pipe-3"><div class="pipe-icon">🤖</div><div class="pipe-title">Extract</div><div class="pipe-desc">Features, pain points, validation, concerns</div></div>
+          <div class="pipe-stage pipe-4"><div class="pipe-icon">🔀</div><div class="pipe-title">Route</div><div class="pipe-desc">Jira, risk register, sprint, digest</div></div>
+          <div class="pipe-stage pipe-5"><div class="pipe-icon">🎯</div><div class="pipe-title">Act</div><div class="pipe-desc">Product decision &lt; 48 hrs</div></div>
+        </div>
+      </div>
+
+      <div class="content-card" style="margin-bottom: 24px;">
+        <h3>Collection Channels</h3>
+        <div class="channel-grid" style="margin-top: 16px;">
+          <div class="ch-card"><div class="ch-icon">📹</div><h4>Video Check-ins</h4><div class="ch-cadence">Bi-weekly · 30 min</div><p>Show prototype, gather reactions. Recorded and transcribed.</p></div>
+          <div class="ch-card"><div class="ch-icon">📊</div><h4>Structured Surveys</h4><div class="ch-cadence">Monthly · Async</div><p>Google Forms with specific prototype direction questions.</p></div>
+          <div class="ch-card"><div class="ch-icon">💬</div><h4>Slack Channel</h4><div class="ch-cadence">Always-on</div><p>#content-scanner-partners. AI monitors for themes and urgency.</p></div>
+          <div class="ch-card"><div class="ch-icon">📈</div><h4>Usage Analytics</h4><div class="ch-cadence">Continuous</div><p>PostHog events when partners test prototype.</p></div>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <h3>Routing Rules</h3>
+        <ul class="checklist">
+          <li><span class="check-icon check-urgent">!</span> Critical blocker → Steve + Sarah immediately (same day)</li>
+          <li><span class="check-icon check-done">→</span> Feature request → Sarah → Jira backlog (within 48 hours)</li>
+          <li><span class="check-icon check-done">→</span> Usability concern → Sarah → next sprint planning</li>
+          <li><span class="check-icon check-done">→</span> Strategic insight → Steve weekly review digest</li>
+          <li><span class="check-icon check-urgent">!</span> Legal/compliance flag → Jan + Steve same day</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Quality -->
+    <div class="page-section" id="quality">
+      <div class="dash-header">
+        <h1>Quality Control</h1>
+        <p>Five quality gates from recruitment through launch. Red flags trigger immediate escalation.</p>
+      </div>
+
+      <div class="content-card" style="margin-bottom: 24px;">
+        <h3>Quality Gates</h3>
+        <ul class="gate-list">
+          <li class="gate-item"><div class="gate-dot gate-green"></div><div class="gate-info"><h4>Pre-Program Gate</h4><div class="gate-date">Before April 1</div><p>Participants confirmed. Materials compliant. Legal cleared. Recording consent obtained.</p></div></li>
+          <li class="gate-item"><div class="gate-dot gate-green"></div><div class="gate-info"><h4>Post-Sessions Gate</h4><div class="gate-date">April 30</div><p>All session captures complete within 48 hours. Cross-session synthesis done. Emerging patterns documented.</p></div></li>
+          <li class="gate-item"><div class="gate-dot gate-green"></div><div class="gate-info"><h4>Spec Lock Gate</h4><div class="gate-date">May 16</div><p>MVP spec finalized with Absolute / Next / Nice categories. All partners reviewed. Engineering feasibility confirmed.</p></div></li>
+          <li class="gate-item"><div class="gate-dot gate-orange"></div><div class="gate-info"><h4>Go / No-Go Gate</h4><div class="gate-date">July 21–25</div><p>Product reviewed against MVP spec. Partner satisfaction measured. Technical readiness confirmed. Legal clearance.</p></div></li>
+          <li class="gate-item"><div class="gate-dot gate-green"></div><div class="gate-info"><h4>Launch Ready Gate</h4><div class="gate-date">July 28</div><p>Preview event complete. Design partners have first access. Launch communications approved by Steve.</p></div></li>
+        </ul>
+      </div>
+
+      <div class="red-flag-banner">
+        <h3>Red Flags — Stop and Escalate to Steve</h3>
+        <div class="flags">
+          <span>⚠️ Design partner drops out without explanation</span>
+          <span>⚠️ Feedback consistently contradicts direction</span>
+          <span>⚠️ Engineering timeline slips more than 2 weeks</span>
+          <span>⚠️ Legal concern raised about content or IP</span>
+          <span>⚠️ Any external leak of Content Scanner details</span>
+          <span>⚠️ Partner satisfaction trending negative</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="page-section" id="team">
+      <div class="dash-header">
+        <h1>Team & Roles</h1>
+        <p>Clear ownership for every session and every workstream.</p>
+      </div>
+
+      <div class="team-grid" style="margin-bottom: 32px;">
+        <div class="team-member">
+          <div class="tm-avatar" style="background:var(--bm-deep-green);">SW</div>
+          <h4>Steve Wandler</h4>
+          <div class="tm-role">Facilitator + Vision</div>
+          <p>Opens with founder story. Facilitates all sessions. Real-time product decisions. Approves all external comms.</p>
+        </div>
+        <div class="team-member">
+          <div class="tm-avatar" style="background:var(--bm-teal-accent);">NF</div>
+          <h4>Natasha Flanders</h4>
+          <div class="tm-role">Publisher BD</div>
+          <p>Co-facilitates publisher sessions. Manages publisher logistics. Recruitment lead (publishers).</p>
+        </div>
+        <div class="team-member">
+          <div class="tm-avatar" style="background:var(--bm-pumpkin);">SE</div>
+          <h4>Sarah El Massry</h4>
+          <div class="tm-role">Product Owner</div>
+          <p>Real-time product capture. MVP spec owner. Mockup/concept prep. Translates sessions to spec.</p>
+        </div>
+        <div class="team-member">
+          <div class="tm-avatar" style="background:#6366F1;">PR</div>
+          <h4>Patrick Reid</h4>
+          <div class="tm-role">CS + Technical</div>
+          <p>Data/technical questions. CS workflow context. District coordination. Pilot logistics.</p>
+        </div>
+        <div class="team-member">
+          <div class="tm-avatar" style="background:var(--bm-muted-gray);">JG</div>
+          <h4>Jan Gilboy</h4>
+          <div class="tm-role">Legal (Not in sessions)</div>
+          <p>Reviews all materials for IP/legal. NDA/MOU pipeline. Recording consent. Pre-launch review.</p>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <h3>Decision Authority</h3>
+        <ul class="checklist">
+          <li><span class="check-icon check-done">S</span> Program scope and timeline — Steve</li>
+          <li><span class="check-icon check-done">S</span> Which publishers/districts to invite — Steve (with input)</li>
+          <li><span class="check-icon check-done">S</span> All external communications — Steve approves</li>
+          <li><span class="check-icon check-done">S</span> Session facilitation approach — Steve</li>
+          <li><span class="check-icon" style="background:var(--bm-pumpkin);color:white;">SE</span> Product spec priority — Sarah → Steve approves</li>
+          <li><span class="check-icon" style="background:var(--bm-muted-gray);color:white;">JG</span> Legal terms — Jan → Steve approves</li>
+          <li><span class="check-icon" style="background:#6366F1;color:white;">R</span> Technical feasibility — Raju (consulted via Sarah)</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showSection(sectionId) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+  event.target.closest('.nav-item').classList.add('active');
+}
+</script>
+
+</body>
+</html>

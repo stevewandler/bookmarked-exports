@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bookmarked Council &mdash; Operations Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bm-eigengrau: #101828;
+  --bm-deep-green: #107569;
+  --bm-teal-accent: #12A38C;
+  --bm-pumpkin: #FF692E;
+  --bm-white: #FFFFFF;
+  --bm-light-1: #F8FAFC;
+  --bm-light-2: #F9FAFB;
+  --bm-light-3: #F8F5F0;
+  --bm-border: #E5E7EB;
+  --bm-text-secondary: #6B7280;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Urbanist', sans-serif;
+  color: var(--bm-eigengrau);
+  background: var(--bm-white);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* Header */
+.header {
+  background: var(--bm-white);
+  border-bottom: 3px solid var(--bm-deep-green);
+  padding: 28px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 20px; }
+.header-logo { height: 38px; }
+.header-divider { width: 1px; height: 38px; background: var(--bm-border); }
+.header-title h1 { font-size: 21px; font-weight: 700; color: var(--bm-eigengrau); letter-spacing: -0.3px; }
+.header-title p { font-size: 13px; color: var(--bm-text-secondary); font-weight: 500; }
+.header-meta { text-align: right; font-size: 12px; color: var(--bm-text-secondary); }
+.header-meta .confidential {
+  display: inline-block; background: var(--bm-light-2); border: 1px solid var(--bm-border);
+  border-radius: 4px; padding: 2px 8px; font-weight: 600; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+}
+
+/* Content */
+.content { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+
+/* Sections */
+.section { margin-bottom: 48px; }
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bm-deep-green); color: var(--bm-white);
+  width: 26px; height: 26px; border-radius: 50%;
+  font-size: 13px; font-weight: 700; margin-right: 8px; vertical-align: middle;
+}
+.section h2 {
+  font-size: 20px; font-weight: 700; color: var(--bm-eigengrau);
+  margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--bm-light-2);
+}
+.section h3 { font-size: 16px; font-weight: 700; color: var(--bm-deep-green); margin: 20px 0 8px; }
+.section p { margin-bottom: 12px; color: #374151; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+thead th {
+  background: var(--bm-eigengrau); color: var(--bm-white); padding: 10px 14px;
+  text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px;
+}
+thead th:first-child { border-radius: 6px 0 0 0; }
+thead th:last-child { border-radius: 0 6px 0 0; }
+tbody td { padding: 10px 14px; border-bottom: 1px solid var(--bm-border); vertical-align: top; }
+tbody tr:nth-child(even) { background: var(--bm-light-1); }
+tbody tr:hover { background: #EEF7F6; }
+td a { color: var(--bm-deep-green); text-decoration: none; font-weight: 500; }
+td a:hover { text-decoration: underline; }
+td code {
+  background: var(--bm-light-2); padding: 1px 5px; border-radius: 3px;
+  font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+/* Diagram */
+.diagram-container {
+  background: var(--bm-light-1); border: 1px solid var(--bm-border);
+  border-radius: 8px; padding: 24px; margin: 16px 0; overflow-x: auto;
+}
+
+/* Collapsible Tasks */
+.task-group { margin: 12px 0; border: 1px solid var(--bm-border); border-radius: 8px; overflow: hidden; }
+.task-header {
+  display: flex; align-items: center; gap: 12px; padding: 14px 18px;
+  background: var(--bm-light-1); cursor: pointer; user-select: none; transition: background 0.15s;
+}
+.task-header:hover { background: #EEF7F6; }
+.task-icon {
+  width: 32px; height: 32px; background: var(--bm-deep-green); color: var(--bm-white);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.task-header h4 { font-size: 15px; font-weight: 600; flex: 1; }
+.chevron { font-size: 18px; color: var(--bm-text-secondary); transition: transform 0.2s; }
+.task-group.open .chevron { transform: rotate(90deg); }
+.task-body { display: none; padding: 18px; background: var(--bm-white); border-top: 1px solid var(--bm-border); }
+.task-group.open .task-body { display: block; }
+
+.prompt-box {
+  background: var(--bm-light-3); border-left: 3px solid var(--bm-pumpkin);
+  padding: 10px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 14px;
+}
+.prompt-box .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--bm-pumpkin); margin-bottom: 4px; }
+.action-box {
+  background: var(--bm-light-1); border-left: 3px solid var(--bm-deep-green);
+  padding: 10px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 14px;
+}
+.action-box .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--bm-deep-green); margin-bottom: 4px; }
+.verify-box {
+  background: #FFFBEB; border-left: 3px solid #F59E0B;
+  padding: 10px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 14px;
+}
+.verify-box .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #D97706; margin-bottom: 4px; }
+
+/* Timeline */
+.timeline { position: relative; padding: 0 0 0 32px; margin: 20px 0; }
+.timeline::before {
+  content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px;
+  width: 2px; background: var(--bm-deep-green);
+}
+.timeline-item { position: relative; margin-bottom: 18px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -25px; top: 6px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bm-deep-green); border: 2px solid var(--bm-white);
+  box-shadow: 0 0 0 2px var(--bm-deep-green);
+}
+.timeline-item.highlight::before { background: var(--bm-pumpkin); box-shadow: 0 0 0 2px var(--bm-pumpkin); }
+.timeline-date { font-size: 13px; font-weight: 700; color: var(--bm-deep-green); }
+.timeline-item.highlight .timeline-date { color: var(--bm-pumpkin); }
+.timeline-desc { font-size: 14px; color: #374151; }
+
+/* Quick Reference */
+.quick-ref {
+  background: var(--bm-eigengrau); color: var(--bm-white);
+  border-radius: 10px; padding: 28px 32px; margin-top: 32px;
+}
+.quick-ref h2 { color: var(--bm-white); border-bottom-color: rgba(255,255,255,0.15); margin-bottom: 20px; }
+.quick-ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.quick-ref-col h4 {
+  color: var(--bm-teal-accent); font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.quick-ref-col ul { list-style: none; padding: 0; }
+.quick-ref-col li { font-size: 13px; padding: 3px 0; color: #D1D5DB; }
+.quick-ref-col li strong { color: var(--bm-white); }
+.quick-ref-col a { color: var(--bm-teal-accent); text-decoration: none; }
+.quick-ref-col a:hover { text-decoration: underline; }
+
+/* Rules */
+.rule-list { list-style: none; padding: 0; }
+.rule-list li { position: relative; padding: 8px 0 8px 24px; font-size: 14px; }
+.rule-list li::before {
+  content: ''; position: absolute; left: 0; top: 14px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--bm-pumpkin);
+}
+
+/* Footer */
+.footer {
+  background: var(--bm-deep-green); padding: 16px 48px;
+  text-align: center; font-size: 12px; color: rgba(255,255,255,0.7);
+}
+
+@media print {
+  .header { border-bottom-width: 2px; }
+  .task-body { display: block !important; }
+  .chevron { display: none; }
+  .quick-ref { break-inside: avoid; }
+  body { font-size: 12px; }
+  .content { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="header">
+  <div class="header-left">
+    <img class="header-logo" id="logo" alt="Bookmarked" onerror="this.style.display='none'">
+    <script>
+      // Load logo as base64 for portability
+      (function(){
+        var paths = [
+          '../../../design/social-profiles/logo-horizontal-green-official.png',
+          '../../design/social-profiles/logo-horizontal-green-official.png',
+          '/Users/stevewandler/My Drive/07 AI/Claude Code/bookmarked-os/claude-output/design/social-profiles/logo-horizontal-green-official.png'
+        ];
+        var img = document.getElementById('logo');
+        var i = 0;
+        function tryNext() {
+          if (i >= paths.length) { img.style.display = 'none'; return; }
+          img.src = paths[i];
+          i++;
+        }
+        img.onerror = tryNext;
+        tryNext();
+      })();
+    </script>
+    <div class="header-divider"></div>
+    <div class="header-title">
+      <h1>The Bookmarked Council &mdash; Operations Playbook</h1>
+      <p>How the system works and how to operate it day-to-day</p>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="confidential">Internal Document &mdash; Not for Distribution</div>
+    <div>Last updated: March 23, 2026</div>
+  </div>
+</div>
+
+<!-- ========== CONTENT ========== -->
+<div class="content">
+
+<!-- ===== 1. System Architecture ===== -->
+<div class="section">
+  <h2><span class="section-num">1</span> System Architecture Overview</h2>
+  <p>The Bookmarked Council operates across six connected systems. Partners interact through the external portal, while the team manages everything through Claude Code, which reads from and writes to the underlying data layer.</p>
+
+  <div class="diagram-container">
+    <svg viewBox="0 0 920 520" xmlns="http://www.w3.org/2000/svg" font-family="Urbanist, sans-serif" width="100%" style="max-width:920px;">
+      <!-- Background regions -->
+      <rect x="10" y="10" width="440" height="240" rx="12" fill="#F8F5F0" stroke="#E5E7EB" stroke-width="1"/>
+      <text x="24" y="34" font-size="11" fill="#6B7280" font-weight="600" letter-spacing="0.5">EXTERNAL (PARTNER-FACING)</text>
+
+      <rect x="470" y="10" width="440" height="240" rx="12" fill="#F8FAFC" stroke="#E5E7EB" stroke-width="1"/>
+      <text x="484" y="34" font-size="11" fill="#6B7280" font-weight="600" letter-spacing="0.5">INTERNAL (TEAM-FACING)</text>
+
+      <rect x="10" y="270" width="900" height="240" rx="12" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+      <text x="24" y="294" font-size="11" fill="#6B7280" font-weight="600" letter-spacing="0.5">DATA &amp; OPERATIONS LAYER</text>
+
+      <!-- External Portal -->
+      <rect x="50" y="60" width="180" height="80" rx="8" fill="#FFFFFF" stroke="#107569" stroke-width="2"/>
+      <text x="140" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#107569">Council Portal</text>
+      <text x="140" y="110" text-anchor="middle" font-size="11" fill="#6B7280">GitHub Pages</text>
+      <text x="140" y="125" text-anchor="middle" font-size="10" fill="#6B7280">Partners submit feedback</text>
+
+      <!-- Partner Icon -->
+      <rect x="80" y="170" width="120" height="50" rx="6" fill="#FF692E" opacity="0.1" stroke="#FF692E" stroke-width="1.5"/>
+      <text x="140" y="193" text-anchor="middle" font-size="12" font-weight="600" fill="#FF692E">Partners</text>
+      <text x="140" y="208" text-anchor="middle" font-size="10" fill="#FF692E">Publishers + Districts</text>
+
+      <!-- Arrow: Partners -> Portal -->
+      <line x1="140" y1="170" x2="140" y2="140" stroke="#FF692E" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+
+      <!-- Ops Dashboard -->
+      <rect x="510" y="60" width="180" height="80" rx="8" fill="#FFFFFF" stroke="#107569" stroke-width="2"/>
+      <text x="600" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#107569">Ops Dashboard</text>
+      <text x="600" y="110" text-anchor="middle" font-size="11" fill="#6B7280">GitHub Pages</text>
+      <text x="600" y="125" text-anchor="middle" font-size="10" fill="#6B7280">Team monitors status</text>
+
+      <!-- Team Icon -->
+      <rect x="730" y="60" width="150" height="80" rx="6" fill="#12A38C" opacity="0.1" stroke="#12A38C" stroke-width="1.5"/>
+      <text x="805" y="90" text-anchor="middle" font-size="12" font-weight="600" fill="#12A38C">Team</text>
+      <text x="805" y="106" text-anchor="middle" font-size="10" fill="#107569">Natasha</text>
+      <text x="805" y="118" text-anchor="middle" font-size="10" fill="#107569">Jan</text>
+      <text x="805" y="130" text-anchor="middle" font-size="10" fill="#107569">Steve</text>
+
+      <!-- Arrow: Team -> Dashboard -->
+      <line x1="730" y1="100" x2="690" y2="100" stroke="#12A38C" stroke-width="1.5" marker-end="url(#arrow-teal)"/>
+
+      <!-- Apps Script API -->
+      <rect x="260" y="60" width="170" height="80" rx="8" fill="#FFFFFF" stroke="#FF692E" stroke-width="2"/>
+      <text x="345" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#FF692E">Apps Script API</text>
+      <text x="345" y="110" text-anchor="middle" font-size="11" fill="#6B7280">Feedback API</text>
+      <text x="345" y="125" text-anchor="middle" font-size="10" fill="#6B7280">Portal &rarr; Sheet</text>
+
+      <!-- Arrow: Portal -> Apps Script -->
+      <line x1="230" y1="100" x2="260" y2="100" stroke="#107569" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+      <!-- Google Sheet -->
+      <rect x="50" y="320" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#107569" stroke-width="2"/>
+      <text x="150" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#107569">Google Sheet</text>
+      <text x="150" y="368" text-anchor="middle" font-size="11" fill="#6B7280">Portal Backend</text>
+      <text x="150" y="383" text-anchor="middle" font-size="10" fill="#6B7280">Feedback + Submissions</text>
+
+      <!-- Arrow: Apps Script -> Sheet -->
+      <path d="M345,140 L345,180 L150,180 L150,320" fill="none" stroke="#FF692E" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+
+      <!-- Confluence -->
+      <rect x="300" y="320" width="200" height="80" rx="8" fill="#FFFFFF" stroke="#107569" stroke-width="2"/>
+      <text x="400" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#107569">Confluence</text>
+      <text x="400" y="368" text-anchor="middle" font-size="11" fill="#6B7280">Publisher Hub &rarr; Council</text>
+      <text x="400" y="383" text-anchor="middle" font-size="10" fill="#6B7280">Source of truth for ops</text>
+
+      <!-- Jira -->
+      <rect x="550" y="320" width="160" height="80" rx="8" fill="#FFFFFF" stroke="#107569" stroke-width="2"/>
+      <text x="630" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#107569">Jira</text>
+      <text x="630" y="368" text-anchor="middle" font-size="11" fill="#6B7280">Actionable items</text>
+      <text x="630" y="383" text-anchor="middle" font-size="10" fill="#6B7280">Tickets from feedback</text>
+
+      <!-- Claude Code (center of operations layer) -->
+      <rect x="340" y="430" width="240" height="70" rx="10" fill="#107569" stroke="#107569" stroke-width="2"/>
+      <text x="460" y="460" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">Claude Code</text>
+      <text x="460" y="478" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.8)">Operating layer &mdash; reads, writes, routes</text>
+
+      <!-- Claude -> Sheet -->
+      <line x1="370" y1="430" x2="180" y2="400" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-teal)"/>
+      <!-- Claude -> Confluence -->
+      <line x1="430" y1="430" x2="410" y2="400" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-teal)"/>
+      <!-- Claude -> Jira -->
+      <line x1="510" y1="430" x2="620" y2="400" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-teal)"/>
+      <!-- Claude -> Dashboard -->
+      <path d="M560,445 L780,445 L780,180 L600,140" fill="none" stroke="#12A38C" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-teal)"/>
+      <!-- Team -> Claude -->
+      <path d="M805,140 L805,465 L580,465" fill="none" stroke="#101828" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
+      <text x="810" y="310" font-size="10" fill="#6B7280" transform="rotate(90,810,310)">Team uses Claude Code</text>
+
+      <!-- Arrow definitions -->
+      <defs>
+        <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#107569"/>
+        </marker>
+        <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#FF692E"/>
+        </marker>
+        <marker id="arrow-teal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#12A38C"/>
+        </marker>
+        <marker id="arrow-dark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#101828"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <p style="font-size:13px; color:var(--bm-text-secondary); text-align:center; margin-top:8px;">
+    <strong>Solid lines</strong> = automated data flow &nbsp;&bull;&nbsp; <strong>Dashed lines</strong> = Claude Code reads/writes &nbsp;&bull;&nbsp; <strong>Orange</strong> = partner flow &nbsp;&bull;&nbsp; <strong>Teal</strong> = team flow
+  </p>
+</div>
+
+<!-- ===== 2. System Inventory ===== -->
+<div class="section">
+  <h2><span class="section-num">2</span> What Was Built (System Inventory)</h2>
+  <p>Every component of the Council system, its purpose, and where to find it.</p>
+
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Purpose</th><th>URL / Location</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Council Portal</strong></td>
+        <td>External partner-facing page with program info and feedback form</td>
+        <td><a href="https://stevewandler.github.io/bookmarked-exports/exports/bookmarked-council-portal.html" target="_blank">GitHub Pages</a></td>
+      </tr>
+      <tr>
+        <td><strong>Ops Dashboard</strong></td>
+        <td>Internal team dashboard &mdash; partner tracker, feedback, timeline</td>
+        <td><a href="https://stevewandler.github.io/bookmarked-exports/exports/bookmarked-council-ops-dashboard.html" target="_blank">GitHub Pages</a></td>
+      </tr>
+      <tr>
+        <td><strong>Google Sheet</strong></td>
+        <td>Data backend for portal feedback submissions</td>
+        <td>"Bookmarked Council &mdash; Portal Backend" in Google Sheets</td>
+      </tr>
+      <tr>
+        <td><strong>Apps Script API</strong></td>
+        <td>Connects portal form to Google Sheet</td>
+        <td>"Bookmarked Council &mdash; Feedback API" in Apps Script</td>
+      </tr>
+      <tr>
+        <td><strong>Confluence Hub</strong></td>
+        <td>Source of truth for all Council operations</td>
+        <td>Publisher Hub &rarr; The Bookmarked Council <code>96665601</code></td>
+      </tr>
+      <tr>
+        <td><strong>District Outreach Playbook</strong></td>
+        <td>Email templates, outreach timeline, follow-up cadence</td>
+        <td>Confluence page <code>97353729</code></td>
+      </tr>
+      <tr>
+        <td><strong>Partner Roster</strong></td>
+        <td>Publisher and district status tracking</td>
+        <td>Confluence child page under Council hub</td>
+      </tr>
+      <tr>
+        <td><strong>Feedback Tracker</strong></td>
+        <td>Routes and tracks partner feedback</td>
+        <td>Confluence child page under Council hub</td>
+      </tr>
+      <tr>
+        <td><strong>Meeting Log</strong></td>
+        <td>Session notes, decisions, action items</td>
+        <td>Confluence child page under Council hub</td>
+      </tr>
+      <tr>
+        <td><strong>Collateral Status</strong></td>
+        <td>Asset tracking for session materials</td>
+        <td>Confluence child page under Council hub</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== 3. How to Operate ===== -->
+<div class="section">
+  <h2><span class="section-num">3</span> How to Operate with Claude Code</h2>
+  <p>Each task below shows the plain-English prompt to give Claude, what Claude does behind the scenes, and where to verify the result. Click any task to expand it.</p>
+
+  <!-- Task A: Update partner status -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">A</div>
+      <h4>Update Partner Status</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "Update Saddleback's status to Confirmed in the partner roster"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Opens the Confluence Partner Roster page</li>
+          <li>Finds the Saddleback row and updates the status column to "Confirmed"</li>
+          <li>Adds a timestamp note for the status change</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Check the Confluence Partner Roster page, or open the Ops Dashboard &rarr; Partner Tracker section to see the updated status.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task B: Log a meeting -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">B</div>
+      <h4>Log a Meeting or Call</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "I just had a call with Jade from Saddleback. Here's what we discussed: [paste notes or transcript]"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Creates a structured entry in the Meeting Log page on Confluence</li>
+          <li>Extracts action items from the discussion</li>
+          <li>Updates Partner Roster with any status changes or new contact info</li>
+          <li>Flags anything that needs Steve's attention</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Check the Meeting Log page on Confluence. Action items will appear in the Feedback Tracker if they're product-related.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task C: Process feedback -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">C</div>
+      <h4>Process Incoming Feedback</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "A partner submitted feedback through the portal &mdash; check the Google Sheet and route it"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Reads the Google Sheet to find new, unprocessed submissions</li>
+          <li>Creates a structured entry in the Confluence Feedback Tracker</li>
+          <li>If the feedback is actionable, creates a Jira ticket linked to the Council epic</li>
+          <li>Tags the feedback by type: product, content, process, or general</li>
+          <li>Marks the row as processed in the Sheet</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Check the Feedback Tracker on Confluence. If a Jira ticket was created, it will show in the Bookmarked project board.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task D: Send outreach -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">D</div>
+      <h4>Send Outreach Emails</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "Send the warm intro email to [District Name], contact is [Name] at [email]"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Pulls the appropriate email template from the District Outreach Playbook on Confluence</li>
+          <li>Personalizes it with the district name and contact</li>
+          <li>Drafts the email and <strong>shows it to Steve for approval</strong></li>
+          <li>After Steve approves, sends via <code>gws</code> CLI</li>
+          <li>Updates the Partner Roster with outreach status and date</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Check Gmail sent folder. Partner Roster on Confluence will show the outreach date and status.
+      </div>
+      <p style="margin-top:12px; font-size:13px; color:var(--bm-pumpkin); font-weight:600;">
+        Important: All external emails require Steve's approval before sending.
+      </p>
+    </div>
+  </div>
+
+  <!-- Task E: Update dashboard -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">E</div>
+      <h4>Update the Ops Dashboard</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "Update the recruitment table &mdash; Silverleaf ISD confirmed, contact is Jane Archer"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Edits the Ops Dashboard HTML file locally</li>
+          <li>Updates the relevant table with the new information</li>
+          <li>Copies the file to <code>/tmp/bookmarked-exports/exports/</code></li>
+          <li>Pushes to GitHub Pages so the live dashboard reflects the change</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Open the Ops Dashboard URL in your browser. Changes should be live within a minute of the push.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task F: Prep for session -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">F</div>
+      <h4>Prepare for a Session</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "Prep me for the Week 1 publisher co-design session"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Pulls the current Partner Roster &mdash; who's confirmed, their roles, their context</li>
+          <li>Reads recent feedback from the Feedback Tracker</li>
+          <li>Reviews the Meeting Log for any outstanding action items</li>
+          <li>Generates a branded prep brief (HTML) with key talking points, attendee info, and agenda items</li>
+          <li>Opens the brief on your desktop</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        The prep brief opens automatically. Review it before the session and flag any changes.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task G: Ingest transcript -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">G</div>
+      <h4>Ingest a Transcript</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "Here's the transcript from today's session with publishers [paste or reference Plaud recording]"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Extracts key decisions, feedback items, and action items from the transcript</li>
+          <li>Creates a Meeting Log entry with structured notes</li>
+          <li>Routes product feedback to the Feedback Tracker</li>
+          <li>Updates Partner Roster with any new information (contacts, preferences, concerns)</li>
+          <li>Creates Jira tickets for actionable product or engineering items</li>
+          <li>Flags items that need follow-up from specific team members</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Check Meeting Log, Feedback Tracker, and Jira for the new entries. Claude will summarize what was routed where.
+      </div>
+    </div>
+  </div>
+
+  <!-- Task H: Check health -->
+  <div class="task-group">
+    <div class="task-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="task-icon">H</div>
+      <h4>Check Program Health</h4>
+      <span class="chevron">&#9654;</span>
+    </div>
+    <div class="task-body">
+      <div class="prompt-box">
+        <div class="label">What you say to Claude</div>
+        "How's the Council program looking?"
+      </div>
+      <div class="action-box">
+        <div class="label">What Claude does</div>
+        <ul style="margin:4px 0 0 16px; font-size:14px;">
+          <li>Reads the Partner Roster &mdash; how many confirmed vs. pending vs. declined</li>
+          <li>Checks the Feedback Tracker &mdash; volume, unprocessed items, trends</li>
+          <li>Reviews Collateral Status &mdash; what materials are ready vs. in progress</li>
+          <li>Checks the timeline &mdash; upcoming deadlines and milestones</li>
+          <li>Produces a concise health summary with any red flags</li>
+        </ul>
+      </div>
+      <div class="verify-box">
+        <div class="label">Where to verify</div>
+        Claude will present the health summary directly. For deeper detail, check the Ops Dashboard.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. Outreach Timeline ===== -->
+<div class="section">
+  <h2><span class="section-num">4</span> Outreach Timeline</h2>
+  <p>Key milestones for district recruitment and session execution.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">March 28</div>
+      <div class="timeline-desc">Target list finalized &mdash; districts and contacts confirmed</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">March 28&ndash;31</div>
+      <div class="timeline-desc">First outreach emails sent to target districts</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 2&ndash;3</div>
+      <div class="timeline-desc">Follow-up #1 sent to non-responders</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 9</div>
+      <div class="timeline-desc">Confirmed / declined status locked &mdash; final roster set</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 11</div>
+      <div class="timeline-desc">Session prep materials sent to confirmed participants</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-date">April 14</div>
+      <div class="timeline-desc"><strong>District Session 1</strong> &mdash; first co-design session</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-date">April 21</div>
+      <div class="timeline-desc"><strong>District Session 2</strong> &mdash; second co-design session</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-date">April 28</div>
+      <div class="timeline-desc"><strong>Joint Session</strong> &mdash; publishers + districts together</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">May</div>
+      <div class="timeline-desc">Follow-up surveys and synthesis of all Council input</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5. Team Roles ===== -->
+<div class="section">
+  <h2><span class="section-num">5</span> Team Roles</h2>
+
+  <table>
+    <thead>
+      <tr><th>Person</th><th>Role in Council</th><th>Day-to-Day Responsibilities</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Steve Wandler</strong></td>
+        <td>Facilitator + Vision</td>
+        <td>Reviews materials, approves all external comms, facilitates live sessions, sets strategic direction</td>
+      </tr>
+      <tr>
+        <td><strong>Natasha Flanders</strong></td>
+        <td>Program Lead</td>
+        <td>Recruitment, logistics, partner relationship health, day-to-day Council operations</td>
+      </tr>
+      <tr>
+        <td><strong>Jan Gilboy</strong></td>
+        <td>Program Support</td>
+        <td>Supporting Natasha and Steve in the Council process &mdash; research, coordination, follow-ups</td>
+      </tr>
+      <tr>
+        <td><strong>Sarah El Massry</strong></td>
+        <td>Product Owner</td>
+        <td>Real-time product capture during sessions, MVP spec writing, translates feedback to engineering</td>
+      </tr>
+      <tr>
+        <td><strong>Patrick Reid</strong></td>
+        <td>CS + Technical</td>
+        <td>Data and technical questions, district coordination, pilot logistics</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== 6. Key Rules ===== -->
+<div class="section">
+  <h2><span class="section-num">6</span> Key Rules</h2>
+  <p>These rules apply to all Council communications and operations. Non-negotiable.</p>
+
+  <ul class="rule-list">
+    <li><strong>All external communications must be approved by Steve before sending.</strong> Claude will draft and present &mdash; Steve sends or approves.</li>
+    <li><strong>Book Intelligence</strong> describes what is publicly known <em>about</em> books. Never say "what's in the book" &mdash; Bookmarked does not read book contents.</li>
+    <li><strong>Content Scanner</strong> reads actual book content with publisher permission. This is a separate, future capability &mdash; do not conflate with Book Intelligence.</li>
+    <li><strong>Never position Bookmarked as replacing librarians.</strong> Bookmarked empowers librarians with better tools and data.</li>
+    <li><strong>Lead with empowerment, not compliance burden.</strong> Time savings framing, not regulatory pressure.</li>
+    <li><strong>Use "co-design" language.</strong> This is a Council, not a "focus group" or "beta test." Partners are collaborators, not subjects.</li>
+    <li><strong>District data boundaries are sacred.</strong> Never cross district data boundaries or suggest doing so.</li>
+  </ul>
+</div>
+
+<!-- ===== 7. Quick Reference Card ===== -->
+<div class="section">
+  <div class="quick-ref">
+    <h2><span class="section-num" style="background:var(--bm-teal-accent);">7</span> Quick Reference Card</h2>
+
+    <div class="quick-ref-grid">
+      <div class="quick-ref-col">
+        <h4>Key URLs</h4>
+        <ul>
+          <li><strong>Council Portal:</strong> <a href="https://stevewandler.github.io/bookmarked-exports/exports/bookmarked-council-portal.html" target="_blank">GitHub Pages</a></li>
+          <li><strong>Ops Dashboard:</strong> <a href="https://stevewandler.github.io/bookmarked-exports/exports/bookmarked-council-ops-dashboard.html" target="_blank">GitHub Pages</a></li>
+          <li><strong>Google Sheet:</strong> "Bookmarked Council &mdash; Portal Backend"</li>
+          <li><strong>Apps Script:</strong> "Bookmarked Council &mdash; Feedback API"</li>
+        </ul>
+
+        <h4 style="margin-top:16px;">Confluence Pages</h4>
+        <ul>
+          <li><strong>Council Hub:</strong> Page ID <code style="background:rgba(255,255,255,0.1); color:#D1D5DB; padding:1px 5px; border-radius:3px;">96665601</code></li>
+          <li><strong>District Outreach:</strong> Page ID <code style="background:rgba(255,255,255,0.1); color:#D1D5DB; padding:1px 5px; border-radius:3px;">97353729</code></li>
+          <li><strong>Partner Roster:</strong> Child of Council Hub</li>
+          <li><strong>Feedback Tracker:</strong> Child of Council Hub</li>
+          <li><strong>Meeting Log:</strong> Child of Council Hub</li>
+          <li><strong>Collateral Status:</strong> Child of Council Hub</li>
+        </ul>
+      </div>
+
+      <div class="quick-ref-col">
+        <h4>Key Dates</h4>
+        <ul>
+          <li><strong>March 28:</strong> Target list finalized</li>
+          <li><strong>March 28&ndash;31:</strong> First outreach</li>
+          <li><strong>April 9:</strong> Roster locked</li>
+          <li><strong>April 14:</strong> District Session 1</li>
+          <li><strong>April 21:</strong> District Session 2</li>
+          <li><strong>April 28:</strong> Joint Session</li>
+        </ul>
+
+        <h4 style="margin-top:16px;">Slack</h4>
+        <ul>
+          <li><strong>Channel:</strong> #bookmarked-council</li>
+          <li><strong>Publisher Channel:</strong> C0AE6PLUJRG</li>
+        </ul>
+
+        <h4 style="margin-top:16px;">Who to Contact</h4>
+        <ul>
+          <li><strong>Operations / logistics:</strong> Natasha</li>
+          <li><strong>External comms approval:</strong> Steve</li>
+          <li><strong>Product feedback routing:</strong> Sarah</li>
+          <li><strong>Technical / data questions:</strong> Patrick</li>
+          <li><strong>System / tooling issues:</strong> Steve</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Bookmarked &mdash; The Bookmarked Council Operations Playbook &mdash; Internal Use Only &mdash; March 2026
+</div>
+
+<script>
+// Toggle all task groups
+document.querySelectorAll('.task-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>

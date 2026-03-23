@@ -98,6 +98,47 @@ tr:hover td{background:var(--bm-bg-cool);}
 .alert h4{font-size:14px;font-weight:700;color:var(--bm-pumpkin);margin-bottom:4px;}
 .alert p{font-size:13px;color:var(--bm-secondary-text);}
 
+/* Countdown */
+.countdown{background:white;border-radius:var(--bm-radius-lg);padding:20px;box-shadow:var(--bm-shadow-sm);border:1px solid var(--bm-border-light);margin-bottom:24px;display:flex;align-items:center;gap:24px;}
+.countdown-label{font-size:13px;font-weight:600;color:var(--bm-secondary-text);}
+.countdown-label strong{color:var(--bm-eigengrau);display:block;font-size:15px;}
+.countdown-units{display:flex;gap:12px;}
+.cd-unit{text-align:center;background:var(--bm-bg-light);border-radius:var(--bm-radius-md);padding:10px 14px;min-width:60px;}
+.cd-unit .cd-num{font-size:28px;font-weight:800;color:var(--bm-deep-green);line-height:1;letter-spacing:-0.03em;}
+.cd-unit .cd-lbl{font-size:10px;color:var(--bm-muted-gray);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-top:2px;}
+.cd-unit.urgent .cd-num{color:var(--bm-pumpkin);}
+
+/* Progress bars */
+.kpi-progress{margin-top:8px;height:4px;border-radius:2px;background:var(--bm-border-light);overflow:hidden;}
+.kpi-progress-fill{height:100%;border-radius:2px;transition:width 0.6s ease;}
+.kpi-progress-fill.green{background:var(--bm-teal-accent);}
+.kpi-progress-fill.orange{background:var(--bm-pumpkin);}
+.kpi-progress-fill.blue{background:#3B82F6;}
+
+/* Collateral progress */
+.collateral-progress{background:white;border-radius:var(--bm-radius-md);padding:16px 20px;box-shadow:var(--bm-shadow-sm);border:1px solid var(--bm-border-light);margin-bottom:24px;}
+.collateral-progress h4{font-size:14px;font-weight:700;margin-bottom:8px;}
+.collateral-bar{height:12px;border-radius:6px;background:var(--bm-border-light);overflow:hidden;display:flex;}
+.collateral-bar .seg{height:100%;transition:width 0.6s ease;}
+.seg-done{background:var(--bm-teal-accent);}
+.seg-progress{background:var(--bm-pumpkin);}
+.seg-legend{display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--bm-secondary-text);}
+.seg-legend span{display:flex;align-items:center;gap:4px;}
+.seg-legend .dot{width:8px;height:8px;border-radius:50%;}
+
+/* Sortable tables */
+th.sortable{cursor:pointer;user-select:none;position:relative;padding-right:24px;}
+th.sortable:hover{color:var(--bm-deep-green);}
+th.sortable::after{content:'\2195';position:absolute;right:8px;font-size:10px;color:var(--bm-muted-gray);}
+th.sortable.asc::after{content:'\2191';color:var(--bm-deep-green);}
+th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
+
+/* Search */
+.search-bar{display:flex;gap:8px;margin-bottom:16px;}
+.search-input{flex:1;padding:10px 16px;border:1px solid var(--bm-border-light);border-radius:var(--bm-radius-md);font-family:var(--bm-font);font-size:14px;color:var(--bm-eigengrau);}
+.search-input:focus{outline:none;border-color:var(--bm-teal-accent);box-shadow:0 0 0 3px rgba(18,163,140,0.1);}
+.search-input::placeholder{color:var(--bm-muted-gray);}
+
 .link-list{list-style:none;}
 .link-list li{padding:6px 0;}
 .link-list a{font-size:13px;font-weight:600;color:var(--bm-teal-accent);display:flex;align-items:center;gap:6px;text-decoration:none;}
@@ -157,18 +198,58 @@ tr:hover td{background:var(--bm-bg-cool);}
     <p>Internal view &mdash; partner status, upcoming actions, engagement tracking, feedback pipeline health</p>
   </div>
 
-  <div class="alert">
-    <h4>21 days to kickoff &mdash; recruitment must close by April 7</h4>
-    <p>Week of April 14 is the first session week (publisher + district in parallel). All partners must be confirmed and onboarded by April 7. Natasha: finalize invitations this week. Steve: approve district participant list.</p>
+  <!-- Live countdown -->
+  <div class="countdown" id="countdown">
+    <div class="countdown-label">
+      <strong>Next milestone</strong>
+      <span id="cd-event-name">First Co-Design Sessions</span>
+    </div>
+    <div class="countdown-units">
+      <div class="cd-unit" id="cd-days"><div class="cd-num">--</div><div class="cd-lbl">Days</div></div>
+      <div class="cd-unit" id="cd-hours"><div class="cd-num">--</div><div class="cd-lbl">Hours</div></div>
+      <div class="cd-unit" id="cd-mins"><div class="cd-num">--</div><div class="cd-lbl">Mins</div></div>
+    </div>
   </div>
 
   <div class="kpi-row">
-    <div class="kpi accent"><div class="val">1/5</div><div class="lbl">Publishers Confirmed</div></div>
-    <div class="kpi warn"><div class="val">0/5</div><div class="lbl">Districts Confirmed</div></div>
-    <div class="kpi"><div class="val">0/4</div><div class="lbl">Sessions Complete</div></div>
-    <div class="kpi"><div class="val">0</div><div class="lbl">Feedback Items</div></div>
-    <div class="kpi"><div class="val">0</div><div class="lbl">Roadmap Votes</div></div>
-    <div class="kpi"><div class="val">2/14</div><div class="lbl">Collateral Ready</div></div>
+    <div class="kpi accent">
+      <div class="val">1/5</div><div class="lbl">Publishers Confirmed</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill green" style="width:20%"></div></div>
+    </div>
+    <div class="kpi warn">
+      <div class="val">0/5</div><div class="lbl">Districts Confirmed</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill orange" style="width:0%"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="val">0/4</div><div class="lbl">Sessions Complete</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill blue" style="width:0%"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="val">0</div><div class="lbl">Feedback Items</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill green" style="width:0%"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="val">0</div><div class="lbl">Roadmap Votes</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill green" style="width:0%"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="val">2/14</div><div class="lbl">Collateral Ready</div>
+      <div class="kpi-progress"><div class="kpi-progress-fill green" style="width:14%"></div></div>
+    </div>
+  </div>
+
+  <!-- Collateral progress bar -->
+  <div class="collateral-progress">
+    <h4>Collateral Readiness &mdash; 2 of 14 items</h4>
+    <div class="collateral-bar">
+      <div class="seg seg-done" style="width:14.3%"></div>
+      <div class="seg seg-progress" style="width:7.1%"></div>
+    </div>
+    <div class="seg-legend">
+      <span><span class="dot" style="background:var(--bm-teal-accent)"></span> Complete (2)</span>
+      <span><span class="dot" style="background:var(--bm-pumpkin)"></span> In Progress (1)</span>
+      <span><span class="dot" style="background:var(--bm-border-light)"></span> Not Started (11)</span>
+    </div>
   </div>
 
   <div class="two-col">
@@ -221,10 +302,14 @@ tr:hover td{background:var(--bm-bg-cool);}
     <p>Canonical source in Confluence (<a href="https://bookmarked-team.atlassian.net/wiki/spaces/PROD/pages/96698369" target="_blank">Partner Roster</a>). Natasha updates via Claude.</p>
   </div>
 
-  <div class="tbl-card">
+  <div class="search-bar">
+    <input class="search-input" type="text" id="partnerSearch" placeholder="Search partners by name, status, or owner..." oninput="filterPartners()">
+  </div>
+
+  <div class="tbl-card" id="publisherTable">
     <div class="tbl-header"><h3>Publisher Partners</h3><span class="tbl-badge">Target: 3&ndash;5</span></div>
     <table>
-      <thead><tr><th>Publisher</th><th>Contact</th><th>Status</th><th>NDA</th><th>Next Action</th><th>Owner</th></tr></thead>
+      <thead><tr><th class="sortable" onclick="sortTable('publisherTable',0)">Publisher</th><th>Contact</th><th class="sortable" onclick="sortTable('publisherTable',2)">Status</th><th>NDA</th><th>Next Action</th><th class="sortable" onclick="sortTable('publisherTable',5)">Owner</th></tr></thead>
       <tbody>
         <tr><td>Saddleback Educational</td><td>Tim McHugh</td><td><span class="pill pill-green">Founding</span></td><td><span class="pill pill-green">MOU Signed</span></td><td>Send Council portal link</td><td>Natasha</td></tr>
         <tr><td>Cajun Kids / Excalibur</td><td>Jade Landry</td><td><span class="pill pill-orange">Invited</span></td><td><span class="pill pill-orange">NDA Sent</span></td><td>Follow up on NDA + send invitation</td><td>Natasha</td></tr>
@@ -235,10 +320,10 @@ tr:hover td{background:var(--bm-bg-cool);}
     </table>
   </div>
 
-  <div class="tbl-card">
+  <div class="tbl-card" id="districtTable">
     <div class="tbl-header"><h3>District Partners</h3><span class="tbl-badge">Target: 3&ndash;5</span></div>
     <table>
-      <thead><tr><th>District</th><th>Contact</th><th>Status</th><th>Engagement</th><th>Next Action</th><th>Owner</th></tr></thead>
+      <thead><tr><th class="sortable" onclick="sortTable('districtTable',0)">District</th><th>Contact</th><th class="sortable" onclick="sortTable('districtTable',2)">Status</th><th>Engagement</th><th>Next Action</th><th class="sortable" onclick="sortTable('districtTable',5)">Owner</th></tr></thead>
       <tbody>
         <tr><td>Midlothian ISD</td><td>TBD</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-blue">High</span></td><td>Patrick: confirm contact, send invitation</td><td>Patrick</td></tr>
         <tr><td>Godley ISD</td><td>TBD</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-blue">High</span></td><td>Patrick: confirm contact, send invitation</td><td>Patrick</td></tr>
@@ -475,12 +560,100 @@ tr:hover td{background:var(--bm-bg-cool);}
 </div>
 
 <script>
+// ===== Navigation =====
 function show(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   event.target.closest('.sb-item').classList.add('active');
 }
+
+// ===== Countdown Timer =====
+const MILESTONES = [
+  { date: new Date('2026-04-07T09:00:00'), label: 'Recruitment Deadline' },
+  { date: new Date('2026-04-14T09:00:00'), label: 'First Co-Design Sessions' },
+  { date: new Date('2026-04-21T09:00:00'), label: 'Second Co-Design Sessions' },
+  { date: new Date('2026-04-28T09:00:00'), label: 'Joint Session' },
+  { date: new Date('2026-05-05T09:00:00'), label: 'Synthesis Follow-Up' },
+  { date: new Date('2026-05-25T09:00:00'), label: 'Spec Lock' },
+  { date: new Date('2026-08-24T09:00:00'), label: 'Public Launch Event' }
+];
+
+function updateCountdown() {
+  const now = new Date();
+  const next = MILESTONES.find(m => m.date > now);
+  if (!next) return;
+
+  document.getElementById('cd-event-name').textContent = next.label;
+  const diff = next.date - now;
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minsEl = document.getElementById('cd-mins');
+
+  daysEl.querySelector('.cd-num').textContent = days;
+  hoursEl.querySelector('.cd-num').textContent = hours;
+  minsEl.querySelector('.cd-num').textContent = mins;
+
+  // Urgent styling when < 7 days
+  if (days < 7) {
+    daysEl.classList.add('urgent');
+  } else {
+    daysEl.classList.remove('urgent');
+  }
+}
+
+// ===== Table Sorting =====
+function sortTable(tableId, colIndex) {
+  const table = document.getElementById(tableId).querySelector('table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const th = table.querySelectorAll('th')[colIndex];
+
+  // Toggle direction
+  const isAsc = th.classList.contains('asc');
+  table.querySelectorAll('th').forEach(h => h.classList.remove('asc', 'desc'));
+
+  if (isAsc) {
+    th.classList.add('desc');
+  } else {
+    th.classList.add('asc');
+  }
+
+  rows.sort((a, b) => {
+    const aText = (a.cells[colIndex]?.textContent || '').trim().toLowerCase();
+    const bText = (b.cells[colIndex]?.textContent || '').trim().toLowerCase();
+    const dir = isAsc ? -1 : 1;
+    return aText.localeCompare(bText) * dir;
+  });
+
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// ===== Partner Search =====
+function filterPartners() {
+  const query = document.getElementById('partnerSearch').value.toLowerCase();
+  const tables = ['publisherTable', 'districtTable'];
+
+  tables.forEach(tableId => {
+    const el = document.getElementById(tableId);
+    if (!el) return;
+    const rows = el.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(query) ? '' : 'none';
+    });
+  });
+}
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded', function() {
+  updateCountdown();
+  setInterval(updateCountdown, 60000); // Update every minute
+});
 </script>
 </body>
 </html>

@@ -171,6 +171,7 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
     <div class="sb-section">Operations</div>
     <button class="sb-item active" onclick="show('dash')"><span class="sb-icon">&#x1F4CA;</span>Dashboard</button>
     <button class="sb-item" onclick="show('partners')"><span class="sb-icon">&#x1F91D;</span>Partner Tracker</button>
+    <button class="sb-item" onclick="show('pubpipeline')"><span class="sb-icon">&#x1F4D6;</span>Publisher Pipeline</button>
     <button class="sb-item" onclick="show('recruitment')"><span class="sb-icon">&#x1F4E8;</span>Recruitment</button>
     <button class="sb-item" onclick="show('engagement')"><span class="sb-icon">&#x1F525;</span>Engagement</button>
     <button class="sb-item" onclick="show('meetings')"><span class="sb-icon">&#x1F4C5;</span>Meeting Log</button>
@@ -308,15 +309,19 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
   </div>
 
   <div class="tbl-card" id="publisherTable">
-    <div class="tbl-header"><h3>Publisher Partners</h3><span class="tbl-badge">Target: 3&ndash;5</span></div>
+    <div class="tbl-header"><h3>Publisher Partners</h3><span class="tbl-badge">9 Publishers &bull; Updated 3/25</span></div>
     <table>
       <thead><tr><th class="sortable" onclick="sortTable('publisherTable',0)">Publisher</th><th>Contact</th><th class="sortable" onclick="sortTable('publisherTable',2)">Status</th><th>NDA</th><th>Next Action</th><th class="sortable" onclick="sortTable('publisherTable',5)">Owner</th></tr></thead>
       <tbody>
-        <tr><td>Saddleback Educational</td><td>Tim McHugh</td><td><span class="pill pill-green">Founding</span></td><td><span class="pill pill-green">MOU Signed</span></td><td>Send Council portal link</td><td>Natasha</td></tr>
-        <tr><td>Cajun Kids / Excalibur</td><td>Jade Landry</td><td><span class="pill pill-orange">Invited</span></td><td><span class="pill pill-orange">NDA Sent</span></td><td>Follow up on NDA + send invitation</td><td>Natasha</td></tr>
-        <tr><td>Lerner / Rosen</td><td>Tom Rathbun</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Send Council invitation (TLA timing)</td><td>Natasha</td></tr>
-        <tr><td>Brave Books</td><td>Cooper Bell</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Evaluate fit</td><td>Steve</td></tr>
-        <tr><td><em>Open Seat</em></td><td>&mdash;</td><td><span class="pill pill-gray">Open</span></td><td>&mdash;</td><td>Identify from TLA connections</td><td>Natasha</td></tr>
+        <tr><td><strong>Saddleback Educational</strong></td><td>Tim McHugh, Co-Owner</td><td><span class="pill pill-green">Design Partner</span></td><td><span class="pill pill-green">MOU Signed 3/20</span></td><td>Countersign MOU; Tim sends 18 book PDFs</td><td>Steve / Patrick</td></tr>
+        <tr><td><strong>Cajun Kids / Excalibur</strong></td><td>Jade Landry</td><td><span class="pill pill-orange">NDA Stage</span></td><td><span class="pill pill-orange">NDA Sent 3/16</span></td><td>Follow up NDA return; schedule ideation session</td><td>Natasha</td></tr>
+        <tr><td><strong>Brave Books</strong></td><td>Cooper Bell, Head of Sales</td><td><span class="pill pill-blue">Discovery</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Book PDF delivery overdue; Patrick monitoring</td><td>Patrick</td></tr>
+        <tr><td><strong>Scholastic</strong></td><td>Joanne Hewat</td><td><span class="pill pill-blue">Discovery</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Re-engaged 3/25; TLA or call in coming weeks</td><td>Steve</td></tr>
+        <tr><td><strong>Capstone Publishing</strong></td><td>Beth Brezenoff (EVP/GM), Haygood (CRO)</td><td><span class="pill pill-blue">Discovery</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Re-engaged 3/25; waiting for response</td><td>Steve / Natasha</td></tr>
+        <tr><td><strong>Cherry Lake Publishing</strong></td><td>Ben Mondloch</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Re-engaged 3/25 via Scott Crawford; TLA coffee</td><td>Steve</td></tr>
+        <tr><td><strong>Lerner / Rosen</strong></td><td>Tom Rathbun (both), Brad, Arlene</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-gray">Not Started</span></td><td>TLA meeting planned; prep talking points</td><td>Natasha</td></tr>
+        <tr><td><strong>Brooke Stephens</strong></td><td>&mdash;</td><td><span class="pill pill-blue">Discovery</span></td><td><span class="pill pill-gray">Legal Review</span></td><td>Copyright boundary consultation</td><td>Steve + Jan</td></tr>
+        <tr><td><strong>Libraria</strong></td><td>&mdash;</td><td><span class="pill pill-gray">Prospect</span></td><td><span class="pill pill-gray">Not Started</span></td><td>Early relationship via Forney intro</td><td>Natasha</td></tr>
       </tbody>
     </table>
   </div>
@@ -334,6 +339,234 @@ th.sortable.desc::after{content:'\2193';color:var(--bm-deep-green);}
       </tbody>
     </table>
   </div>
+</div>
+
+
+<!-- ===== PUBLISHER PIPELINE (DETAILED) ===== -->
+<div class="page" id="pubpipeline">
+  <div class="pg-header">
+    <h1>Publisher Pipeline</h1>
+    <p>Detailed publisher relationship tracker with timelines, contacts, and next actions. Updated March 25, 2026.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;">
+    <div style="background:var(--bm-bg-green-tint);border-radius:12px;padding:20px;text-align:center;border:1px solid #D1FAE5;">
+      <div style="font-size:32px;font-weight:800;color:var(--bm-deep-green);">1</div>
+      <div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;letter-spacing:0.5px;">MOU Signed</div>
+    </div>
+    <div style="background:#FFF7ED;border-radius:12px;padding:20px;text-align:center;border:1px solid #FED7AA;">
+      <div style="font-size:32px;font-weight:800;color:#9A3412;">1</div>
+      <div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;letter-spacing:0.5px;">NDA Stage</div>
+    </div>
+    <div style="background:#EFF6FF;border-radius:12px;padding:20px;text-align:center;border:1px solid #BFDBFE;">
+      <div style="font-size:32px;font-weight:800;color:#1E40AF;">4</div>
+      <div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;letter-spacing:0.5px;">Discovery</div>
+    </div>
+    <div style="background:var(--bm-bg-light);border-radius:12px;padding:20px;text-align:center;border:1px solid var(--bm-border-light);">
+      <div style="font-size:32px;font-weight:800;color:var(--bm-secondary-text);">3</div>
+      <div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;letter-spacing:0.5px;">Prospect</div>
+    </div>
+  </div>
+
+  <!-- SADDLEBACK -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Saddleback Educational Publishing</div><div style="font-size:12px;color:var(--bm-muted-gray);">Small K-12 Specialist / Hi-Lo Publisher</div></div>
+      <span class="pill pill-green" style="padding:4px 12px;">MOU Signed</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contact</div><div style="font-size:14px;">Tim McHugh, Co-Owner &mdash; tmchugh@sdlback.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Steve / Patrick</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Pilot Content</div><div style="font-size:14px;">"Welcome Newcomers Stories" &mdash; 18-book series</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Advised against % of sales pricing. Insists district = primary customer.</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);min-width:70px;display:inline-block;">Feb 20</span> Initial call &mdash; raised legal authority + district proof concerns</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);min-width:70px;display:inline-block;">Feb 27</span> Mutual NDA fully executed</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);min-width:70px;display:inline-block;">Mar 4</span> Call completed &mdash; agreed to share 18-book series for pilot</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);min-width:70px;display:inline-block;">Mar 20</span> MOU signed</div>
+    </div>
+    <div style="padding:12px 16px;background:#ECFDF5;border-radius:8px;border-left:3px solid var(--bm-deep-green);">
+      <div style="font-size:11px;font-weight:700;color:var(--bm-deep-green);text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Steve countersigns MOU. Tim sends 18 book PDFs to Patrick for intake.</div>
+    </div>
+  </div>
+
+  <!-- CAJUN KIDS -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Cajun Kids / Excalibur Publishing</div><div style="font-size:12px;color:var(--bm-muted-gray);">Regional / Independent K-12</div></div>
+      <span class="pill pill-orange" style="padding:4px 12px;">NDA Sent</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contact</div><div style="font-size:14px;">Jade Landry</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Intro Source</div><div style="font-size:14px;">Brave Books (Cooper Bell)</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Natasha</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">NDA Sent</div><div style="font-size:14px;">March 16, 2026</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 9</span> Natasha had initial call</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 16</span> NDA sent</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 19</span> Patrick followed up</div>
+    </div>
+    <div style="padding:12px 16px;background:#FFF7ED;border-radius:8px;border-left:3px solid var(--bm-pumpkin);">
+      <div style="font-size:11px;font-weight:700;color:#9A3412;text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Follow up on NDA return. Schedule ideation session once signed.</div>
+    </div>
+  </div>
+
+  <!-- BRAVE BOOKS -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Brave Books</div><div style="font-size:12px;color:var(--bm-muted-gray);">Religious / Values-Based Publisher</div></div>
+      <span class="pill pill-blue" style="padding:4px 12px;">Waiting on Files</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contact</div><div style="font-size:14px;">Cooper Bell, Head of Sales &mdash; cooper@brave.us</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Location</div><div style="font-size:14px;">Conroe, TX</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Patrick</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Introduced us to Cajun Kids</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Feb 25</span> Productive initial call &mdash; committed as design partner</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 3-5</span> Follow-up emails, coordinating internally on book selection</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 17</span> Patrick followed up on Google Drive delivery</div>
+    </div>
+    <div style="padding:12px 16px;background:#EFF6FF;border-radius:8px;border-left:3px solid #1E40AF;">
+      <div style="font-size:11px;font-weight:700;color:#1E40AF;text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Book PDF delivery overdue. Patrick monitoring.</div>
+    </div>
+  </div>
+
+  <!-- SCHOLASTIC -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Scholastic</div><div style="font-size:12px;color:var(--bm-muted-gray);">Major National Publisher</div></div>
+      <span style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#FDF2F8;color:#9D174D;">Re-engaged 3/25</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contact</div><div style="font-size:14px;">Joanne Hewat &mdash; jhewat@scholastic.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Steve</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Relationship</div><div style="font-size:14px;">Warm &mdash; several frank, personal conversations</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Board had censorship concerns. Frame: getting books moving + revenue. Districts reporting not ordering Scholastic for book fairs.</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Multiple</span> Several personal one-on-one conversations with Joanne</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 25</span> Steve emailed re: TLA weekend and Content Scanner update</div>
+    </div>
+    <div style="padding:12px 16px;background:#FDF2F8;border-radius:8px;border-left:3px solid #9D174D;">
+      <div style="font-size:11px;font-weight:700;color:#9D174D;text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Waiting for Joanne's reply. Meet at TLA or schedule call in coming weeks. Joanne is the decision maker &mdash; could determine larger Texas program.</div>
+    </div>
+  </div>
+
+  <!-- CAPSTONE -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Capstone Publishing</div><div style="font-size:12px;color:var(--bm-muted-gray);">Mid-Size Educational Publisher</div></div>
+      <span style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#FDF2F8;color:#9D174D;">Re-engaged 3/25</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contacts</div><div style="font-size:14px;">Beth Brezenoff (EVP/GM Content), Haygood Poundstone (CRO)</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Email</div><div style="font-size:14px;">bbrezenoff@capstonepub.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Steve / Natasha</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Were warm and excited, then went cold. Multiple follow-ups ignored.</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Sep 2025</span> Steve initial contact &mdash; Beth expressed strong interest</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Feb 10</span> Steve re-engaged, introduced Natasha and Jan</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 4</span> Natasha followed up &mdash; no response</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 25</span> Steve emailed directly re: Content Scanner design process + TLA</div>
+    </div>
+    <div style="padding:12px 16px;background:#FDF2F8;border-radius:8px;border-left:3px solid #9D174D;">
+      <div style="font-size:11px;font-weight:700;color:#9D174D;text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Waiting for response. Steve re-engaged directly with Content Scanner tease and TLA ask.</div>
+    </div>
+  </div>
+
+  <!-- CHERRY LAKE -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Cherry Lake Publishing</div><div style="font-size:12px;color:var(--bm-muted-gray);">Educational Publisher</div></div>
+      <span style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#FDF2F8;color:#9D174D;">Re-engaged 3/25</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contact</div><div style="font-size:14px;">Ben Mondloch &mdash; ben.mondloch@cherrylakepublishing.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Intro Source</div><div style="font-size:14px;">Scott Crawford (MediaSource) &mdash; scrawford@mediasourceinc.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Steve</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Scott thought Cherry Lake would be a great fit. Scott and Steve meeting at TLA.</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Earlier</span> Scott Crawford introduced Steve to Ben &mdash; never connected</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 25</span> Steve emailed Ben, CC'd Scott &mdash; proposed three-way coffee at TLA</div>
+    </div>
+    <div style="padding:12px 16px;background:var(--bm-bg-light);border-radius:8px;border-left:3px solid var(--bm-secondary-text);">
+      <div style="font-size:11px;font-weight:700;color:var(--bm-secondary-text);text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Waiting for Ben's reply. Strategy: three-way coffee with Scott at TLA as warm bridge.</div>
+    </div>
+  </div>
+
+  <!-- LERNER / ROSEN -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Lerner Publishing Group / Rosen Publishing</div><div style="font-size:12px;color:var(--bm-muted-gray);">Mid-Size Educational Publishers</div></div>
+      <span class="pill pill-gray" style="padding:4px 12px;">TLA Meeting Planned</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Contacts</div><div style="font-size:14px;">Tom Rathbun (rep for both), Brad (Lerner), Arlene (Rosen)</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Email</div><div style="font-size:14px;">tlrath@cs.com</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Natasha</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Key Intel</div><div style="font-size:14px;">Both Brad and Arlene "very interested" &mdash; want to meet at TLA</div></div>
+    </div>
+    <div style="border-top:1px solid var(--bm-border-light);padding-top:12px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--bm-secondary-text);margin-bottom:6px;">Timeline</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Late Feb</span> Tom had hernia surgery &mdash; delayed response</div>
+      <div style="font-size:13px;color:var(--bm-secondary-text);"><span style="color:var(--bm-muted-gray);display:inline-block;min-width:70px;">Mar 9</span> Both Lerner and Rosen contacts expressed strong interest</div>
+    </div>
+    <div style="padding:12px 16px;background:var(--bm-bg-light);border-radius:8px;border-left:3px solid var(--bm-secondary-text);">
+      <div style="font-size:11px;font-weight:700;color:var(--bm-secondary-text);text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">TLA Houston is the key touchpoint. Prep talking points for in-person meetings.</div>
+    </div>
+  </div>
+
+  <!-- BROOKE STEPHENS -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Brooke Stephens</div><div style="font-size:12px;color:var(--bm-muted-gray);">Independent / Legal Consultation</div></div>
+      <span class="pill pill-blue" style="padding:4px 12px;">Legal Review</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Steve + Jan</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Focus</div><div style="font-size:14px;">Copyright boundary consultation for Content Scanner</div></div>
+    </div>
+    <div style="padding:12px 16px;background:#EFF6FF;border-radius:8px;border-left:3px solid #1E40AF;">
+      <div style="font-size:11px;font-weight:700;color:#1E40AF;text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Pending legal review of copyright boundaries.</div>
+    </div>
+  </div>
+
+  <!-- LIBRARIA -->
+  <div style="background:white;border-radius:12px;padding:24px;margin-bottom:12px;border:1px solid var(--bm-border-light);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:20px;font-weight:700;">Libraria</div><div style="font-size:12px;color:var(--bm-muted-gray);">Independent Publisher</div></div>
+      <span class="pill pill-gray" style="padding:4px 12px;">Early Stage</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 32px;margin-bottom:16px;">
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Intro Source</div><div style="font-size:14px;">Forney connection</div></div>
+      <div><div style="font-size:11px;color:var(--bm-muted-gray);text-transform:uppercase;">Owner</div><div style="font-size:14px;">Natasha</div></div>
+    </div>
+    <div style="padding:12px 16px;background:var(--bm-bg-light);border-radius:8px;border-left:3px solid var(--bm-secondary-text);">
+      <div style="font-size:11px;font-weight:700;color:var(--bm-secondary-text);text-transform:uppercase;">Next Action</div>
+      <div style="font-size:14px;margin-top:4px;">Early relationship development via Forney intro.</div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ===== RECRUITMENT ===== -->
